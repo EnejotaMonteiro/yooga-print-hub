@@ -19,25 +19,20 @@ const Index = () => {
         {/* Logo */}
         <div className="mb-8">
           <img 
-            src={yoogaLogo}
+            src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png"
             alt="Yooga Suporte Logo" 
             className="h-16 md:h-20"
           />
         </div>
         
         {/* Modern Info Section */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <div className="bg-gradient-primary backdrop-blur-sm rounded-2xl p-6 md:p-8 text-center shadow-elegant">
-            <p className="text-lg md:text-xl text-primary-foreground leading-relaxed mb-6">
-              Nesta página você encontrará todos os drivers necessários para instalação e 
-              atualização das impressoras utilizadas pela equipe Yooga. Clique no botão correspondente 
-              para fazer o download direto.
-            </p>
+        <div className="max-w-3xl mx-auto mb-8">
+          <div className="bg-gradient-primary backdrop-blur-sm rounded-xl p-4 md:p-6 text-center shadow-elegant">
             <Button 
               asChild
               variant="secondary"
-              size="lg"
-              className="bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-sm transition-smooth"
+              size="default"
+              className="bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-sm transition-smooth mb-3"
             >
               <a 
                 href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da"
@@ -47,6 +42,11 @@ const Index = () => {
                 Wiki Impressoras
               </a>
             </Button>
+            <p className="text-sm md:text-base text-primary-foreground leading-relaxed">
+              Nesta página você encontrará todos os drivers necessários para instalação e 
+              atualização das impressoras utilizadas pela equipe Yooga. Clique no botão correspondente 
+              para fazer o download direto.
+            </p>
           </div>
         </div>
       </div>
