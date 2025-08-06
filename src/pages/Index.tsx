@@ -63,7 +63,7 @@ const Index = () => {
             <PrinterCard
               key={printer.id}
               name={printer.name}
-              image={printer.image}
+              videoUrl={printer.videoUrl}
               downloadUrl={printer.downloadUrl}
             />
           ))}

@@ -4,11 +4,11 @@ import { Download } from "lucide-react";
 
 interface PrinterCardProps {
   name: string;
-  image: string;
+  videoUrl: string;
   downloadUrl: string;
 }
 
-export const PrinterCard = ({ name, image, downloadUrl }: PrinterCardProps) => {
+export const PrinterCard = ({ name, videoUrl, downloadUrl }: PrinterCardProps) => {
   const handleDownload = () => {
     window.open(downloadUrl, '_blank');
   };
@@ -17,10 +17,13 @@ export const PrinterCard = ({ name, image, downloadUrl }: PrinterCardProps) => {
     <Card className="group overflow-hidden bg-white/80 backdrop-blur-sm border-white/20 shadow-elegant hover:shadow-glow transition-smooth hover:scale-105">
       <CardContent className="p-0">
         <div className="aspect-video overflow-hidden">
-          <img
-            src={image}
-            alt={name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-smooth"
+          <iframe
+            src={videoUrl}
+            title={`${name} - Configuração e Funcionamento`}
+            className="w-full h-full rounded-t-lg"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
           />
         </div>
         <div className="p-6">

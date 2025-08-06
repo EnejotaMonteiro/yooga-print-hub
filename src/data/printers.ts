@@ -1,52 +1,63 @@
-import printerI9 from "@/assets/printer-elgin-i9.jpg";
-import printerI7 from "@/assets/printer-elgin-i7.jpg";
-import printerL42Pro from "@/assets/printer-elgin-l42-pro.jpg";
-import printerTT042 from "@/assets/printer-elgin-tt042.jpg";
-import printerL42 from "@/assets/printer-elgin-l42.jpg";
-import printerI8 from "@/assets/printer-elgin-i8.jpg";
-
 export interface Printer {
   id: string;
   name: string;
-  image: string;
+  videoUrl: string;
   downloadUrl: string;
 }
 
 export const printers: Printer[] = [
   {
     id: "1",
-    name: "ELGIN I9",
-    image: printerI9,
-    downloadUrl: "https://example.com/drivers/elgin-i9.zip"
+    name: "Bematech 4200TH",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    downloadUrl: "https://example.com/drivers/bematech-4200th.zip"
   },
   {
     id: "2", 
-    name: "ELGIN I7",
-    image: printerI7,
-    downloadUrl: "https://example.com/drivers/elgin-i7.zip"
+    name: "Bematech 4200 HS",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    downloadUrl: "https://example.com/drivers/bematech-4200hs.zip"
   },
   {
     id: "3",
-    name: "ELGIN L42 PRO",
-    image: printerL42Pro, 
-    downloadUrl: "https://example.com/drivers/elgin-l42-pro.zip"
+    name: "Bematech 100s",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", 
+    downloadUrl: "https://example.com/drivers/bematech-100s.zip"
   },
   {
     id: "4",
-    name: "ELGIN TT042",
-    image: printerTT042,
-    downloadUrl: "https://example.com/drivers/elgin-tt042.zip"
+    name: "Bematech 2500",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    downloadUrl: "https://example.com/drivers/bematech-2500.zip"
   },
   {
     id: "5",
-    name: "ELGIN L42",
-    image: printerL42,
-    downloadUrl: "https://example.com/drivers/elgin-l42.zip"
+    name: "Bematech 4000",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    downloadUrl: "https://example.com/drivers/bematech-4000.zip"
   },
   {
     id: "6",
-    name: "ELGIN I8",
-    image: printerI8,
-    downloadUrl: "https://example.com/drivers/elgin-i8.zip"
+    name: "POS 80",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    downloadUrl: "https://example.com/drivers/pos-80.zip"
+  },
+  {
+    id: "7",
+    name: "POS 58",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    downloadUrl: "https://example.com/drivers/pos-58.zip"
+  },
+  {
+    id: "8",
+    name: "Epson T20",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    downloadUrl: "https://example.com/drivers/epson-t20.zip"
+  },
+  {
+    id: "9",
+    name: "Epson T20X",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    downloadUrl: "https://example.com/drivers/epson-t20x.zip"
   }
 ];
