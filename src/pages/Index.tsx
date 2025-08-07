@@ -65,6 +65,8 @@ const Index = () => {
               name={printer.name}
               videoUrl={printer.videoUrl}
               downloadUrl={printer.downloadUrl}
+              networkConnection={printer.networkConnection}
+              recommendedWindows={printer.recommendedWindows}
             />
           ))}
           {filteredPrinters.length === 0 && searchTerm && (
