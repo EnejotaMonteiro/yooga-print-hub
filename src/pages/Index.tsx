@@ -16,38 +16,31 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Header Section */}
       <div className="container mx-auto px-4 pt-8 pb-8">
+        {/* Wiki Button at top */}
+        <div className="mb-8 text-center">
+          <Button 
+            asChild
+            variant="default"
+            size="default"
+            className="bg-gradient-primary text-white hover:opacity-90 transition-smooth mb-6"
+          >
+            <a 
+              href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wiki Impressoras
+            </a>
+          </Button>
+        </div>
+
         {/* Logo */}
-        <div className="mb-8">
+        <div className="mb-8 text-center">
           <img 
             src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png"
             alt="Yooga Suporte Logo" 
-            className="h-16 md:h-20"
+            className="h-16 md:h-20 mx-auto"
           />
-        </div>
-        
-        {/* Modern Info Section */}
-        <div className="max-w-3xl mx-auto mb-8">
-          <div className="bg-gradient-primary backdrop-blur-sm rounded-xl p-4 md:p-6 text-center shadow-elegant">
-            <Button 
-              asChild
-              variant="secondary"
-              size="default"
-              className="bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-sm transition-smooth mb-3"
-            >
-              <a 
-                href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Wiki Impressoras
-              </a>
-            </Button>
-            <p className="text-sm md:text-base text-primary-foreground leading-relaxed">
-              Nesta página você encontrará todos os drivers necessários para instalação e 
-              atualização das impressoras utilizadas pela equipe Yooga. Clique no botão correspondente 
-              para fazer o download direto.
-            </p>
-          </div>
         </div>
       </div>
 
