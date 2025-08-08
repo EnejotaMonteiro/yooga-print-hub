@@ -29,7 +29,7 @@ export const printers: Printer[] = [
     name: "Bematech 100s",
     videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw", 
     downloadUrl: "https://example.com/drivers/bematech-100s.zip",
-    networkConnection: false,
+    networkConnection: true,
     recommendedWindows: "Windows XP/7/8/10"
   },
   {
@@ -37,7 +37,7 @@ export const printers: Printer[] = [
     name: "Bematech 2500",
     videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
     downloadUrl: "https://example.com/drivers/bematech-2500.zip",
-    networkConnection: false,
+    networkConnection: true,
     recommendedWindows: "Windows XP/7/8/10"
   },
   {
@@ -53,7 +53,7 @@ export const printers: Printer[] = [
     name: "POS 80",
     videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
     downloadUrl: "https://example.com/drivers/pos-80.zip",
-    networkConnection: false,
+    networkConnection: true,
     recommendedWindows: "Windows XP/7/8/10/11"
   },
   {
@@ -61,7 +61,7 @@ export const printers: Printer[] = [
     name: "POS 58",
     videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
     downloadUrl: "https://example.com/drivers/pos-58.zip",
-    networkConnection: false,
+    networkConnection: true,
     recommendedWindows: "Windows XP/7/8/10/11"
   },
   {
