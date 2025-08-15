@@ -10,7 +10,7 @@ export interface Printer {
 export const printers: Printer[] = [
   {
     id: "1",
-    name: "Bematech 4200 TH
+    name: "Bematech 4200 TH", 
     videoUrl: "https://www.youtube.com/watch?v=Vap2A8fZTWQ",
     downloadUrl: "https://example.com/drivers/bematech-4200th.zip",
     networkConnection: true,
