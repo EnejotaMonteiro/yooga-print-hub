@@ -37,15 +37,13 @@ const Index = () => {
               <a 
                 href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer" 
               >
                 Wiki Impressoras
               </a>
             </Button>
             <p className="text-sm md:text-base text-primary-foreground leading-relaxed">
-              Nesta página você encontrará todos os drivers necessários para instalação e 
-              atualização das impressoras utilizadas pela equipe Yooga. Clique no botão correspondente 
-              para fazer o download direto.
+              Nessa página você terá acesso a Wiki de Impressoras.
             </p>
           </div>
         </div>
@@ -81,7 +79,7 @@ const Index = () => {
       <footer className="bg-card/60 backdrop-blur-sm border-t border-white/20 py-8 mt-12">
         <div className="container mx-auto px-4 text-center">
           <p className="text-muted-foreground">
-            © 2024 Yooga - Suporte Interno - Drivers de Impressoras ELGIN
+            © 2025 Yooga Suporte - Drivers de impressoras
           </p>
         </div>
       </footer>

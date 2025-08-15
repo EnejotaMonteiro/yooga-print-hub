@@ -10,8 +10,8 @@ export interface Printer {
 export const printers: Printer[] = [
   {
     id: "1",
-    name: "Bematech ",
-    videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
+    name: "Bematech 4200 TH
+    videoUrl: "https://www.youtube.com/watch?v=Vap2A8fZTWQ",
     downloadUrl: "https://example.com/drivers/bematech-4200th.zip",
     networkConnection: true,
     recommendedWindows: "Windows 7/8/10/11"
@@ -19,7 +19,7 @@ export const printers: Printer[] = [
   {
     id: "2", 
     name: "Bematech 4200 HS",
-    videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
+    videoUrl: "https://www.youtube.com/watch?v=oKiZ3FMZZ38",
     downloadUrl: "https://example.com/drivers/bematech-4200hs.zip",
     networkConnection: true,
     recommendedWindows: "Windows 7/8/10/11"
@@ -27,7 +27,7 @@ export const printers: Printer[] = [
   {
     id: "3",
     name: "Bematech 100s",
-    videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw", 
+    videoUrl: "https://www.youtube.com/watch?v=Mm1ri-cU-t4", 
     downloadUrl: "https://example.com/drivers/bematech-100s.zip",
     networkConnection: true,
     recommendedWindows: "Windows XP/7/8/10"
@@ -35,7 +35,7 @@ export const printers: Printer[] = [
   {
     id: "4",
     name: "Bematech 2500",
-    videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
+    videoUrl: "https://www.youtube.com/watch?v=fBzCsaXlzdw",
     downloadUrl: "https://example.com/drivers/bematech-2500.zip",
     networkConnection: true,
     recommendedWindows: "Windows XP/7/8/10"
