@@ -79,5 +79,12 @@ export const printers: Printer[] = [
     downloadUrl: "https://example.com/drivers/epson-t20x.zip",
     networkConnection: true,
     recommendedWindows: "Windows 7/8/10/11"
-  }
-];
+  },
+  {
+    id: "11",
+    name: "Epson teste 2020",
+    videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
+    downloadUrl: "https://example.com/drivers/epson-t20x.zip",
+    networkConnection: true,
+    recommendedWindows: "Windows 10/22"
+  },
