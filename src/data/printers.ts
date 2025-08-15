@@ -10,7 +10,7 @@ export interface Printer {
 export const printers: Printer[] = [
   {
     id: "1",
-    name: "Bematech 4200 TESTE",
+    name: "Bematech ",
     videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
     downloadUrl: "https://example.com/drivers/bematech-4200th.zip",
     networkConnection: true,
@@ -80,11 +80,4 @@ export const printers: Printer[] = [
     networkConnection: true,
     recommendedWindows: "Windows 7/8/10/11"
   }
-]{
-    id: "10",
-    name: "Teste Criação impressora",
-    videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
-    downloadUrl: "https://example.com/drivers/epson-t20x.zip",
-    networkConnection: true,
-    recommendedWindows: "Windows 7/8/10/11"
-  }
+];
