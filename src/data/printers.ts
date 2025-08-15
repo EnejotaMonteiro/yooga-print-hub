@@ -88,3 +88,4 @@ export const printers: Printer[] = [
     networkConnection: true,
     recommendedWindows: "Windows 10/22"
      },
+    ]
