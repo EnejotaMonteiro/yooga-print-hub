@@ -80,7 +80,7 @@ export const printers: Printer[] = [
     networkConnection: true,
     recommendedWindows: "Windows 7/8/10/11"
   }
-];{
+]{
     id: "10",
     name: "Teste Criação impressora",
     videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
