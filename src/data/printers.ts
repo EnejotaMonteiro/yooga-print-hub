@@ -86,5 +86,4 @@ export const printers: Printer[] = [
     videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
     downloadUrl: "https://example.com/drivers/epson-t20x.zip",
     networkConnection: true,
-    recommendedWindows: "Windows 10/22"
-  }
+    recommendedWindows: "Windows 10/22"]}
