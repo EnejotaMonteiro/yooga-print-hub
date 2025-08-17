@@ -14,6 +14,22 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Top Wiki Link Bar */}
+      <div className="w-full bg-primary/10 border-b border-primary/20 py-2">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <a 
+              href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-primary hover:text-primary/80 transition-colors underline"
+            >
+              📚 Wiki Impressoras - Configurações e Possíveis Erros
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* Header Section */}
       <div className="container mx-auto px-4 pt-8 pb-8">
         {/* Logo */}
@@ -25,28 +41,6 @@ const Index = () => {
           />
         </div>
         
-        {/* Modern Info Section */}
-        <div className="max-w-3xl mx-auto mb-8">
-          <div className="bg-gradient-primary backdrop-blur-sm rounded-xl p-4 md:p-6 text-center shadow-elegant">
-            <Button 
-              asChild
-              variant="secondary"
-              size="default"
-              className="bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-sm transition-smooth mb-3"
-            >
-              <a 
-                href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da"
-                target="_blank"
-                rel="noopener noreferrer" 
-              >
-                Wiki Impressoras
-              </a>
-            </Button>
-            <p className="text-sm md:text-base text-primary-foreground leading-relaxed">
-              Nessa página você terá acesso a Wiki de Impressoras.
-            </p>
-          </div>
-        </div>
       </div>
 
       {/* Search Bar */}

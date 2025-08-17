@@ -1,8 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Download, Network, Wifi, WifiOff } from "lucide-react";
-import { useState } from "react";
+import { Download } from "lucide-react";
 
 interface PrinterCardProps {
   name: string;
@@ -13,8 +11,6 @@ interface PrinterCardProps {
 }
 
 export const PrinterCard = ({ name, videoUrl, downloadUrl, networkConnection, recommendedWindows }: PrinterCardProps) => {
-  const [observation, setObservation] = useState("");
-  
   const handleDownload = () => {
     window.open(downloadUrl, '_blank');
   };
@@ -43,33 +39,8 @@ export const PrinterCard = ({ name, videoUrl, downloadUrl, networkConnection, re
             Download Driver
           </Button>
           
-          <div className="space-y-3 mb-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              {networkConnection ? (
-                <Wifi className="w-4 h-4 text-green-500" />
-              ) : (
-                <WifiOff className="w-4 h-4 text-red-500" />
-              )}
-              <span>
-                {networkConnection ? "Funciona por cabo de rede" : "Não funciona por cabo de rede"}
-              </span>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              <strong>Windows recomendado:</strong> {recommendedWindows}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor={`observation-${name}`} className="text-sm font-medium text-foreground">
-              Observações:
-            </label>
-            <Textarea
-              id={`observation-${name}`}
-              placeholder="Adicione suas observações sobre esta impressora..."
-              value={observation}
-              onChange={(e) => setObservation(e.target.value)}
-              className="min-h-[80px] resize-none"
-            />
+          <div className="text-sm text-muted-foreground">
+            <strong>Windows recomendado:</strong> {recommendedWindows}
           </div>
         </div>
       </CardContent>
