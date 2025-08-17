@@ -15,14 +15,14 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Top Wiki Link Bar */}
-      <div className="w-full bg-gradient-primary border-b border-primary/20 py-2">
+      <div className="w-full bg-primary/10 border-b border-primary/20 py-2">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <a 
               href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-white hover:text-white/80 transition-colors underline font-medium"
+              className="text-sm text-primary hover:text-primary/80 transition-colors underline"
             >
               📚 Wiki Impressoras - Configurações e Possíveis Erros
             </a>
@@ -56,7 +56,6 @@ const Index = () => {
               key={printer.id}
               name={printer.name}
               videoUrl={printer.videoUrl}
-              videoUrl2={printer.videoUrl2}
               downloadUrl={printer.downloadUrl}
               networkConnection={printer.networkConnection}
               recommendedWindows={printer.recommendedWindows}
