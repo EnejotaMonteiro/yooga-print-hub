@@ -56,6 +56,7 @@ const Index = () => {
               key={printer.id}
               name={printer.name}
               videoUrl={printer.videoUrl}
+              videoUrl2={printer.videoUrl2}
               downloadUrl={printer.downloadUrl}
               networkConnection={printer.networkConnection}
               recommendedWindows={printer.recommendedWindows}
