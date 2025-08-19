@@ -22,7 +22,7 @@ const Index = () => {
               href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-primary hover:text-primary/80 transition-colors underline"
+              className="text-sm text-white hover:text-white/80 transition-colors underline"
             >
               📚 Wiki Impressoras - Configurações e Possíveis Erros
             </a>
@@ -39,6 +39,27 @@ const Index = () => {
             alt="Yooga Suporte Logo" 
             className="h-16 md:h-20"
           />
+        </div>
+
+        {/* Universal Configuration Video */}
+        <div className="mb-8 flex justify-center">
+          <div className="w-full max-w-md bg-white/80 backdrop-blur-sm border border-white/20 rounded-lg shadow-elegant overflow-hidden">
+            <div className="p-4">
+              <h3 className="text-lg font-semibold mb-3 text-center text-foreground">
+                Guia Universal de Configuração
+              </h3>
+              <div className="aspect-video">
+                <iframe
+                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                  title="Guia Universal de Configuração de Impressoras"
+                  className="w-full h-full rounded"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          </div>
         </div>
         
       </div>
