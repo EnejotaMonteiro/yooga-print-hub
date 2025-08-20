@@ -103,5 +103,7 @@ export const printers: Printer[] = [
     downloadUrl: "https://example.com/drivers/epson-t20x.zip",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
-    
+    }
+];
+
 //AtualizaçãoV1
