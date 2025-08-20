@@ -10,7 +10,7 @@ export interface Printer {
 export const printers: Printer[] = [
   {
     id: "1",
-    name: "Bematech ",
+    name: "Bematech 4200TH ",
     videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
     downloadUrl: "https://example.com/drivers/bematech-4200th.zip",
     networkConnection: true,
@@ -87,7 +87,21 @@ export const printers: Printer[] = [
     downloadUrl: "https://example.com/drivers/epson-t20x.zip",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
-  }
-];
-
+    },
+    {
+    id: "11",
+    name: "Elgin i7",
+    videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
+    downloadUrl: "https://example.com/drivers/epson-t20x.zip",
+    networkConnection: true,
+    recommendedWindows: "Windows 10 e 11"
+     },
+    {
+    id: "12",
+    name: "Elgin i9",
+    videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
+    downloadUrl: "https://example.com/drivers/epson-t20x.zip",
+    networkConnection: true,
+    recommendedWindows: "Windows 10 e 11"
+    
 //AtualizaçãoV1
