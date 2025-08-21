@@ -11,7 +11,7 @@ export const printers: Printer[] = [
   {
     id: "1",
     name: "Bematech 4200TH ",
-    videoUrl: "https://www.youtube.com/watch?v=Vap2A8fZTWQ",
+    videoUrl: "https://www.youtube.com/embed/Vap2A8fZTWQ",
     downloadUrl: "https://drive.google.com/file/d/17VmWJJV5PY-hC9LpQap8Fawa79VpNm8S/view?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
@@ -19,7 +19,7 @@ export const printers: Printer[] = [
   {
     id: "2", 
     name: "Bematech 4200 HS",
-    videoUrl: "https://www.youtube.com/watch?v=oKiZ3FMZZ38",
+    videoUrl: "https://www.youtube.com/embed/oKiZ3FMZZ38",
     downloadUrl: "https://example.com/drivers/bematech-4200hs.zip",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
@@ -27,7 +27,7 @@ export const printers: Printer[] = [
   {
     id: "3",
     name: "Bematech 100s",
-    videoUrl: "https://www.youtube.com/watch?v=Mm1ri-cU-t4", 
+    videoUrl: "https://www.youtube.com/embed/Mm1ri-cU-t4", 
     downloadUrl: "https://drive.google.com/file/d/17VmWJJV5PY-hC9LpQap8Fawa79VpNm8S/view?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
@@ -35,7 +35,7 @@ export const printers: Printer[] = [
   {
     id: "4",
     name: "Bematech 2500",
-    videoUrl: "https://www.youtube.com/watch?v=fBzCsaXlzdw",
+    videoUrl: "https://www.youtube.com/embed/fBzCsaXlzdw",
     downloadUrl: "https://drive.google.com/file/d/17VmWJJV5PY-hC9LpQap8Fawa79VpNm8S/view?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
@@ -43,7 +43,7 @@ export const printers: Printer[] = [
   {
     id: "5",
     name: "Bematech 4000",
-    videoUrl: "https://www.youtube.com/watch?v=0_q6H66Ihfw",
+    videoUrl: "https://www.youtube.com/embed/0_q6H66Ihfw",
     downloadUrl: "https://drive.google.com/file/d/17VmWJJV5PY-hC9LpQap8Fawa79VpNm8S/view?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
@@ -51,7 +51,7 @@ export const printers: Printer[] = [
   {
     id: "6",
     name: "POS 80",
-    videoUrl: "https://www.youtube.com/watch?v=XGEI23V-ZIo",
+    videoUrl: "https://www.youtube.com/embed/XGEI23V-ZIo",
     downloadUrl: "https://drive.google.com/drive/folders/16Zt7pXIAp9Cc4T3R09SxDILBIrQ9HTWC?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
@@ -59,7 +59,7 @@ export const printers: Printer[] = [
   {
     id: "7",
     name: "POS 58",
-    videoUrl: "https://www.youtube.com/watch?v=KlzbNK8UVdU",
+    videoUrl: "https://www.youtube.com/embed/KlzbNK8UVdU",
     downloadUrl: "https://drive.google.com/drive/folders/16Zt7pXIAp9Cc4T3R09SxDILBIrQ9HTWC?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
@@ -67,7 +67,7 @@ export const printers: Printer[] = [
   {
     id: "8",
     name: "Epson T20",
-    videoUrl: "https://www.youtube.com/watch?v=MG6d4jAPwvQ",
+    videoUrl: "https://www.youtube.com/embed/MG6d4jAPwvQ",
     downloadUrl: "https://drive.google.com/drive/folders/103lYGDXpbQy3kTZFajDdmRrX4ko26xx-?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
@@ -75,7 +75,7 @@ export const printers: Printer[] = [
   {
     id: "9",
     name: "Epson T20X",
-    videoUrl: "https://www.youtube.com/watch?v=o5jSyje5aFc",
+    videoUrl: "https://www.youtube.com/embed/o5jSyje5aFc",
     downloadUrl: "https://drive.google.com/drive/folders/1bswzgyYZiCeOKo0o49yaguAvLmC0hQJT?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
@@ -83,7 +83,7 @@ export const printers: Printer[] = [
   {
     id: "10",
     name: "Epson TM88v",
-    videoUrl: "https://www.youtube.com/watch?v=ixYnWGyIIL4",
+    videoUrl: "https://www.youtube.com/embed/ixYnWGyIIL4",
     downloadUrl: "https://drive.google.com/drive/folders/1WGQRDra5rM_80BMLsbLjAj6Ert5BcU32?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
@@ -91,7 +91,7 @@ export const printers: Printer[] = [
     {
     id: "11",
     name: "Elgin i7",
-    videoUrl: "https://www.youtube.com/watch?v=ToPI3NrZDzE",
+    videoUrl: "https://www.youtube.com/embed/ToPI3NrZDzE",
     downloadUrl: "https://drive.google.com/drive/folders/19CRj9o8K-x4dAIM1gDlEENl000q8N8bf?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
@@ -99,7 +99,7 @@ export const printers: Printer[] = [
     {
     id: "12",
     name: "Elgin i9",
-    videoUrl: "https://www.youtube.com/watch?v=ToPI3NrZDzE",
+    videoUrl: "https://www.youtube.com/embed/ToPI3NrZDzE",
     downloadUrl: "https://drive.google.com/drive/folders/19CRj9o8K-x4dAIM1gDlEENl000q8N8bf?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
