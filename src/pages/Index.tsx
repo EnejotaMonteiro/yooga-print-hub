@@ -2,6 +2,7 @@ import { useState } from "react";
 import { PrinterCard } from "@/components/PrinterCard";
 import { SearchBar } from "@/components/SearchBar";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { printers } from "@/data/printers";
 import yoogaLogo from "@/assets/yooga-logo.png";
 
@@ -88,6 +89,106 @@ const Index = () => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="container mx-auto px-4 py-16">
+        <Tabs defaultValue="faq" className="w-full max-w-4xl mx-auto">
+          <TabsList className="grid w-full grid-cols-1">
+            <TabsTrigger value="faq">Dúvidas Recorrentes</TabsTrigger>
+          </TabsList>
+          <TabsContent value="faq" className="mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Video 1 */}
+              <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-lg shadow-elegant overflow-hidden">
+                <div className="p-4">
+                  <h4 className="text-lg font-semibold mb-3 text-foreground">
+                    Como instalar drivers manualmente
+                  </h4>
+                  <div className="aspect-video mb-3">
+                    <iframe
+                      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                      title="Como instalar drivers manualmente"
+                      className="w-full h-full rounded"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Aprenda o passo a passo para instalar drivers de impressora manualmente no Windows.
+                  </p>
+                </div>
+              </div>
+
+              {/* Video 2 */}
+              <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-lg shadow-elegant overflow-hidden">
+                <div className="p-4">
+                  <h4 className="text-lg font-semibold mb-3 text-foreground">
+                    Configuração de impressora em rede
+                  </h4>
+                  <div className="aspect-video mb-3">
+                    <iframe
+                      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                      title="Configuração de impressora em rede"
+                      className="w-full h-full rounded"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Como configurar sua impressora para funcionar na rede local.
+                  </p>
+                </div>
+              </div>
+
+              {/* Video 3 */}
+              <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-lg shadow-elegant overflow-hidden">
+                <div className="p-4">
+                  <h4 className="text-lg font-semibold mb-3 text-foreground">
+                    Resolução de problemas comuns
+                  </h4>
+                  <div className="aspect-video mb-3">
+                    <iframe
+                      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                      title="Resolução de problemas comuns"
+                      className="w-full h-full rounded"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Soluções para os erros mais frequentes em impressoras.
+                  </p>
+                </div>
+              </div>
+
+              {/* Video 4 */}
+              <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-lg shadow-elegant overflow-hidden">
+                <div className="p-4">
+                  <h4 className="text-lg font-semibold mb-3 text-foreground">
+                    Configurações avançadas do sistema
+                  </h4>
+                  <div className="aspect-video mb-3">
+                    <iframe
+                      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                      title="Configurações avançadas do sistema"
+                      className="w-full h-full rounded"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Configurações avançadas para otimizar o funcionamento das impressoras.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
 
       {/* Footer */}
