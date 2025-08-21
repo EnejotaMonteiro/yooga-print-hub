@@ -11,7 +11,7 @@ export const printers: Printer[] = [
   {
     id: "1",
     name: "Bematech 4200TH ",
-    videoUrl: "https://www.youtube.com/embed/videoseries?list=UUvjUM98AY2QxxL2Iq8dRrFw",
+    videoUrl: "wwwwwww",
     downloadUrl: "https://drive.google.com/file/d/17VmWJJV5PY-hC9LpQap8Fawa79VpNm8S/view?usp=sharing",
     networkConnection: true,
     recommendedWindows: "Windows 10 e 11"
