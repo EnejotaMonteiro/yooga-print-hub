@@ -1,16 +1,27 @@
 import { useState } from "react";
 import { PrinterCard } from "@/components/PrinterCard";
 import { SearchBar } from "@/components/SearchBar";
+import { VideoTutorial } from "@/components/FAQ/VideoTutorial";
+import { TutorialSearch } from "@/components/FAQ/TutorialSearch";
+import { ObservationsBlock } from "@/components/FAQ/ObservationsBlock";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { printers } from "@/data/printers";
+import { tutorials } from "@/data/tutorials";
 import yoogaLogo from "@/assets/yooga-logo.png";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [tutorialSearchTerm, setTutorialSearchTerm] = useState("");
 
   const filteredPrinters = printers.filter(printer =>
     printer.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredTutorials = tutorials.filter(tutorial =>
+    tutorial.title.toLowerCase().includes(tutorialSearchTerm.toLowerCase()) ||
+    tutorial.description.toLowerCase().includes(tutorialSearchTerm.toLowerCase()) ||
+    tutorial.keywords.some(keyword => keyword.toLowerCase().includes(tutorialSearchTerm.toLowerCase()))
   );
 
   return (
@@ -91,104 +102,37 @@ const Index = () => {
         </div>
       </div>
 
-      {/* FAQ Section */}
+      {/* Dúvidas Recorrentes / Observações Section */}
       <div className="container mx-auto px-4 py-16">
-        <Tabs defaultValue="faq" className="w-full max-w-4xl mx-auto">
-          <TabsList className="grid w-full grid-cols-1">
-            <TabsTrigger value="faq">Dúvidas Recorrentes</TabsTrigger>
-          </TabsList>
-          <TabsContent value="faq" className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Video 1 */}
-              <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-lg shadow-elegant overflow-hidden">
-                <div className="p-4">
-                  <h4 className="text-lg font-semibold mb-3 text-foreground">
-                    Como instalar drivers manualmente
-                  </h4>
-                  <div className="aspect-video mb-3">
-                    <iframe
-                      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                      title="Como instalar drivers manualmente"
-                      className="w-full h-full rounded"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Aprenda o passo a passo para instalar drivers de impressora manualmente no Windows.
-                  </p>
-                </div>
+        <div className="w-full max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">
+            Dúvidas Recorrentes / Observações
+          </h2>
+          
+          {/* Search Bar for Tutorials */}
+          <TutorialSearch searchTerm={tutorialSearchTerm} onSearchChange={setTutorialSearchTerm} />
+          
+          {/* Tutorials Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {filteredTutorials.map((tutorial) => (
+              <VideoTutorial
+                key={tutorial.id}
+                id={tutorial.id}
+                title={tutorial.title}
+                description={tutorial.description}
+                videoUrl={tutorial.videoUrl}
+              />
+            ))}
+            {filteredTutorials.length === 0 && tutorialSearchTerm && (
+              <div className="col-span-full text-center py-8">
+                <p className="text-muted-foreground">Nenhum tutorial encontrado para "{tutorialSearchTerm}"</p>
               </div>
-
-              {/* Video 2 */}
-              <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-lg shadow-elegant overflow-hidden">
-                <div className="p-4">
-                  <h4 className="text-lg font-semibold mb-3 text-foreground">
-                    Configuração de impressora em rede
-                  </h4>
-                  <div className="aspect-video mb-3">
-                    <iframe
-                      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                      title="Configuração de impressora em rede"
-                      className="w-full h-full rounded"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Como configurar sua impressora para funcionar na rede local.
-                  </p>
-                </div>
-              </div>
-
-              {/* Video 3 */}
-              <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-lg shadow-elegant overflow-hidden">
-                <div className="p-4">
-                  <h4 className="text-lg font-semibold mb-3 text-foreground">
-                    Resolução de problemas comuns
-                  </h4>
-                  <div className="aspect-video mb-3">
-                    <iframe
-                      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                      title="Resolução de problemas comuns"
-                      className="w-full h-full rounded"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Soluções para os erros mais frequentes em impressoras.
-                  </p>
-                </div>
-              </div>
-
-              {/* Video 4 */}
-              <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-lg shadow-elegant overflow-hidden">
-                <div className="p-4">
-                  <h4 className="text-lg font-semibold mb-3 text-foreground">
-                    Configurações avançadas do sistema
-                  </h4>
-                  <div className="aspect-video mb-3">
-                    <iframe
-                      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                      title="Configurações avançadas do sistema"
-                      className="w-full h-full rounded"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Configurações avançadas para otimizar o funcionamento das impressoras.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+            )}
+          </div>
+          
+          {/* Observations Block */}
+          <ObservationsBlock />
+        </div>
       </div>
 
       {/* Footer */}
