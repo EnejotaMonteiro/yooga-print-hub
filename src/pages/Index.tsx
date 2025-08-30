@@ -6,6 +6,7 @@ import { TutorialSearch } from "@/components/FAQ/TutorialSearch";
 import { ObservationsBlock } from "@/components/FAQ/ObservationsBlock";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LogIn } from "lucide-react";
 import { printers } from "@/data/printers";
 import { tutorials } from "@/data/tutorials";
 import yoogaLogo from "@/assets/yooga-logo.png";
@@ -44,13 +45,22 @@ const Index = () => {
 
       {/* Header Section */}
       <div className="container mx-auto px-4 pt-8 pb-8">
-        {/* Logo */}
-        <div className="mb-8">
+        {/* Logo and Login */}
+        <div className="mb-8 flex justify-between items-center">
           <img 
             src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png"
             alt="Yooga Suporte Logo" 
             className="h-16 md:h-20"
           />
+          <a href="/login">
+            <Button 
+              className="bg-gradient-primary hover:opacity-90 transition-smooth shadow-elegant flex items-center gap-2"
+              size="lg"
+            >
+              <LogIn className="w-4 h-4" />
+              Login Suporte
+            </Button>
+          </a>
         </div>
 
         {/* Universal Configuration Video */}
