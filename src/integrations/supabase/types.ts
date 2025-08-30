@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      mensagens_chat: {
+        Row: {
+          conteudo: string
+          cor_usuario: string | null
+          criado_em: string | null
+          id: string
+          impressora_id: string
+          usuario_id: string
+        }
+        Insert: {
+          conteudo: string
+          cor_usuario?: string | null
+          criado_em?: string | null
+          id?: string
+          impressora_id: string
+          usuario_id: string
+        }
+        Update: {
+          conteudo?: string
+          cor_usuario?: string | null
+          criado_em?: string | null
+          id?: string
+          impressora_id?: string
+          usuario_id?: string
+        }
+        Relationships: []
+      }
       perfis: {
         Row: {
           atualizado_em: string | null

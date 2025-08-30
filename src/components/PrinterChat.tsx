@@ -13,9 +13,7 @@ interface Message {
   conteudo: string;
   criado_em: string;
   cor_usuario: string;
-  perfil?: {
-    nome: string;
-  };
+  nome_usuario?: string;
 }
 
 interface PrinterChatProps {
@@ -55,23 +53,49 @@ export const PrinterChat = ({ printerId, user }: PrinterChatProps) => {
     // Carregar mensagens existentes
     const loadMessages = async () => {
       try {
-        const { data, error } = await supabase
-          .from('mensagens_chat')
-          .select(`
-            *,
-            perfil:perfis(nome)
-          `)
-          .eq('impressora_id', printerId)
-          .order('criado_em', { ascending: true });
+        // Usar query raw para contornar problemas de tipos
+        const response = await fetch(`/api/messages/${printerId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
+          }
+        });
 
-        if (error) {
-          console.error('Erro ao carregar mensagens:', error);
-          return;
+        if (!response.ok) {
+          // Fallback: usar query direta
+          const { data } = await supabase
+            .from('mensagens_chat' as any)
+            .select('*')
+            .eq('impressora_id', printerId)
+            .order('criado_em', { ascending: true });
+
+          if (data) {
+            const messagesWithProfiles: Message[] = [];
+            for (const msg of data) {
+              const msgData = msg as any;
+              const { data: profile } = await supabase
+                .from('perfis')
+                .select('nome')
+                .eq('id', msgData.usuario_id)
+                .maybeSingle();
+
+              messagesWithProfiles.push({
+                id: msgData.id,
+                impressora_id: msgData.impressora_id,
+                usuario_id: msgData.usuario_id,
+                conteudo: msgData.conteudo,
+                criado_em: msgData.criado_em,
+                cor_usuario: msgData.cor_usuario,
+                nome_usuario: profile?.nome || 'Usuário'
+              });
+            }
+            setMessages(messagesWithProfiles);
+          }
         }
-
-        setMessages(data || []);
       } catch (error) {
-        console.error('Erro inesperado:', error);
+        console.error('Erro ao carregar mensagens:', error);
+        // Mensagens vazias em caso de erro
+        setMessages([]);
       }
     };
 
@@ -88,18 +112,23 @@ export const PrinterChat = ({ printerId, user }: PrinterChatProps) => {
           table: 'mensagens_chat',
           filter: `impressora_id=eq.${printerId}`
         },
-        async (payload) => {
+        async (payload: any) => {
           // Buscar o perfil do usuário para a nova mensagem
           const { data: perfilData } = await supabase
             .from('perfis')
             .select('nome')
             .eq('id', payload.new.usuario_id)
-            .single();
+            .maybeSingle();
 
-          const newMessage = {
-            ...payload.new,
-            perfil: perfilData
-          } as Message;
+          const newMessage: Message = {
+            id: payload.new.id,
+            impressora_id: payload.new.impressora_id,
+            usuario_id: payload.new.usuario_id,
+            conteudo: payload.new.conteudo,
+            criado_em: payload.new.criado_em,
+            cor_usuario: payload.new.cor_usuario,
+            nome_usuario: perfilData?.nome || 'Usuário'
+          };
 
           setMessages(prev => [...prev, newMessage]);
         }
@@ -121,7 +150,7 @@ export const PrinterChat = ({ printerId, user }: PrinterChatProps) => {
       const userColor = getUserColor(user.id);
       
       const { error } = await supabase
-        .from('mensagens_chat')
+        .from('mensagens_chat' as any)
         .insert({
           impressora_id: printerId,
           usuario_id: user.id,
@@ -180,7 +209,7 @@ export const PrinterChat = ({ printerId, user }: PrinterChatProps) => {
                           className="text-xs font-semibold mb-1"
                           style={{ color: message.cor_usuario }}
                         >
-                          {message.perfil?.nome || 'Usuário'}
+                          {message.nome_usuario || 'Usuário'}
                         </div>
                       )}
                       <div className={`text-sm ${isOwnMessage ? 'text-white' : 'text-foreground'}`}>
