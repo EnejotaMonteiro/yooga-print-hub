@@ -19,6 +19,7 @@ interface Message {
 interface PrinterChatProps {
   printerId: string;
   user: any;
+  compact?: boolean;
 }
 
 const userColors = [
@@ -34,7 +35,7 @@ const getUserColor = (userId: string) => {
   return userColors[Math.abs(hash) % userColors.length];
 };
 
-export const PrinterChat = ({ printerId, user }: PrinterChatProps) => {
+export const PrinterChat = ({ printerId, user, compact = false }: PrinterChatProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -180,14 +181,14 @@ export const PrinterChat = ({ printerId, user }: PrinterChatProps) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className={compact ? "space-y-2" : "space-y-4"}>
       {/* Messages Container */}
-      <Card className="h-96 overflow-hidden">
-        <CardContent className="p-4 h-full flex flex-col">
-          <div className="flex-1 overflow-y-auto space-y-3 pr-2">
+      <Card className={`${compact ? "h-48" : "h-96"} overflow-hidden`}>
+        <CardContent className={`${compact ? "p-3" : "p-4"} h-full flex flex-col`}>
+          <div className={`flex-1 overflow-y-auto ${compact ? "space-y-2" : "space-y-3"} pr-2`}>
             {messages.length === 0 ? (
-              <div className="text-center text-muted-foreground py-8">
-                Seja o primeiro a enviar uma mensagem neste chat!
+              <div className={`text-center text-muted-foreground ${compact ? "py-4 text-xs" : "py-8"}`}>
+                {compact ? "Nenhuma mensagem ainda" : "Seja o primeiro a enviar uma mensagem neste chat!"}
               </div>
             ) : (
               messages.map((message) => {
@@ -198,7 +199,7 @@ export const PrinterChat = ({ printerId, user }: PrinterChatProps) => {
                     className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                      className={`${compact ? "max-w-xs px-3 py-1" : "max-w-xs lg:max-w-md px-4 py-2"} rounded-lg ${
                         isOwnMessage 
                           ? 'bg-gradient-primary text-white' 
                           : 'bg-white border shadow-sm'
@@ -206,16 +207,16 @@ export const PrinterChat = ({ printerId, user }: PrinterChatProps) => {
                     >
                       {!isOwnMessage && (
                         <div 
-                          className="text-xs font-semibold mb-1"
+                          className={`${compact ? "text-xs" : "text-xs"} font-semibold mb-1`}
                           style={{ color: message.cor_usuario }}
                         >
                           {message.nome_usuario || 'Usuário'}
                         </div>
                       )}
-                      <div className={`text-sm ${isOwnMessage ? 'text-white' : 'text-foreground'}`}>
+                      <div className={`${compact ? "text-xs" : "text-sm"} ${isOwnMessage ? 'text-white' : 'text-foreground'}`}>
                         {message.conteudo}
                       </div>
-                      <div className={`text-xs mt-1 ${isOwnMessage ? 'text-white/80' : 'text-muted-foreground'}`}>
+                      <div className={`text-xs ${compact ? "mt-0.5" : "mt-1"} ${isOwnMessage ? 'text-white/80' : 'text-muted-foreground'}`}>
                         {new Date(message.criado_em).toLocaleTimeString('pt-BR', {
                           hour: '2-digit',
                           minute: '2-digit'
@@ -236,16 +237,16 @@ export const PrinterChat = ({ printerId, user }: PrinterChatProps) => {
         <Input
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Digite sua mensagem..."
+          placeholder={compact ? "Mensagem..." : "Digite sua mensagem..."}
           disabled={loading}
-          className="flex-1"
+          className={`flex-1 ${compact ? "h-8 text-sm" : ""}`}
         />
         <Button
           type="submit"
           disabled={loading || !newMessage.trim()}
-          className="bg-gradient-primary hover:opacity-90 transition-smooth"
+          className={`bg-gradient-primary hover:opacity-90 transition-smooth ${compact ? "h-8 px-3" : ""}`}
         >
-          <Send className="w-4 h-4" />
+          <Send className={compact ? "w-3 h-3" : "w-4 h-4"} />
         </Button>
       </form>
     </div>

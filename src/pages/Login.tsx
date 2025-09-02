@@ -35,7 +35,7 @@ const Login = () => {
           title: "Login realizado com sucesso!",
           description: "Redirecionando para o painel..."
         });
-        navigate("/painel");
+        navigate("/");
       }
     } catch (error) {
       toast({
@@ -50,45 +50,46 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-white/90 backdrop-blur-sm border-white/20 shadow-elegant">
-        <CardHeader className="text-center">
+      <Card className="w-full max-w-sm bg-white/95 backdrop-blur-sm border-white/30 shadow-2xl">
+        <CardHeader className="text-center pb-2">
           <img 
             src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png"
             alt="Yooga Suporte Logo" 
-            className="h-12 mx-auto mb-4"
+            className="h-14 mx-auto mb-6"
           />
-          <CardTitle className="text-2xl font-bold text-foreground">
-            Login do Sistema
+          <CardTitle className="text-xl font-medium text-foreground">
+            Acesso ao Sistema
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-2">
           <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+            <div className="space-y-1">
+              <Label htmlFor="email" className="text-sm font-medium">Email</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Digite seu email"
+                placeholder="seu@email.com"
+                className="h-11"
                 required
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
+            <div className="space-y-1">
+              <Label htmlFor="password" className="text-sm font-medium">Senha</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Digite sua senha"
+                placeholder="••••••••"
+                className="h-11"
                 required
               />
             </div>
             <Button
               type="submit"
-              className="w-full bg-gradient-primary hover:opacity-90 transition-smooth shadow-elegant"
-              size="lg"
+              className="w-full h-11 bg-gradient-primary hover:opacity-90 transition-smooth shadow-elegant mt-6"
               disabled={loading}
             >
               {loading ? "Entrando..." : "Entrar"}
