@@ -15,9 +15,9 @@ export const tutorials: Tutorial[] = [
     keywords: ["spooler", "reiniciar", "fila", "travado", "bloqueado", "serviço"]
   },
   {
-    id: "Em construção...",
-    title: "Em construção...",
-    description: "Em construção...",
+    id: "instalacao-manual-driver",
+    title: "Instalação manual de driver",
+    description: "Como instalar drivers de impressora manualmente quando o Windows não reconhece automaticamente.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     keywords: ["driver", "manual", "instalar", "inf", "windows", "instalação"]
   },
@@ -29,23 +29,23 @@ export const tutorials: Tutorial[] = [
     keywords: ["rede", "ip", "compartilhar", "local", "múltiplos", "computadores"]
   },
   {
-    id: "Em construção...",
-    title: "Em construção...",
-    description: "Em construção...",
+    id: "diagnostico-conexao",
+    title: "Diagnóstico de conexão",
+    description: "Como verificar e diagnosticar problemas de conexão entre computador e impressora.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     keywords: ["conexão", "cabo", "porta", "diagnóstico", "verificar", "configuração"]
   },
   {
-    id: "Em construção...",
-    title: "Em construção...",
-    description: "Em construção...",
+    id: "limpeza-manutencao",
+    title: "Limpeza e manutenção",
+    description: "Procedimentos básicos de limpeza e manutenção preventiva para impressoras.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     keywords: ["limpeza", "cabeçote", "manutenção", "produtos", "cuidados"]
   },
   {
-    id: "Em construção...",
-    title: "Em construção...",
-    description: "Em construção...",
+    id: "otimizar-qualidade",
+    title: "Otimizar qualidade de impressão",
+    description: "Ajustes para melhorar a qualidade, densidade e velocidade de impressão.",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     keywords: ["qualidade", "densidade", "velocidade", "clara", "borrada", "otimizar"]
   }

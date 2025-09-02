@@ -53,49 +53,45 @@ export const PrinterChat = ({ printerId, user, compact = false }: PrinterChatPro
   useEffect(() => {
     // Carregar mensagens existentes
     const loadMessages = async () => {
+      console.log('Carregando mensagens para impressora:', printerId);
       try {
-        // Usar query raw para contornar problemas de tipos
-        const response = await fetch(`/api/messages/${printerId}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
+        // Query direta para mensagens
+        const { data, error } = await supabase
+          .from('mensagens_chat')
+          .select('*')
+          .eq('impressora_id', printerId)
+          .order('criado_em', { ascending: true });
+
+        if (error) {
+          console.error('Erro ao carregar mensagens:', error);
+          return;
+        }
+
+        console.log('Mensagens carregadas:', data?.length || 0);
+
+        if (data) {
+          const messagesWithProfiles: Message[] = [];
+          for (const msg of data) {
+            const { data: profile } = await supabase
+              .from('perfis')
+              .select('nome')
+              .eq('id', msg.usuario_id)
+              .maybeSingle();
+            
+            messagesWithProfiles.push({
+              id: msg.id,
+              impressora_id: msg.impressora_id,
+              usuario_id: msg.usuario_id,
+              conteudo: msg.conteudo,
+              criado_em: msg.criado_em,
+              cor_usuario: msg.cor_usuario,
+              nome_usuario: profile?.nome || 'Usuário'
+            });
           }
-        });
-
-        if (!response.ok) {
-          // Fallback: usar query direta
-          const { data } = await supabase
-            .from('mensagens_chat' as any)
-            .select('*')
-            .eq('impressora_id', printerId)
-            .order('criado_em', { ascending: true });
-
-          if (data) {
-            const messagesWithProfiles: Message[] = [];
-            for (const msg of data) {
-              const msgData = msg as any;
-              const { data: profile } = await supabase
-                .from('perfis')
-                .select('nome')
-                .eq('id', msgData.usuario_id)
-                .maybeSingle();
-
-              messagesWithProfiles.push({
-                id: msgData.id,
-                impressora_id: msgData.impressora_id,
-                usuario_id: msgData.usuario_id,
-                conteudo: msgData.conteudo,
-                criado_em: msgData.criado_em,
-                cor_usuario: msgData.cor_usuario,
-                nome_usuario: profile?.nome || 'Usuário'
-              });
-            }
-            setMessages(messagesWithProfiles);
-          }
+          setMessages(messagesWithProfiles);
         }
       } catch (error) {
-        console.error('Erro ao carregar mensagens:', error);
-        // Mensagens vazias em caso de erro
+        console.error('Erro inesperado ao carregar mensagens:', error);
         setMessages([]);
       }
     };
@@ -114,6 +110,8 @@ export const PrinterChat = ({ printerId, user, compact = false }: PrinterChatPro
           filter: `impressora_id=eq.${printerId}`
         },
         async (payload: any) => {
+          console.log('Nova mensagem recebida via realtime:', payload.new);
+          
           // Buscar o perfil do usuário para a nova mensagem
           const { data: perfilData } = await supabase
             .from('perfis')
@@ -131,12 +129,21 @@ export const PrinterChat = ({ printerId, user, compact = false }: PrinterChatPro
             nome_usuario: perfilData?.nome || 'Usuário'
           };
 
-          setMessages(prev => [...prev, newMessage]);
+          setMessages(prev => {
+            // Verificar se a mensagem já existe para evitar duplicatas
+            if (prev.some(msg => msg.id === newMessage.id)) {
+              return prev;
+            }
+            return [...prev, newMessage];
+          });
         }
       )
       .subscribe();
 
+    console.log('Canal realtime configurado para:', `chat-${printerId}`);
+
     return () => {
+      console.log('Removendo canal realtime');
       supabase.removeChannel(channel);
     };
   }, [printerId]);
@@ -146,20 +153,25 @@ export const PrinterChat = ({ printerId, user, compact = false }: PrinterChatPro
     
     if (!newMessage.trim()) return;
 
+    console.log('Enviando mensagem:', newMessage.trim(), 'para impressora:', printerId);
     setLoading(true);
+    
     try {
       const userColor = getUserColor(user.id);
       
-      const { error } = await supabase
-        .from('mensagens_chat' as any)
+      const { data, error } = await supabase
+        .from('mensagens_chat')
         .insert({
           impressora_id: printerId,
           usuario_id: user.id,
           conteudo: newMessage.trim(),
           cor_usuario: userColor
-        });
+        })
+        .select()
+        .single();
 
       if (error) {
+        console.error('Erro ao enviar mensagem:', error);
         toast({
           title: "Erro ao enviar mensagem",
           description: error.message,
@@ -168,8 +180,11 @@ export const PrinterChat = ({ printerId, user, compact = false }: PrinterChatPro
         return;
       }
 
+      console.log('Mensagem enviada com sucesso:', data);
       setNewMessage("");
+      
     } catch (error) {
+      console.error('Erro inesperado ao enviar mensagem:', error);
       toast({
         title: "Erro inesperado",
         description: "Tente novamente em alguns instantes",
