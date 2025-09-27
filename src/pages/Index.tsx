@@ -9,7 +9,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut } from "lucide-react";
+import { LogOut, BookOpen } from "lucide-react";
 import { printers } from "@/data/printers";
 import { tutorials } from "@/data/tutorials";
 import yoogaLogo from "@/assets/yooga-logo.png";
@@ -59,22 +59,6 @@ const Index = () => {
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-background">
-        {/* Top Wiki Link Bar */}
-        <div className="w-full bg-gradient-primary py-2">
-          <div className="container mx-auto px-4">
-            <div className="text-center">
-              <a 
-                href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-white hover:text-white/80 transition-colors underline"
-              >
-                📚 Wiki Impressoras - Configurações e Possíveis Erros
-              </a>
-            </div>
-          </div>
-        </div>
-
         {/* Header Section */}
         <div className="container mx-auto px-4 pt-8 pb-8">
           {/* Header with Logo and Logout */}
@@ -182,6 +166,17 @@ const Index = () => {
             <ObservationsBlock />
           </div>
         </div>
+
+        {/* Wiki Floating Button */}
+        <a
+          href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-6 right-6 bg-gradient-primary text-white p-4 rounded-lg shadow-elegant hover:shadow-glow hover:scale-105 transition-smooth z-50 flex items-center gap-2"
+        >
+          <BookOpen className="w-5 h-5" />
+          <span className="text-sm font-medium">Wiki</span>
+        </a>
 
         {/* Footer */}
         <footer className="bg-card/60 backdrop-blur-sm border-t border-white/20 py-8 mt-12">
