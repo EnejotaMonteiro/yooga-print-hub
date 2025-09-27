@@ -1,6 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PrinterChat } from "@/components/PrinterChat";
 import { Download } from "lucide-react";
 
 interface PrinterCardProps {
@@ -9,11 +8,9 @@ interface PrinterCardProps {
   downloadUrl: string;
   networkConnection: boolean;
   recommendedWindows: string;
-  printerId: string;
-  user: any;
 }
 
-export const PrinterCard = ({ name, videoUrl, downloadUrl, networkConnection, recommendedWindows, printerId, user }: PrinterCardProps) => {
+export const PrinterCard = ({ name, videoUrl, downloadUrl, networkConnection, recommendedWindows }: PrinterCardProps) => {
   const handleDownload = () => {
     window.open(downloadUrl, '_blank');
   };
@@ -42,14 +39,8 @@ export const PrinterCard = ({ name, videoUrl, downloadUrl, networkConnection, re
             Download Driver
           </Button>
           
-          <div className="text-sm text-muted-foreground mb-4">
+          <div className="text-sm text-muted-foreground">
             <strong>Windows recomendado:</strong> {recommendedWindows}
-          </div>
-
-          {/* Chat integrado */}
-          <div className="border-t border-white/20 pt-4">
-            <h4 className="text-sm font-medium text-foreground mb-3">Chat de Suporte</h4>
-            <PrinterChat printerId={printerId} user={user} compact={true} />
           </div>
         </div>
       </CardContent>

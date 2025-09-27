@@ -140,8 +140,6 @@ const Index = () => {
                 downloadUrl={printer.downloadUrl}
                 networkConnection={printer.networkConnection}
                 recommendedWindows={printer.recommendedWindows}
-                printerId={printer.id}
-                user={user}
               />
             ))}
             {filteredPrinters.length === 0 && searchTerm && (
