@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      configuracao_site: {
+        Row: {
+          id: string
+          updated_at: string | null
+          video_guia_universal_url: string
+        }
+        Insert: {
+          id?: string
+          updated_at?: string | null
+          video_guia_universal_url: string
+        }
+        Update: {
+          id?: string
+          updated_at?: string | null
+          video_guia_universal_url?: string
+        }
+        Relationships: []
+      }
+      impressoras: {
+        Row: {
+          ativo: boolean | null
+          conexao_rede: boolean | null
+          created_at: string | null
+          download_url: string
+          id: string
+          imagem_url: string
+          nome: string
+          ordem: number | null
+          updated_at: string | null
+          video_url: string
+          windows_recomendado: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          conexao_rede?: boolean | null
+          created_at?: string | null
+          download_url: string
+          id?: string
+          imagem_url: string
+          nome: string
+          ordem?: number | null
+          updated_at?: string | null
+          video_url: string
+          windows_recomendado?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          conexao_rede?: boolean | null
+          created_at?: string | null
+          download_url?: string
+          id?: string
+          imagem_url?: string
+          nome?: string
+          ordem?: number | null
+          updated_at?: string | null
+          video_url?: string
+          windows_recomendado?: string | null
+        }
+        Relationships: []
+      }
       mensagens_chat: {
         Row: {
           conteudo: string
@@ -65,15 +125,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -200,6 +287,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const

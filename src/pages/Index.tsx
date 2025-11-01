@@ -5,19 +5,21 @@ import { SearchBar } from "@/components/SearchBar";
 import { VideoTutorial } from "@/components/FAQ/VideoTutorial";
 import { TutorialSearch } from "@/components/FAQ/TutorialSearch";
 import { ObservationsBlock } from "@/components/FAQ/ObservationsBlock";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, BookOpen } from "lucide-react";
-import { printers } from "@/data/printers";
+import { LogOut, BookOpen, LogIn, Shield } from "lucide-react";
 import { tutorials } from "@/data/tutorials";
-import yoogaLogo from "@/assets/yooga-logo.png";
+import { useAdmin } from "@/hooks/use-admin";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [tutorialSearchTerm, setTutorialSearchTerm] = useState("");
   const [user, setUser] = useState<any>(null);
+  const [printers, setPrinters] = useState<any[]>([]);
+  const [videoGuiaUrl, setVideoGuiaUrl] = useState("");
+  const [loadingPrinters, setLoadingPrinters] = useState(true);
+  const { isAdmin } = useAdmin();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -27,7 +29,54 @@ const Index = () => {
       setUser(session?.user);
     };
     getUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const fetchPrinters = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('impressoras')
+          .select('*')
+          .eq('ativo', true)
+          .order('ordem', { ascending: true });
+
+        if (error) throw error;
+        setPrinters(data || []);
+      } catch (error) {
+        console.error('Erro ao buscar impressoras:', error);
+        toast({
+          title: "Erro ao carregar impressoras",
+          description: "Tente novamente mais tarde",
+          variant: "destructive"
+        });
+      } finally {
+        setLoadingPrinters(false);
+      }
+    };
+
+    const fetchConfig = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('configuracao_site')
+          .select('video_guia_universal_url')
+          .single();
+
+        if (error) throw error;
+        setVideoGuiaUrl(data?.video_guia_universal_url || '');
+      } catch (error) {
+        console.error('Erro ao buscar configuração:', error);
+      }
+    };
+
+    fetchPrinters();
+    fetchConfig();
+  }, [toast]);
 
   const handleLogout = async () => {
     try {
@@ -47,7 +96,7 @@ const Index = () => {
   };
 
   const filteredPrinters = printers.filter(printer =>
-    printer.name.toLowerCase().includes(searchTerm.toLowerCase())
+    printer.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const filteredTutorials = tutorials.filter(tutorial =>
@@ -57,31 +106,55 @@ const Index = () => {
   );
 
   return (
-    <ProtectedRoute>
-      <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
         {/* Header Section */}
         <div className="container mx-auto px-4 pt-8 pb-8">
-          {/* Header with Logo and Logout */}
+          {/* Header with Logo and Login/Logout */}
           <div className="mb-8 flex justify-between items-center">
             <img 
               src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png"
               alt="Yooga Suporte Logo" 
               className="h-16 md:h-20"
             />
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <p className="text-sm text-muted-foreground">Logado como:</p>
-                <p className="text-sm font-medium text-foreground">{user?.email}</p>
-              </div>
-              <Button 
-                onClick={handleLogout}
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-2"
-              >
-                <LogOut className="w-4 h-4" />
-                Sair
-              </Button>
+            <div className="flex items-center gap-2">
+              {user ? (
+                <>
+                  {isAdmin && (
+                    <Button
+                      onClick={() => navigate("/admin")}
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-2"
+                    >
+                      <Shield className="w-4 h-4" />
+                      Admin
+                    </Button>
+                  )}
+                  <div className="text-right hidden md:block">
+                    <p className="text-xs text-muted-foreground">Logado como:</p>
+                    <p className="text-xs font-medium text-foreground">{user?.email}</p>
+                  </div>
+                  <Button 
+                    onClick={handleLogout}
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span className="hidden sm:inline">Sair</span>
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  onClick={() => navigate("/login")}
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <LogIn className="w-4 h-4" />
+                  Login Admin
+                </Button>
+              )}
             </div>
           </div>
 
@@ -94,7 +167,7 @@ const Index = () => {
                 </h3>
                 <div className="aspect-video">
                   <iframe
-                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    src={videoGuiaUrl || "https://www.youtube.com/embed/dQw4w9WgXcQ"}
                     title="Guia Universal de Configuração de Impressoras"
                     className="w-full h-full rounded"
                     frameBorder="0"
@@ -115,23 +188,35 @@ const Index = () => {
 
         {/* Printers Grid */}
         <div className="container mx-auto px-4 pb-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {filteredPrinters.map((printer) => (
-              <PrinterCard
-                key={printer.id}
-                name={printer.name}
-                videoUrl={printer.videoUrl}
-                downloadUrl={printer.downloadUrl}
-                networkConnection={printer.networkConnection}
-                recommendedWindows={printer.recommendedWindows}
-              />
-            ))}
-            {filteredPrinters.length === 0 && searchTerm && (
-              <div className="col-span-full text-center py-8">
-                <p className="text-muted-foreground">Nenhuma impressora encontrada para "{searchTerm}"</p>
-              </div>
-            )}
-          </div>
+          {loadingPrinters ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Carregando impressoras...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {filteredPrinters.map((printer) => (
+                <PrinterCard
+                  key={printer.id}
+                  name={printer.nome}
+                  videoUrl={printer.video_url}
+                  downloadUrl={printer.download_url}
+                  networkConnection={printer.conexao_rede}
+                  recommendedWindows={printer.windows_recomendado}
+                />
+              ))}
+              {filteredPrinters.length === 0 && searchTerm && (
+                <div className="col-span-full text-center py-8">
+                  <p className="text-muted-foreground">Nenhuma impressora encontrada para "{searchTerm}"</p>
+                </div>
+              )}
+              {printers.length === 0 && !loadingPrinters && (
+                <div className="col-span-full text-center py-8">
+                  <p className="text-muted-foreground">Nenhuma impressora cadastrada ainda.</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Dúvidas Recorrentes / Observações Section */}
@@ -187,7 +272,6 @@ const Index = () => {
           </div>
         </footer>
       </div>
-    </ProtectedRoute>
   );
 };
 
