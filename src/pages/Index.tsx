@@ -4,7 +4,7 @@ import { PrinterCard } from "@/components/PrinterCard";
 import { SearchBar } from "@/components/SearchBar";
 import { VideoTutorial } from "@/components/FAQ/VideoTutorial";
 import { TutorialSearch } from "@/components/FAQ/TutorialSearch";
-import { ObservationsBlock } from "@/components/FAQ/ObservationsBlock";
+import { AIChat } from "@/components/FAQ/AIChat";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -248,7 +248,7 @@ const Index = () => {
             </div>
             
             {/* Observations Block */}
-            <ObservationsBlock />
+            <AIChat />
           </div>
         </div>
 
