@@ -5,12 +5,17 @@ import { Button } from "@/components/ui/button";
 import { LogOut, Plus, Home } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { PrintersList } from "@/components/admin/PrintersList";
+import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Admin = () => {
   const { isAdmin, loading } = useAdmin();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [user, setUser] = useState<any>(null);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -46,6 +51,11 @@ const Admin = () => {
         variant: "destructive"
       });
     }
+  };
+
+  const handleAddSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["printers"] });
+    queryClient.invalidateQueries({ queryKey: ["admin-printers"] });
   };
 
   if (loading) {
@@ -106,16 +116,22 @@ const Admin = () => {
         <div className="grid gap-6">
           {/* Gerenciar Impressoras */}
           <div className="bg-card rounded-lg p-6 shadow-elegant">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-foreground">Gerenciar Impressoras</h2>
-              <Button className="flex items-center gap-2">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-xl font-semibold text-foreground">Gerenciar Impressoras</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Adicione, edite ou remova impressoras do catálogo
+                </p>
+              </div>
+              <Button 
+                className="flex items-center gap-2"
+                onClick={() => setAddDialogOpen(true)}
+              >
                 <Plus className="w-4 h-4" />
                 Adicionar Impressora
               </Button>
             </div>
-            <p className="text-muted-foreground">
-              Funcionalidade de gerenciamento de impressoras em desenvolvimento...
-            </p>
+            <PrintersList />
           </div>
 
           {/* Configurações do Site */}
@@ -127,6 +143,12 @@ const Admin = () => {
           </div>
         </div>
       </div>
+
+      <PrinterFormDialog
+        open={addDialogOpen}
+        onOpenChange={setAddDialogOpen}
+        onSuccess={handleAddSuccess}
+      />
     </div>
   );
 };
