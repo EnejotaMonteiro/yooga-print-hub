@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { LogOut, Plus, Home } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,31 +10,33 @@ import { UserRolesList } from "@/components/admin/UserRolesList";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Admin = () => {
-  const { isAdmin, loading } = useAdmin();
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   useEffect(() => {
-    const getUser = async () => {
+    const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user);
+      
+      if (!session) {
+        toast({
+          title: "Acesso negado",
+          description: "Você precisa estar logado para acessar esta área",
+          variant: "destructive"
+        });
+        navigate("/login");
+        return;
+      }
+      
+      setUser(session.user);
+      setLoading(false);
     };
-    getUser();
-  }, []);
-
-  useEffect(() => {
-    if (!loading && !isAdmin) {
-      toast({
-        title: "Acesso negado",
-        description: "Você não tem permissão para acessar esta área",
-        variant: "destructive"
-      });
-      navigate("/");
-    }
-  }, [isAdmin, loading, navigate, toast]);
+    
+    checkAuth();
+  }, [navigate, toast]);
 
   const handleLogout = async () => {
     try {
@@ -64,13 +65,13 @@ const Admin = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Verificando permissões...</p>
+          <p className="text-muted-foreground">Carregando...</p>
         </div>
       </div>
     );
   }
 
-  if (!isAdmin) {
+  if (!user) {
     return null;
   }
 

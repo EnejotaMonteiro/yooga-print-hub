@@ -10,7 +10,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { LogOut, BookOpen, LogIn, Shield } from "lucide-react";
 import { tutorials } from "@/data/tutorials";
-import { useAdmin } from "@/hooks/use-admin";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +18,6 @@ const Index = () => {
   const [printers, setPrinters] = useState<any[]>([]);
   const [videoGuiaUrl, setVideoGuiaUrl] = useState("");
   const [loadingPrinters, setLoadingPrinters] = useState(true);
-  const { isAdmin } = useAdmin();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -119,17 +117,15 @@ const Index = () => {
             <div className="flex items-center gap-2">
               {user ? (
                 <>
-                  {isAdmin && (
-                    <Button
-                      onClick={() => navigate("/admin")}
-                      variant="outline"
-                      size="sm"
-                      className="flex items-center gap-2"
-                    >
-                      <Shield className="w-4 h-4" />
-                      Admin
-                    </Button>
-                  )}
+                  <Button
+                    onClick={() => navigate("/admin")}
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <Shield className="w-4 h-4" />
+                    Admin
+                  </Button>
                   <div className="text-right hidden md:block">
                     <p className="text-xs text-muted-foreground">Logado como:</p>
                     <p className="text-xs font-medium text-foreground">{user?.email}</p>
