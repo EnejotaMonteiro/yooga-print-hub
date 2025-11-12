@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PrintersList } from "@/components/admin/PrintersList";
 import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
+import { UserRolesList } from "@/components/admin/UserRolesList";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Admin = () => {
@@ -132,6 +133,11 @@ const Admin = () => {
               </Button>
             </div>
             <PrintersList />
+          </div>
+
+          {/* Gerenciar Usuários */}
+          <div className="bg-card rounded-lg p-6 shadow-elegant">
+            <UserRolesList />
           </div>
 
           {/* Configurações do Site */}
