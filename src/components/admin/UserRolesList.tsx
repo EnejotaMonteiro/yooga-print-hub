@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useSuperAdmin } from "@/hooks/use-super-admin";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +18,7 @@ interface UserWithRole {
 
 export const UserRolesList = () => {
   const queryClient = useQueryClient();
+  const { isSuperAdmin, loading: superAdminLoading } = useSuperAdmin();
   const [loadingUserId, setLoadingUserId] = useState<string | null>(null);
 
   const { data: users, isLoading } = useQuery({
@@ -115,7 +117,7 @@ export const UserRolesList = () => {
     toggleAdminMutation.mutate({ userId, isCurrentlyAdmin });
   };
 
-  if (isLoading) {
+  if (isLoading || superAdminLoading) {
     return (
       <Card>
         <CardHeader>
@@ -125,6 +127,26 @@ export const UserRolesList = () => {
         <CardContent>
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!isSuperAdmin) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Gerenciamento de Usuários</CardTitle>
+          <CardDescription>Gerencie as permissões de administrador dos usuários cadastrados</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center p-8">
+            <Shield className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">Acesso Restrito</h3>
+            <p className="text-muted-foreground">
+              Apenas administradores gerais podem gerenciar usuários.
+            </p>
           </div>
         </CardContent>
       </Card>
