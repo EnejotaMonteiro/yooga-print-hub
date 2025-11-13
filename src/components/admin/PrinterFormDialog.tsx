@@ -26,14 +26,14 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
 const printerFormSchema = z.object({
-  nome: z.string().min(1, "Nome é obrigatório").max(100, "Nome muito longo"),
-  video_url: z.string().url("URL do vídeo inválida").max(500, "URL muito longa"),
-  download_url: z.string().url("URL de download inválida").max(500, "URL muito longa"),
-  imagem_url: z.string().url("URL da imagem inválida").max(500, "URL muito longa"),
-  windows_recomendado: z.string().max(50, "Texto muito longo").default("Windows 10 e 11"),
-  conexao_rede: z.boolean().default(true),
-  ativo: z.boolean().default(true),
-  ordem: z.number().int().min(0).default(0),
+  nome: z.string().optional(),
+  video_url: z.string().optional(),
+  download_url: z.string().optional(),
+  imagem_url: z.string().optional(),
+  windows_recomendado: z.string().optional().default("Windows 10 e 11"),
+  conexao_rede: z.boolean().optional().default(true),
+  ativo: z.boolean().optional().default(true),
+  ordem: z.coerce.number().int().min(0).optional().default(0),
 });
 
 type PrinterFormValues = z.infer<typeof printerFormSchema>;
