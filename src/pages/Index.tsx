@@ -163,8 +163,8 @@ const Index = () => {
                 </h3>
                 <div className="aspect-video">
                   <iframe
-                    src={videoGuiaUrl || "https://www.youtube.com/embed/dQw4w9WgXcQ"}
-                    title="Guia Universal de Configuração de Impressoras"
+                    src={videoGuiaUrl || "https://www.youtube.com/watch?v=TLKh-evOW5k"}
+                    title="Configuração padrão da impressora no sistema Yooga"
                     className="w-full h-full rounded"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
