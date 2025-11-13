@@ -7,7 +7,18 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Shield, ShieldOff, Loader2 } from "lucide-react";
+import { Shield, ShieldOff, Loader2, UserPlus, Trash2 } from "lucide-react";
+import { CreateUserDialog } from "./CreateUserDialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface UserWithRole {
   id: string;
@@ -20,6 +31,9 @@ export const UserRolesList = () => {
   const queryClient = useQueryClient();
   const { isSuperAdmin, loading: superAdminLoading } = useSuperAdmin();
   const [loadingUserId, setLoadingUserId] = useState<string | null>(null);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<UserWithRole | null>(null);
 
   const { data: users, isLoading } = useQuery({
     queryKey: ["users-with-roles"],
@@ -117,6 +131,64 @@ export const UserRolesList = () => {
     toggleAdminMutation.mutate({ userId, isCurrentlyAdmin });
   };
 
+  const deleteUserMutation = useMutation({
+    mutationFn: async (userId: string) => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error("Sessão não encontrada");
+      }
+
+      const response = await fetch(
+        "https://hihicwvhtbspaikfnjot.supabase.co/functions/v1/manage-users",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            action: "delete",
+            userId,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Erro ao excluir usuário");
+      }
+    },
+    onMutate: (userId) => {
+      setLoadingUserId(userId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users-with-roles"] });
+      toast.success("Usuário excluído com sucesso");
+      setDeleteDialogOpen(false);
+      setUserToDelete(null);
+    },
+    onError: (error) => {
+      console.error("Erro ao excluir usuário:", error);
+      toast.error(error instanceof Error ? error.message : "Erro ao excluir usuário");
+    },
+    onSettled: () => {
+      setLoadingUserId(null);
+    }
+  });
+
+  const handleDeleteUser = (user: UserWithRole) => {
+    setUserToDelete(user);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (userToDelete) {
+      deleteUserMutation.mutate(userToDelete.id);
+    }
+  };
+
   if (isLoading || superAdminLoading) {
     return (
       <Card>
@@ -154,13 +226,22 @@ export const UserRolesList = () => {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Gerenciamento de Usuários</CardTitle>
-        <CardDescription>
-          Gerencie as permissões de administrador dos usuários cadastrados
-        </CardDescription>
-      </CardHeader>
+    <>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Gerenciamento de Usuários</CardTitle>
+              <CardDescription>
+                Gerencie as permissões de administrador dos usuários cadastrados
+              </CardDescription>
+            </div>
+            <Button onClick={() => setCreateDialogOpen(true)}>
+              <UserPlus className="h-4 w-4 mr-2" />
+              Adicionar Usuário
+            </Button>
+          </div>
+        </CardHeader>
       <CardContent>
         <div className="rounded-md border">
           <Table>
@@ -191,26 +272,43 @@ export const UserRolesList = () => {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button
-                        variant={user.isAdmin ? "destructive" : "default"}
-                        size="sm"
-                        onClick={() => handleToggleAdmin(user.id, user.isAdmin)}
-                        disabled={loadingUserId === user.id}
-                      >
-                        {loadingUserId === user.id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : user.isAdmin ? (
-                          <>
-                            <ShieldOff className="h-4 w-4 mr-1" />
-                            Remover Admin
-                          </>
-                        ) : (
-                          <>
-                            <Shield className="h-4 w-4 mr-1" />
-                            Tornar Admin
-                          </>
-                        )}
-                      </Button>
+                      <div className="flex gap-2 justify-end">
+                        <Button
+                          variant={user.isAdmin ? "destructive" : "default"}
+                          size="sm"
+                          onClick={() => handleToggleAdmin(user.id, user.isAdmin)}
+                          disabled={loadingUserId === user.id}
+                        >
+                          {loadingUserId === user.id ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : user.isAdmin ? (
+                            <>
+                              <ShieldOff className="h-4 w-4 mr-1" />
+                              Remover Admin
+                            </>
+                          ) : (
+                            <>
+                              <Shield className="h-4 w-4 mr-1" />
+                              Tornar Admin
+                            </>
+                          )}
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDeleteUser(user)}
+                          disabled={loadingUserId === user.id}
+                        >
+                          {loadingUserId === user.id ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <>
+                              <Trash2 className="h-4 w-4 mr-1" />
+                              Excluir
+                            </>
+                          )}
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))
@@ -226,5 +324,31 @@ export const UserRolesList = () => {
         </div>
       </CardContent>
     </Card>
+
+    <CreateUserDialog
+      open={createDialogOpen}
+      onOpenChange={setCreateDialogOpen}
+      onSuccess={() => queryClient.invalidateQueries({ queryKey: ["users-with-roles"] })}
+    />
+
+    <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
+          <AlertDialogDescription>
+            Tem certeza que deseja excluir o usuário{" "}
+            <strong>{userToDelete?.nome || userToDelete?.email}</strong>?
+            Esta ação não pode ser desfeita.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogAction onClick={confirmDelete}>
+            Excluir
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+    </>
   );
 };
