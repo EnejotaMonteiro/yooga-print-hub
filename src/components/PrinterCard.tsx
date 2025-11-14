@@ -55,8 +55,6 @@ export const PrinterCard = ({
             disabled={isLast}
             className="bg-background/80 hover:bg-background"
             title="Mover para baixo"
-          >
-            <ArrowDown className="w-4 h-4" />
           </Button>
           <Button
             variant="ghost"
@@ -72,7 +70,7 @@ export const PrinterCard = ({
       <CardContent className="p-0">
         <div className="aspect-video overflow-hidden">
           <iframe
-            src={convertToEmbedUrl(videoUrl)} {/* Usando convertToEmbedUrl */}
+            src={convertToEmbedUrl(videoUrl)}
             title={`${name} - Configuração e Funcionamento`}
             className="w-full h-full rounded-t-lg"
             frameBorder="0"

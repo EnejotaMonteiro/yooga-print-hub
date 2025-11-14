@@ -77,7 +77,7 @@ export const FAQFloatingButton = () => {
                   <div key={tutorial.id} className="bg-card border rounded-lg overflow-hidden">
                     <div className="aspect-video">
                       <iframe
-                        src={convertToEmbedUrl(tutorial.video_url)} {/* Usando convertToEmbedUrl */}
+                        src={convertToEmbedUrl(tutorial.video_url)}
                         title={tutorial.titulo}
                         className="w-full h-full"
                         frameBorder="0"

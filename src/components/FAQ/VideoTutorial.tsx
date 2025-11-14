@@ -15,7 +15,7 @@ export const VideoTutorial = ({ id, title, description, videoUrl }: VideoTutoria
         {/* Mini Player de Vídeo */}
         <div className="aspect-video mb-4 rounded overflow-hidden">
           <iframe
-            src={convertToEmbedUrl(videoUrl)} {/* Usando convertToEmbedUrl */}
+            src={convertToEmbedUrl(videoUrl)}
             title={title}
             className="w-full h-full"
             frameBorder="0"
