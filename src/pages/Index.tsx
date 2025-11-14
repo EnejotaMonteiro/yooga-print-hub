@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { LogOut, LogIn, Shield } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle"; // Import ThemeToggle
+
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [user, setUser] = useState<any>(null);
@@ -104,6 +106,7 @@ const Index = () => {
           <div className="mb-8 flex justify-between items-center">
             <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="h-16 md:h-20" />
             <div className="flex items-center gap-2">
+              <ThemeToggle /> {/* Add ThemeToggle here */}
               {user ? <>
                   <Button onClick={() => navigate("/admin")} variant="outline" size="sm" className="flex items-center gap-2">
                     <Shield className="w-4 h-4" />
