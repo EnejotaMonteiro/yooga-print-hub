@@ -15,6 +15,7 @@ interface PrinterCardProps {
   onMove: (printerId: string, direction: 'up' | 'down') => void;
   isFirst: boolean;
   isLast: boolean;
+  imageUrl?: string; // Adicionado imageUrl
 }
 
 export const PrinterCard = ({
@@ -29,6 +30,7 @@ export const PrinterCard = ({
   onMove,
   isFirst,
   isLast,
+  imageUrl, // Adicionado imageUrl
 }: PrinterCardProps) => {
   const handleDownload = () => {
     window.open(downloadUrl, '_blank');
@@ -71,14 +73,19 @@ export const PrinterCard = ({
       )}
       <CardContent className="p-0">
         <div className="aspect-video overflow-hidden">
-          <iframe
-            src={convertToEmbedUrl(videoUrl)}
-            title={`${name} - Configuração e Funcionamento`}
-            className="w-full h-full rounded-t-lg"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          {/* Você pode adicionar uma imagem aqui se imageUrl estiver disponível, por exemplo: */}
+          {/* {imageUrl ? (
+            <img src={imageUrl} alt={name} className="w-full h-full object-cover rounded-t-lg" />
+          ) : ( */}
+            <iframe
+              src={convertToEmbedUrl(videoUrl)}
+              title={`${name} - Configuração e Funcionamento`}
+              className="w-full h-full rounded-t-lg"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          {/* )} */}
         </div>
         <div className="p-6">
           <h3 className="text-lg font-semibold mb-4 text-foreground">{name}</h3>
