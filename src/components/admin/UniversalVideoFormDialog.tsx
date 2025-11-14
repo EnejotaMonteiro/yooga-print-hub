@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea"; // Importar Textarea
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
@@ -28,6 +29,8 @@ export const UniversalVideoFormDialog = ({
   onSuccess,
 }: UniversalVideoFormDialogProps) => {
   const [videoUrl, setVideoUrl] = useState("");
+  const [title, setTitle] = useState(""); // Novo estado para o título
+  const [description, setDescription] = useState(""); // Novo estado para a descrição
   const [configId, setConfigId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -45,21 +48,30 @@ export const UniversalVideoFormDialog = ({
     try {
       const { data, error } = await supabase
         .from('configuracao_site')
-        .select('id, video_guia_universal_url')
+        .select('id, video_guia_universal_url, titulo_guia_universal, descricao_guia_universal')
         .single();
 
       if (error && error.code === 'PGRST116') { // No rows found
         // Insert a default configuration if none exists
-        const defaultVideoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ'; // Placeholder
+        const defaultVideoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+        const defaultTitle = 'Guia Universal de Configuração';
+        const defaultDescription = 'Assista ao vídeo para um guia completo de configuração de impressoras.';
+
         const { data: newConfig, error: insertError } = await supabase
           .from('configuracao_site')
-          .insert({ video_guia_universal_url: defaultVideoUrl })
-          .select('id, video_guia_universal_url')
+          .insert({
+            video_guia_universal_url: defaultVideoUrl,
+            titulo_guia_universal: defaultTitle,
+            descricao_guia_universal: defaultDescription,
+          })
+          .select('id, video_guia_universal_url, titulo_guia_universal, descricao_guia_universal')
           .single();
 
         if (insertError) throw insertError;
         setConfigId(newConfig?.id || null);
         setVideoUrl(newConfig?.video_guia_universal_url || '');
+        setTitle(newConfig?.titulo_guia_universal || '');
+        setDescription(newConfig?.descricao_guia_universal || '');
         toast({
           title: "Configuração inicial criada",
           description: "Uma configuração padrão foi criada automaticamente.",
@@ -69,6 +81,8 @@ export const UniversalVideoFormDialog = ({
       } else {
         setConfigId(data?.id || null);
         setVideoUrl(data?.video_guia_universal_url || '');
+        setTitle(data?.titulo_guia_universal || '');
+        setDescription(data?.descricao_guia_universal || '');
       }
     } catch (error) {
       console.error('Erro ao buscar/criar configuração:', error);
@@ -96,32 +110,37 @@ export const UniversalVideoFormDialog = ({
 
     setSaving(true);
 
-    // Ensure videoUrl is not empty, use a placeholder if cleared
     const finalVideoUrl = videoUrl.trim() === '' ? 'https://www.youtube.com/embed/dQw4w9WgXcQ' : videoUrl;
+    const finalTitle = title.trim() === '' ? 'Guia Universal de Configuração' : title;
+    const finalDescription = description.trim() === '' ? 'Assista ao vídeo para um guia completo de configuração de impressoras.' : description;
 
     try {
       const { error } = await supabase
         .from('configuracao_site')
-        .update({ video_guia_universal_url: finalVideoUrl })
+        .update({
+          video_guia_universal_url: finalVideoUrl,
+          titulo_guia_universal: finalTitle,
+          descricao_guia_universal: finalDescription,
+        })
         .eq('id', configId);
 
       if (error) {
-        console.error('Supabase update error:', error); // Log the specific Supabase error
-        throw new Error(error.message); // Throw with Supabase error message
+        console.error('Supabase update error:', error);
+        throw new Error(error.message);
       }
 
       toast({
         title: "Salvo com sucesso!",
-        description: "O URL do vídeo foi atualizado"
+        description: "O URL, título e descrição do vídeo foram atualizados"
       });
-      queryClient.invalidateQueries({ queryKey: ["site-config"] }); // Invalidate the query to refetch
+      queryClient.invalidateQueries({ queryKey: ["site-config"] });
       onSuccess();
       onOpenChange(false);
     } catch (error) {
       console.error('Erro ao salvar:', error);
       toast({
         title: "Erro ao salvar",
-        description: error instanceof Error ? error.message : "Não foi possível salvar as alterações", // Use specific error message
+        description: error instanceof Error ? error.message : "Não foi possível salvar as alterações",
         variant: "destructive"
       });
     } finally {
@@ -140,7 +159,7 @@ export const UniversalVideoFormDialog = ({
         <DialogHeader>
           <DialogTitle>Editar Guia Universal de Configuração</DialogTitle>
           <DialogDescription>
-            Atualize o URL do vídeo do guia universal.
+            Atualize o URL, título e descrição do vídeo do guia universal.
           </DialogDescription>
         </DialogHeader>
         {loading ? (
@@ -149,6 +168,30 @@ export const UniversalVideoFormDialog = ({
           </div>
         ) : (
           <form onSubmit={handleSave} className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Título do Guia</Label>
+              <Input
+                id="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Ex: Guia de Configuração Essencial"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="description">Descrição do Guia</Label>
+              <Textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Ex: Assista a este vídeo para aprender a configurar suas impressoras de forma rápida e eficiente."
+                rows={3}
+                required
+              />
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="videoUrl">URL do Vídeo (YouTube)</Label>
               <Input

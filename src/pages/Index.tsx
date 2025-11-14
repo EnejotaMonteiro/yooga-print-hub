@@ -7,19 +7,19 @@ import { FAQFloatingButton } from "@/components/FAQFloatingButton";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, LogIn, Shield, Edit } from "lucide-react"; // Importar Edit
+import { LogOut, LogIn, Shield, Edit } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
-import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog"; // Importar o novo diálogo
+import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [user, setUser] = useState<any>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedPrinterForEdit, setSelectedPrinterForEdit] = useState<any>(null);
-  const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false); // Estado para o diálogo do vídeo universal
+  const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false);
   
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -47,15 +47,22 @@ const Index = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('configuracao_site')
-        .select('video_guia_universal_url')
+        .select('video_guia_universal_url, titulo_guia_universal, descricao_guia_universal')
         .single();
 
       if (error && error.code === 'PGRST116') { // No rows found, create a default one
         const defaultVideoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+        const defaultTitle = 'Guia Universal de Configuração';
+        const defaultDescription = 'Assista ao vídeo para um guia completo de configuração de impressoras.';
+
         const { data: newConfig, error: insertError } = await supabase
           .from('configuracao_site')
-          .insert({ video_guia_universal_url: defaultVideoUrl })
-          .select('video_guia_universal_url')
+          .insert({
+            video_guia_universal_url: defaultVideoUrl,
+            titulo_guia_universal: defaultTitle,
+            descricao_guia_universal: defaultDescription,
+          })
+          .select('video_guia_universal_url, titulo_guia_universal, descricao_guia_universal')
           .single();
         if (insertError) throw insertError;
         return newConfig;
@@ -67,6 +74,8 @@ const Index = () => {
   });
 
   const videoGuiaUrl = siteConfig?.video_guia_universal_url || '';
+  const guiaTitle = siteConfig?.titulo_guia_universal || 'Guia Universal de Configuração';
+  const guiaDescription = siteConfig?.descricao_guia_universal || 'Assista ao vídeo para um guia completo de configuração de impressoras.';
 
   useEffect(() => {
     const getUser = async () => {
@@ -236,10 +245,10 @@ const Index = () => {
               )}
               <div className="p-6 text-center">
                 <h2 className="text-xl font-semibold mb-4 text-foreground">
-                  Guia Universal de Configuração
+                  {guiaTitle}
                 </h2>
                 <p className="text-muted-foreground mb-4">
-                  Assista ao vídeo para um guia completo de configuração de impressoras.
+                  {guiaDescription}
                 </p>
               </div>
             </div>
