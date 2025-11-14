@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -68,6 +68,34 @@ export const PrinterFormDialog = ({
       ordem: printer?.ordem || 0,
     },
   });
+
+  // Resetar o formulário quando a impressora selecionada mudar
+  useEffect(() => {
+    if (printer) {
+      form.reset({
+        nome: printer.nome || "",
+        video_url: printer.video_url || "",
+        download_url: printer.download_url || "",
+        imagem_url: printer.imagem_url || "",
+        windows_recomendado: printer.windows_recomendado || "Windows 10 e 11",
+        conexao_rede: printer.conexao_rede ?? true,
+        ativo: printer.ativo ?? true,
+        ordem: printer.ordem || 0,
+      });
+    } else {
+      // Limpar o formulário quando não há impressora para editar (modo de criação)
+      form.reset({
+        nome: "",
+        video_url: "",
+        download_url: "",
+        imagem_url: "",
+        windows_recomendado: "Windows 10 e 11",
+        conexao_rede: true,
+        ativo: true,
+        ordem: 0,
+      });
+    }
+  }, [printer, form]);
 
   const onSubmit = async (values: PrinterFormValues) => {
     setLoading(true);
