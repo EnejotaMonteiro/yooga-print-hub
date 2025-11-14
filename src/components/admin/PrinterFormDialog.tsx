@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useForm } from "@hookform/react-form"; // Corrigido para @hookform/react-form
+import { useForm } from "react-hook-form"; // Corrigido para react-hook-form
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
