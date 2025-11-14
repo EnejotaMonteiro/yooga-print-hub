@@ -230,11 +230,18 @@ const Index = () => {
         )}
       </div>
 
-      {/* FAQ Floating Button */}
-      <FAQFloatingButton />
-
-      {/* Suggestions Floating Button */}
-      <SuggestionsFloatingButton />
+      {/* Floating Buttons Container (FAQ, Suggestions, Wiki) */}
+      <div className="fixed bottom-6 left-6 z-50 flex space-x-2">
+        <div className="relative group">
+          <FAQFloatingButton />
+        </div>
+        <div className="relative group">
+          <SuggestionsFloatingButton />
+        </div>
+        <div className="relative group">
+          <WikiFloatingButton wikiUrl="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" />
+        </div>
+      </div>
 
       {/* Header Section */}
       <div className="w-full px-4 pt-28 pb-8">
@@ -385,9 +392,6 @@ const Index = () => {
             </DragDropContext>
           )}
         </div>
-
-        {/* Wiki Floating Button */}
-        <WikiFloatingButton wikiUrl="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" />
 
         {/* Footer */}
         <footer className="bg-card/60 backdrop-blur-sm border-t border-border/20 py-8 mt-12">
