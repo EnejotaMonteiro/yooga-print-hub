@@ -7,23 +7,24 @@ import { FAQFloatingButton } from "@/components/FAQFloatingButton";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, LogIn, Shield } from "lucide-react";
+import { LogOut, LogIn, Shield, Edit } from "lucide-react"; // Importar Edit
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { useAdmin } from "@/hooks/use-admin"; // Import useAdmin
-import { useQuery, useQueryClient } from "@tanstack/react-query"; // Import useQuery and useQueryClient
-import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog"; // Import PrinterFormDialog
+import { useAdmin } from "@/hooks/use-admin";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
+import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog"; // Importar o novo diálogo
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [user, setUser] = useState<any>(null);
-  const [videoGuiaUrl, setVideoGuiaUrl] = useState("");
-  const [editDialogOpen, setEditDialogOpen] = useState(false); // State for edit dialog
-  const [selectedPrinterForEdit, setSelectedPrinterForEdit] = useState<any>(null); // State for selected printer
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [selectedPrinterForEdit, setSelectedPrinterForEdit] = useState<any>(null);
+  const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false); // Estado para o diálogo do vídeo universal
   
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { isAdmin, loading: adminLoading } = useAdmin(); // Use the useAdmin hook
-  const queryClient = useQueryClient(); // Initialize query client
+  const { isAdmin, loading: adminLoading } = useAdmin();
+  const queryClient = useQueryClient();
 
   // Fetch printers using TanStack Query
   const { data: printers, isLoading: loadingPrinters, refetch } = useQuery({
@@ -40,6 +41,33 @@ const Index = () => {
     },
   });
 
+  // Fetch universal video config using TanStack Query
+  const { data: siteConfig, isLoading: loadingSiteConfig } = useQuery({
+    queryKey: ["site-config"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('configuracao_site')
+        .select('video_guia_universal_url')
+        .single();
+
+      if (error && error.code === 'PGRST116') { // No rows found, create a default one
+        const defaultVideoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+        const { data: newConfig, error: insertError } = await supabase
+          .from('configuracao_site')
+          .insert({ video_guia_universal_url: defaultVideoUrl })
+          .select('video_guia_universal_url')
+          .single();
+        if (insertError) throw insertError;
+        return newConfig;
+      } else if (error) {
+        throw error;
+      }
+      return data;
+    },
+  });
+
+  const videoGuiaUrl = siteConfig?.video_guia_universal_url || '';
+
   useEffect(() => {
     const getUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -50,19 +78,6 @@ const Index = () => {
       setUser(session?.user || null);
     });
     return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const { data, error } = await supabase.from('configuracao_site').select('video_guia_universal_url').single();
-        if (error) throw error;
-        setVideoGuiaUrl(data?.video_guia_universal_url || '');
-      } catch (error) {
-        console.error('Erro ao buscar configuração:', error);
-      }
-    };
-    fetchConfig();
   }, []);
 
   const handleLogout = async () => {
@@ -189,18 +204,35 @@ const Index = () => {
 
           {/* Universal Configuration Video */}
           <div className="mb-8 flex justify-center">
-            <div className="w-full max-w-md bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden">
-              {videoGuiaUrl && (
-                <div className="aspect-video">
-                  <iframe
-                    src={videoGuiaUrl}
-                    title="Guia Universal de Configuração"
-                    className="w-full h-full"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+            <div className="w-full max-w-md bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden relative">
+              {isAdmin && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsUniversalVideoDialogOpen(true)}
+                  className="absolute top-2 right-2 bg-background/80 hover:bg-background z-10"
+                  title="Editar vídeo universal"
+                >
+                  <Edit className="w-4 h-4" />
+                </Button>
+              )}
+              {loadingSiteConfig ? (
+                <div className="aspect-video flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>
+              ) : (
+                videoGuiaUrl && (
+                  <div className="aspect-video">
+                    <iframe
+                      src={videoGuiaUrl}
+                      title="Guia Universal de Configuração"
+                      className="w-full h-full"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                )
               )}
               <div className="p-6 text-center">
                 <h2 className="text-xl font-semibold mb-4 text-foreground">
@@ -279,9 +311,18 @@ const Index = () => {
           onOpenChange={setEditDialogOpen}
           printer={selectedPrinterForEdit}
           onSuccess={() => {
-            queryClient.invalidateQueries({ queryKey: ["printers"] }); // Invalidate to refetch after edit
+            queryClient.invalidateQueries({ queryKey: ["printers"] });
             setEditDialogOpen(false);
             setSelectedPrinterForEdit(null);
+          }}
+        />
+
+        {/* Universal Video Edit Dialog */}
+        <UniversalVideoFormDialog
+          open={isUniversalVideoDialogOpen}
+          onOpenChange={setIsUniversalVideoDialogOpen}
+          onSuccess={() => {
+            queryClient.invalidateQueries({ queryKey: ["site-config"] });
           }}
         />
     </div>
