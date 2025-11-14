@@ -7,7 +7,7 @@ import { FAQFloatingButton } from "@/components/FAQFloatingButton";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, LogIn, Shield, Settings, GripVertical, Download, Bot } from "lucide-react"; // Importar o ícone Bot
+import { LogOut, LogIn, Shield, Settings, GripVertical, Download, Bot } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,7 +15,7 @@ import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
 import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog";
 import { AIChat } from "@/components/FAQ/AIChat";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
-import { cn } from "@/lib/utils"; // Importar a função cn para classes condicionais
+import { cn } from "@/lib/utils";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,14 +25,13 @@ const Index = () => {
   const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false);
   const [isDragModeActive, setIsDragModeActive] = useState(false);
   const [showDownloadAllButton, setShowDownloadAllButton] = useState(true);
-  const [showAIChat, setShowAIChat] = useState(false); // Novo estado para controlar a visibilidade do chat
+  const [showAIChat, setShowAIChat] = useState(false);
 
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isAdmin, loading: adminLoading } = useAdmin();
   const queryClient = useQueryClient();
 
-  // Fetch printers using TanStack Query
   const { data: printers, isLoading: loadingPrinters } = useQuery({
     queryKey: ["printers"],
     queryFn: async () => {
@@ -47,7 +46,6 @@ const Index = () => {
     },
   });
 
-  // Fetch universal video config using TanStack Query
   const { data: siteConfig, isLoading: loadingSiteConfig } = useQuery({
     queryKey: ["site-config"],
     queryFn: async () => {
@@ -56,7 +54,7 @@ const Index = () => {
         .select('video_guia_universal_url, titulo_guia_universal, descricao_guia_universal')
         .single();
 
-      if (error && error.code === 'PGRST116') { // No rows found, create a default one
+      if (error && error.code === 'PGRST116') {
         const defaultVideoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
         const defaultTitle = 'Guia Universal de Configuração';
         const defaultDescription = 'Assista ao vídeo para um guia completo de configuração de impressoras.';
@@ -95,10 +93,9 @@ const Index = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Efeito para controlar a visibilidade do botão de download
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY < 50) { // Mostra o botão se estiver nos primeiros 50px do topo
+      if (window.scrollY < 50) {
         setShowDownloadAllButton(true);
       } else {
         setShowDownloadAllButton(false);
@@ -106,7 +103,6 @@ const Index = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    // Define o estado inicial ao carregar a página
     handleScroll();
 
     return () => {
@@ -145,26 +141,23 @@ const Index = () => {
     }
 
     const reorderedPrinters = Array.from(printers);
-    const [removed] = reorderedPrinters.splice(result.source.index, 1);
+    const [removed] = reorderedProrderedPrinters.splice(result.source.index, 1);
     reorderedPrinters.splice(result.destination.index, 0, removed);
 
-    // Update 'ordem' values based on new array index
     const updates = reorderedPrinters.map((p, index) => ({
       id: p.id,
       ordem: index,
     }));
 
-    // Optimistic update
     queryClient.setQueryData(["printers"], reorderedPrinters);
 
     try {
-      // Realiza uma atualização para cada impressora individualmente
       for (let i = 0; i < reorderedPrinters.length; i++) {
         const printer = reorderedPrinters[i];
         const { error } = await supabase
           .from('impressoras')
-          .update({ ordem: i }) // Atualiza apenas a ordem
-          .eq('id', printer.id); // Especifica o WHERE clause para cada atualização
+          .update({ ordem: i })
+          .eq('id', printer.id);
 
         if (error) throw error;
       }
@@ -173,7 +166,7 @@ const Index = () => {
         title: "Ordem atualizada",
         description: "A ordem das impressoras foi salva com sucesso",
       });
-      queryClient.invalidateQueries({ queryKey: ["printers"] }); // Invalidate to refetch with new order
+      queryClient.invalidateQueries({ queryKey: ["printers"] });
     } catch (error: any) {
       console.error('Erro ao reordenar impressoras:', error);
       toast({
@@ -181,7 +174,7 @@ const Index = () => {
         description: error.message || "Ocorreu um erro ao reordenar as impressoras",
         variant: "destructive",
       });
-      queryClient.invalidateQueries({ queryKey: ["printers"] }); // Revert optimistic update on error
+      queryClient.invalidateQueries({ queryKey: ["printers"] });
     }
   };
 
@@ -203,7 +196,7 @@ const Index = () => {
 
       {/* Fixed top-right controls */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
-        {showDownloadAllButton && ( // Renderiza condicionalmente
+        {showDownloadAllButton && (
           <a 
             href="https://drive.google.com/drive/folders/1-pro0D_-06g22xL_1o2N5UAMCGiRAEol?usp=drive_link" 
             target="_blank" 
@@ -238,37 +231,42 @@ const Index = () => {
       {/* FAQ Floating Button */}
       <FAQFloatingButton />
 
+      {/* AI Chat Floating Button */}
+      <div className="fixed bottom-6 left-24 z-50"> {/* Ajustado 'left-6' para 'left-24' para não sobrepor o FAQ */}
+        <Button
+          onClick={() => setShowAIChat(prev => !prev)}
+          className="h-14 rounded-full shadow-2xl bg-gradient-primary flex items-center transition-all hover:scale-105 px-0"
+          title={showAIChat ? "Esconder Assistente" : "Mostrar Assistente Rogério"}
+        >
+          <div className="h-14 w-14 flex items-center justify-center flex-shrink-0">
+            <Bot className="w-6 h-6 text-white" />
+          </div>
+          <span className="hidden md:inline-block text-lg font-semibold text-white pr-6">
+            Assistente Rogério
+          </span>
+        </Button>
+      </div>
+
       {/* Header Section */}
-      <div className="w-full px-4 pt-28 pb-8"> {/* Ajustado pt-8 para pt-28 para dar espaço ao logo fixo */}
+      <div className="w-full px-4 pt-28 pb-8">
           {/* Universal Configuration Video and AI Chat */}
           <div className="mb-8 flex flex-col lg:flex-row justify-center gap-6 max-w-7xl mx-auto">
             {/* Universal Configuration Video */}
             <div className={cn(
                 "bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden relative transition-all duration-300 ease-in-out",
-                showAIChat ? "lg:w-1/2" : "w-full" // Em telas grandes, ocupa metade se o chat estiver visível, senão largura total
+                showAIChat ? "lg:w-1/2" : "w-full"
             )}>
               {isAdmin && (
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsUniversalVideoDialogOpen(true)}
-                  className="absolute top-2 right-12 bg-background/80 hover:bg-background z-10" // Ajustado right para dar espaço ao botão do chat
+                  className="absolute top-2 right-2 bg-background/80 hover:bg-background z-10"
                   title="Editar vídeo universal"
                 >
                   <Settings className="w-4 h-4" />
                 </Button>
               )}
-              {/* Botão para alternar o chat do assistente */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setShowAIChat(prev => !prev)}
-                className={`absolute top-2 ${isAdmin ? 'right-2' : 'right-2'} bg-background/80 hover:bg-background z-10`}
-                title={showAIChat ? "Esconder Assistente" : "Mostrar Assistente Rogério"}
-              >
-                <Bot className="w-4 h-4" />
-              </Button>
-
               {loadingSiteConfig ? (
                 <div className="aspect-video flex items-center justify-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -298,7 +296,7 @@ const Index = () => {
             </div>
 
             {/* AI Chat */}
-            {showAIChat && ( // Renderiza condicionalmente o chat
+            {showAIChat && (
                 <div className="w-full lg:w-1/2 transition-all duration-300 ease-in-out">
                     <AIChat />
                 </div>
@@ -309,7 +307,7 @@ const Index = () => {
         {/* Search Bar and Drag Mode Toggle */}
         <div className="container mx-auto px-4 pb-4 flex items-center gap-4 justify-center">
           <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-          {isAdmin && ( // Só mostra o botão de alternar modo de arrastar para admins
+          {isAdmin && (
             <Button
               variant={isDragModeActive ? "default" : "outline"}
               size="icon"
@@ -342,7 +340,7 @@ const Index = () => {
                         key={printer.id} 
                         draggableId={printer.id} 
                         index={index} 
-                        isDragDisabled={!isDragModeActive} // Desabilita arrasto se o modo não estiver ativo
+                        isDragDisabled={!isDragModeActive}
                       >
                         {(provided, snapshot) => (
                           <PrinterCard
@@ -358,9 +356,9 @@ const Index = () => {
                             imageUrl={printer.imagem_url || undefined}
                             innerRef={provided.innerRef}
                             draggableProps={provided.draggableProps}
-                            dragHandleProps={isDragModeActive ? provided.dragHandleProps : null} // Só passa dragHandleProps se o modo de arrastar estiver ativo
-                            isDragModeActive={isDragModeActive} // Passa a nova prop
-                            isDragging={snapshot.isDragging} // Passa o estado de arrasto
+                            dragHandleProps={isDragModeActive ? provided.dragHandleProps : null}
+                            isDragModeActive={isDragModeActive}
+                            isDragging={snapshot.isDragging}
                           />
                         )}
                       </Draggable>
