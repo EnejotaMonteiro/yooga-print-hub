@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { convertToEmbedUrl } from "@/lib/utils"; // Importar a função de utilidade
 
 interface Tutorial {
   id: string;
@@ -76,7 +77,7 @@ export const FAQFloatingButton = () => {
                   <div key={tutorial.id} className="bg-card border rounded-lg overflow-hidden">
                     <div className="aspect-video">
                       <iframe
-                        src={tutorial.video_url}
+                        src={convertToEmbedUrl(tutorial.video_url)} {/* Usando convertToEmbedUrl */}
                         title={tutorial.titulo}
                         className="w-full h-full"
                         frameBorder="0"

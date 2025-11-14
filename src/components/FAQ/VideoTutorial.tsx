@@ -1,4 +1,5 @@
 import React from 'react';
+import { convertToEmbedUrl } from "@/lib/utils"; // Importar a função de utilidade
 
 interface VideoTutorialProps {
   id: string;
@@ -14,7 +15,7 @@ export const VideoTutorial = ({ id, title, description, videoUrl }: VideoTutoria
         {/* Mini Player de Vídeo */}
         <div className="aspect-video mb-4 rounded overflow-hidden">
           <iframe
-            src={videoUrl}
+            src={convertToEmbedUrl(videoUrl)} {/* Usando convertToEmbedUrl */}
             title={title}
             className="w-full h-full"
             frameBorder="0"

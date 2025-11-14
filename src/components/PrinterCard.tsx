@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, Edit, ArrowUp, ArrowDown } from "lucide-react"; // Import Edit, ArrowUp, ArrowDown
+import { convertToEmbedUrl } from "@/lib/utils"; // Importar a função de utilidade
 
 interface PrinterCardProps {
   name: string;
@@ -71,7 +72,7 @@ export const PrinterCard = ({
       <CardContent className="p-0">
         <div className="aspect-video overflow-hidden">
           <iframe
-            src={videoUrl}
+            src={convertToEmbedUrl(videoUrl)} {/* Usando convertToEmbedUrl */}
             title={`${name} - Configuração e Funcionamento`}
             className="w-full h-full rounded-t-lg"
             frameBorder="0"

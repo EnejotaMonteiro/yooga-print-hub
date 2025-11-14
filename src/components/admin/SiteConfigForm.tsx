@@ -25,11 +25,30 @@ export const SiteConfigForm = () => {
         .select('id, video_guia_universal_url')
         .single();
 
-      if (error) throw error;
-      setConfigId(data?.id || null);
-      setVideoUrl(data?.video_guia_universal_url || '');
+      if (error && error.code === 'PGRST116') { // No rows found
+        // Insert a default configuration if none exists
+        const defaultVideoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ'; // Placeholder
+        const { data: newConfig, error: insertError } = await supabase
+          .from('configuracao_site')
+          .insert({ video_guia_universal_url: defaultVideoUrl })
+          .select('id, video_guia_universal_url')
+          .single();
+
+        if (insertError) throw insertError;
+        setConfigId(newConfig?.id || null);
+        setVideoUrl(newConfig?.video_guia_universal_url || '');
+        toast({
+          title: "Configuração inicial criada",
+          description: "Uma configuração padrão foi criada automaticamente.",
+        });
+      } else if (error) {
+        throw error; // Other errors
+      } else {
+        setConfigId(data?.id || null);
+        setVideoUrl(data?.video_guia_universal_url || '');
+      }
     } catch (error) {
-      console.error('Erro ao buscar configuração:', error);
+      console.error('Erro ao buscar/criar configuração:', error);
       toast({
         title: "Erro ao carregar",
         description: "Não foi possível carregar as configurações",
@@ -46,7 +65,7 @@ export const SiteConfigForm = () => {
     if (!configId) {
       toast({
         title: "Erro",
-        description: "ID de configuração não encontrado",
+        description: "ID de configuração não encontrado. Tente recarregar a página.",
         variant: "destructive"
       });
       return;
@@ -54,10 +73,13 @@ export const SiteConfigForm = () => {
 
     setSaving(true);
 
+    // Ensure videoUrl is not empty, use a placeholder if cleared
+    const finalVideoUrl = videoUrl.trim() === '' ? 'https://www.youtube.com/embed/dQw4w9WgXcQ' : videoUrl;
+
     try {
       const { error } = await supabase
         .from('configuracao_site')
-        .update({ video_guia_universal_url: videoUrl })
+        .update({ video_guia_universal_url: finalVideoUrl })
         .eq('id', configId);
 
       if (error) throw error;
@@ -101,7 +123,7 @@ export const SiteConfigForm = () => {
           id="videoUrl"
           type="url"
           value={videoUrl}
-          onChange={handleVideoUrlChange} // Usar o novo handler
+          onChange={handleVideoUrlChange}
           placeholder="https://www.youtube.com/watch?v=..."
           className="w-full"
           required
