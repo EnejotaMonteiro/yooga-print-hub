@@ -231,14 +231,14 @@ const Index = () => {
       </div>
 
       {/* Floating Buttons Container (FAQ, Suggestions, Wiki) */}
-      <div className="fixed bottom-6 left-6 z-50 flex space-x-2">
-        <div className="relative group">
+      <div className="fixed bottom-6 left-6 z-50 flex space-x-1"> {/* Ajustado para space-x-1 */}
+        <div className="relative group z-30 hover:z-50"> {/* Adicionado z-index para sobreposição */}
           <FAQFloatingButton />
         </div>
-        <div className="relative group">
+        <div className="relative group z-20 hover:z-50"> {/* Adicionado z-index para sobreposição */}
           <SuggestionsFloatingButton />
         </div>
-        <div className="relative group">
+        <div className="relative group z-10 hover:z-50"> {/* Adicionado z-index para sobreposição */}
           <WikiFloatingButton wikiUrl="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" />
         </div>
       </div>

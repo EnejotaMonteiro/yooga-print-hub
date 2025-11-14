@@ -49,15 +49,15 @@ export const SuggestionsFloatingButton = () => {
     <>
       <Button
         onClick={() => setOpen(true)}
-        className="relative z-10 group-hover:z-20 h-14 rounded-full shadow-2xl bg-gradient-primary flex items-center 
-                   transition-all duration-500 ease-in-out hover:scale-105 hover:shadow-xl px-0"
+        className="relative z-10 group-hover:z-20 h-14 rounded-full shadow-2xl bg-gradient-primary flex items-center transition-all duration-500 ease-in-out hover:scale-105
+                   pl-2" // Ajustado para pl-2
       >
         {/* Icon container to ensure it's a circle */}
-        <div className="h-14 w-14 flex items-center justify-center flex-shrink-0">
+        <div className="h-12 w-12 flex items-center justify-center flex-shrink-0"> {/* Reduzido para h-12 w-12 */}
           <Lightbulb className="w-6 h-6 text-white" />
         </div>
         <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap group-hover:opacity-100 group-hover:w-auto 
-                       text-lg font-semibold text-white pr-6 transition-all duration-500 ease-in-out">
+                       text-lg font-semibold text-white pr-4 transition-all duration-500 ease-in-out"> {/* Ajustado para pr-4 */}
           Sugestões
         </span>
       </Button>
