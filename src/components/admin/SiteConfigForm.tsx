@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 
 export const SiteConfigForm = () => {
   const [videoUrl, setVideoUrl] = useState("");
+  const [configId, setConfigId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
@@ -20,10 +21,11 @@ export const SiteConfigForm = () => {
     try {
       const { data, error } = await supabase
         .from('configuracao_site')
-        .select('video_guia_universal_url')
+        .select('id, video_guia_universal_url')
         .single();
 
       if (error) throw error;
+      setConfigId(data?.id || null);
       setVideoUrl(data?.video_guia_universal_url || '');
     } catch (error) {
       console.error('Erro ao buscar configuração:', error);
@@ -39,13 +41,23 @@ export const SiteConfigForm = () => {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!configId) {
+      toast({
+        title: "Erro",
+        description: "ID de configuração não encontrado",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setSaving(true);
 
     try {
       const { error } = await supabase
         .from('configuracao_site')
         .update({ video_guia_universal_url: videoUrl })
-        .eq('id', (await supabase.from('configuracao_site').select('id').single()).data?.id);
+        .eq('id', configId);
 
       if (error) throw error;
 
