@@ -286,7 +286,7 @@ const Index = () => {
               <Droppable droppableId="printers-list">
                 {(provided) => (
                   <div
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto printers-droppable-area" {/* Adicionada a classe aqui */}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto printers-droppable-area"
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                   >
