@@ -7,7 +7,7 @@ import { FAQFloatingButton } from "@/components/FAQFloatingButton";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, LogIn, Shield, Settings, GripVertical } from "lucide-react";
+import { LogOut, LogIn, Shield, Settings, GripVertical, Download } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -181,6 +181,16 @@ const Index = () => {
 
       {/* Fixed top-right controls */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        <a 
+          href="https://drive.google.com/drive/folders/1-pro0D_-06g22xL_1o2N5UAMCGiRAEol?usp=drive_link" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <Download className="w-4 h-4" />
+            <span className="hidden sm:inline">Download Todos</span>
+          </Button>
+        </a>
         <ThemeToggle />
         {user ? (
           <>
