@@ -42,14 +42,15 @@ export const FAQFloatingButton = () => {
     <>
       <Button
         onClick={() => setOpen(true)}
-        className="relative z-10 group-hover:z-20 h-14 rounded-full shadow-2xl bg-gradient-primary flex items-center transition-all hover:scale-105
-                   px-0" // Remove default horizontal padding
+        className="relative z-10 group-hover:z-20 h-14 rounded-full shadow-2xl bg-gradient-primary flex items-center 
+                   transition-all duration-500 ease-in-out hover:scale-105 hover:shadow-xl px-0"
       >
         {/* Icon container to ensure it's a circle */}
         <div className="h-14 w-14 flex items-center justify-center flex-shrink-0">
           <BookOpen className="w-6 h-6 text-white" />
         </div>
-        <span className="hidden group-hover:inline-block text-lg font-semibold text-white pr-6 transition-all duration-300"> {/* pr-6 for right padding */}
+        <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap group-hover:opacity-100 group-hover:w-auto 
+                       text-lg font-semibold text-white pr-6 transition-all duration-500 ease-in-out">
           Dúvidas Recorrentes
         </span>
       </Button>
