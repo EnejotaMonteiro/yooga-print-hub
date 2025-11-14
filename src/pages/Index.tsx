@@ -25,7 +25,7 @@ const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isAdmin, loading: adminLoading } = useAdmin();
-  const queryClient = useQueryClient();
+  const queryClient = new QueryClient(); // Re-initialize QueryClient here if it's not global
 
   // Fetch printers using TanStack Query
   const { data: printers, isLoading: loadingPrinters, refetch } = useQuery({
@@ -178,42 +178,38 @@ const Index = () => {
       {/* Fixed Logo */}
       <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="fixed top-4 left-4 h-16 md:h-20 z-50" />
 
-      {/* Socket Status Indicator */}
-      <SocketStatus />
+      {/* Fixed top-right controls */}
+      <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        <SocketStatus />
+        <ThemeToggle />
+        {user ? (
+          <>
+            <Button onClick={() => navigate("/admin")} variant="outline" size="sm" className="flex items-center gap-2">
+              <Shield className="w-4 h-4" />
+              Admin
+            </Button>
+            <div className="text-right hidden md:block">
+              <p className="text-xs text-muted-foreground">Logado como:</p>
+              <p className="text-xs font-medium text-foreground">{getUsernameFromEmail(user?.email)}</p>
+            </div>
+            <Button onClick={handleLogout} variant="outline" size="sm" className="flex items-center gap-2">
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Sair</span>
+            </Button>
+          </>
+        ) : (
+          <Button onClick={() => navigate("/login")} variant="outline" size="sm" className="flex items-center gap-2">
+            <LogIn className="w-4 h-4" />
+            Login Admin
+          </Button>
+        )}
+      </div>
 
       {/* FAQ Floating Button */}
       <FAQFloatingButton />
 
       {/* Header Section */}
       <div className="w-full px-4 pt-28 pb-8"> {/* Ajustado pt-8 para pt-28 para dar espaço ao logo fixo */}
-          {/* Header with Login/Logout (logo removido daqui) */}
-          <div className="mb-8 flex justify-end items-center max-w-7xl mx-auto"> {/* Alterado justify-between para justify-end */}
-            <div className="flex items-center gap-2">
-              <ThemeToggle />
-              {user ? (
-                <>
-                  <Button onClick={() => navigate("/admin")} variant="outline" size="sm" className="flex items-center gap-2">
-                    <Shield className="w-4 h-4" />
-                    Admin
-                  </Button>
-                  <div className="text-right hidden md:block">
-                    <p className="text-xs text-muted-foreground">Logado como:</p>
-                    <p className="text-xs font-medium text-foreground">{getUsernameFromEmail(user?.email)}</p>
-                  </div>
-                  <Button onClick={handleLogout} variant="outline" size="sm" className="flex items-center gap-2">
-                    <LogOut className="w-4 h-4" />
-                    <span className="hidden sm:inline">Sair</span>
-                  </Button>
-                </>
-              ) : (
-                <Button onClick={() => navigate("/login")} variant="outline" size="sm" className="flex items-center gap-2">
-                  <LogIn className="w-4 h-4" />
-                  Login Admin
-                </Button>
-              )}
-            </div>
-          </div>
-
           {/* Universal Configuration Video and AI Chat */}
           <div className="mb-8 flex flex-col lg:flex-row justify-center gap-6 max-w-7xl mx-auto">
             {/* Universal Configuration Video */}
