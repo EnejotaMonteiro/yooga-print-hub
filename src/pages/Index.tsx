@@ -175,6 +175,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Fixed Logo */}
+      <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="fixed top-4 left-4 h-16 md:h-20 z-50" />
+
       {/* Socket Status Indicator */}
       <SocketStatus />
 
@@ -182,10 +185,9 @@ const Index = () => {
       <FAQFloatingButton />
 
       {/* Header Section */}
-      <div className="w-full px-4 pt-8 pb-8">
-          {/* Header with Logo and Login/Logout */}
-          <div className="mb-8 flex justify-between items-center max-w-7xl mx-auto">
-            <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="h-16 md:h-20" />
+      <div className="w-full px-4 pt-28 pb-8"> {/* Ajustado pt-8 para pt-28 para dar espaço ao logo fixo */}
+          {/* Header with Login/Logout (logo removido daqui) */}
+          <div className="mb-8 flex justify-end items-center max-w-7xl mx-auto"> {/* Alterado justify-between para justify-end */}
             <div className="flex items-center gap-2">
               <ThemeToggle />
               {user ? (
