@@ -129,12 +129,5 @@ All colors MUST be HSL.
     transition: var(--transition-smooth);
   }
 
-  /* Estilos para permitir arrastar e soltar sobre iframes */
-  .printer-media-wrapper iframe {
-    pointer-events: none; /* Desativa eventos de clique no iframe por padrão */
-  }
-
-  .printer-media-wrapper:hover iframe {
-    pointer-events: auto; /* Reativa eventos de clique no iframe ao passar o mouse */
-  }
+  /* Removidas as regras CSS anteriores para pointer-events do iframe */
 }

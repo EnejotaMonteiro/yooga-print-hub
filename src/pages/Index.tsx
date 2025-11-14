@@ -7,14 +7,14 @@ import { FAQFloatingButton } from "@/components/FAQFloatingButton";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, LogIn, Shield, Settings } from "lucide-react"; // Alterado Edit para Settings
+import { LogOut, LogIn, Shield, Settings, GripVertical } from "lucide-react"; // Adicionado GripVertical
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
 import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog";
 import { AIChat } from "@/components/FAQ/AIChat";
-import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd"; // Importar DND
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,6 +22,7 @@ const Index = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedPrinterForEdit, setSelectedPrinterForEdit] = useState<any>(null);
   const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false);
+  const [isDragModeActive, setIsDragModeActive] = useState(false); // Novo estado para o modo de arrastar
   
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -250,9 +251,19 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Search Bar */}
-        <div className="container mx-auto px-4 pb-4">
+        {/* Search Bar and Drag Mode Toggle */}
+        <div className="container mx-auto px-4 pb-4 flex items-center gap-4 justify-center">
           <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+          {isAdmin && ( // Só mostra o botão de alternar modo de arrastar para admins
+            <Button
+              variant={isDragModeActive ? "default" : "outline"}
+              size="icon"
+              onClick={() => setIsDragModeActive(prev => !prev)}
+              title={isDragModeActive ? "Desativar modo de arrastar" : "Ativar modo de arrastar para reordenar"}
+            >
+              <GripVertical className="w-4 h-4" />
+            </Button>
+          )}
         </div>
 
         {/* Printers Grid */}
@@ -272,7 +283,12 @@ const Index = () => {
                     ref={provided.innerRef}
                   >
                     {filteredPrinters.map((printer, index) => (
-                      <Draggable key={printer.id} draggableId={printer.id} index={index}>
+                      <Draggable 
+                        key={printer.id} 
+                        draggableId={printer.id} 
+                        index={index} 
+                        isDragDisabled={!isDragModeActive} // Desabilita arrasto se o modo não estiver ativo
+                      >
                         {(provided, snapshot) => (
                           <PrinterCard
                             key={printer.id}
@@ -287,7 +303,8 @@ const Index = () => {
                             imageUrl={printer.imagem_url || undefined}
                             innerRef={provided.innerRef}
                             draggableProps={provided.draggableProps}
-                            dragHandleProps={provided.dragHandleProps}
+                            dragHandleProps={isDragModeActive ? provided.dragHandleProps : null} // Só passa dragHandleProps se o modo de arrastar estiver ativo
+                            isDragModeActive={isDragModeActive} // Passa a nova prop
                           />
                         )}
                       </Draggable>

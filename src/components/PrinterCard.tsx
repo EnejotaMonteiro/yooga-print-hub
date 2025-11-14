@@ -13,6 +13,7 @@ interface PrinterCardProps {
   isAdmin: boolean;
   onEdit: (printerId: string) => void;
   imageUrl?: string;
+  isDragModeActive: boolean; // Nova prop
 
   innerRef?: (element: HTMLElement | null) => void;
   draggableProps?: any;
@@ -29,6 +30,7 @@ export const PrinterCard = ({
   isAdmin,
   onEdit,
   imageUrl,
+  isDragModeActive, // Usando a nova prop
   innerRef,
   draggableProps,
   dragHandleProps,
@@ -42,7 +44,7 @@ export const PrinterCard = ({
       className="group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant hover:shadow-glow transition-smooth hover:scale-105 relative"
       ref={innerRef}
       {...draggableProps}
-      {...dragHandleProps}
+      {...dragHandleProps} // dragHandleProps só será passado se isDragModeActive for true em Index.tsx
     >
       {isAdmin && (
         <div className="absolute top-2 right-2 flex gap-1 z-10">
@@ -58,7 +60,7 @@ export const PrinterCard = ({
         </div>
       )}
       <CardContent className="p-0">
-        <div className="aspect-video overflow-hidden printer-media-wrapper"> {/* Adicionado printer-media-wrapper */}
+        <div className="aspect-video overflow-hidden printer-media-wrapper">
           {imageUrl ? (
             <img src={imageUrl} alt={name} className="w-full h-full object-cover rounded-t-lg" />
           ) : (
@@ -69,6 +71,7 @@ export const PrinterCard = ({
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              style={{ pointerEvents: isDragModeActive ? 'none' : 'auto' }} // Estilo condicional
             />
           )}
         </div>
