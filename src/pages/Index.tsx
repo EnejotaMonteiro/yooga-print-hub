@@ -178,9 +178,13 @@ const Index = () => {
       {/* Fixed Logo */}
       <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="fixed top-4 left-4 h-16 md:h-20 z-50" />
 
+      {/* Fixed top-center Socket Status */}
+      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+        <SocketStatus />
+      </div>
+
       {/* Fixed top-right controls */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
-        <SocketStatus />
         <ThemeToggle />
         {user ? (
           <>
@@ -188,7 +192,6 @@ const Index = () => {
               <Shield className="w-4 h-4" />
               Admin
             </Button>
-            {/* Removido o bloco "Logado como:" */}
             <Button onClick={handleLogout} variant="outline" size="sm" className="flex items-center gap-2">
               <LogOut className="w-4 h-4" />
               <span className="hidden sm:inline">Sair</span>
