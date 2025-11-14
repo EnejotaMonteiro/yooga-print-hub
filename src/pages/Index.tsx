@@ -126,6 +126,12 @@ const Index = () => {
     const [removed] = reorderedPrinters.splice(result.source.index, 1);
     reorderedPrinters.splice(result.destination.index, 0, removed);
 
+    // Update 'ordem' values based on new array index
+    const updates = reorderedPrinters.map((p, index) => ({
+      id: p.id,
+      ordem: index,
+    }));
+
     // Optimistic update
     queryClient.setQueryData(["printers"], reorderedPrinters);
 
@@ -306,6 +312,7 @@ const Index = () => {
                             draggableProps={provided.draggableProps}
                             dragHandleProps={isDragModeActive ? provided.dragHandleProps : null} // Só passa dragHandleProps se o modo de arrastar estiver ativo
                             isDragModeActive={isDragModeActive} // Passa a nova prop
+                            isDragging={snapshot.isDragging} // Passa o estado de arrasto
                           />
                         )}
                       </Draggable>

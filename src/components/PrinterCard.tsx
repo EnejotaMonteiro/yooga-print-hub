@@ -18,6 +18,7 @@ interface PrinterCardProps {
   innerRef?: (element: HTMLElement | null) => void;
   draggableProps?: any;
   dragHandleProps?: any;
+  isDragging?: boolean; // Adicionada prop para indicar se está sendo arrastado
 }
 
 export const PrinterCard = ({
@@ -30,10 +31,11 @@ export const PrinterCard = ({
   isAdmin,
   onEdit,
   imageUrl,
-  isDragModeActive, // Usando a nova prop
+  isDragModeActive,
   innerRef,
   draggableProps,
   dragHandleProps,
+  isDragging, // Usando a nova prop
 }: PrinterCardProps) => {
   const handleDownload = () => {
     window.open(downloadUrl, '_blank');
@@ -41,10 +43,12 @@ export const PrinterCard = ({
 
   return (
     <Card 
-      className="group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant hover:shadow-glow transition-smooth hover:scale-105 relative"
+      className={`group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant hover:shadow-glow transition-smooth relative ${
+        isDragging ? 'shadow-xl scale-105 ring-2 ring-primary/50' : 'hover:scale-105' // Estilo condicional para arrastar
+      }`}
       ref={innerRef}
       {...draggableProps}
-      {...dragHandleProps} // dragHandleProps só será passado se isDragModeActive for true em Index.tsx
+      {...dragHandleProps}
     >
       {isAdmin && (
         <div className="absolute top-2 right-2 flex gap-1 z-10">
@@ -71,7 +75,7 @@ export const PrinterCard = ({
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              style={{ pointerEvents: isDragModeActive ? 'none' : 'auto' }} // Estilo condicional
+              style={{ pointerEvents: isDragModeActive ? 'none' : 'auto' }}
             />
           )}
         </div>
