@@ -70,6 +70,10 @@ const Admin = () => {
     setAddTutorialDialogOpen(false);
   };
 
+  const getUsernameFromEmail = (email: string | undefined) => {
+    return email ? email.split('@')[0] : 'Usuário';
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -98,7 +102,7 @@ const Admin = () => {
             <div className="flex items-center gap-4">
               <div className="text-right">
                 <p className="text-sm text-muted-foreground">Logado como:</p>
-                <p className="text-sm font-medium text-foreground">{user?.email}</p>
+                <p className="text-sm font-medium text-foreground">{getUsernameFromEmail(user?.email)}</p>
               </div>
               <Button
                 onClick={() => navigate("/")}

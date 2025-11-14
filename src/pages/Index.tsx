@@ -144,6 +144,10 @@ const Index = () => {
     printer.nome.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
 
+  const getUsernameFromEmail = (email: string | undefined) => {
+    return email ? email.split('@')[0] : 'Usuário';
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Socket Status Indicator */}
@@ -167,7 +171,7 @@ const Index = () => {
                   </Button>
                   <div className="text-right hidden md:block">
                     <p className="text-xs text-muted-foreground">Logado como:</p>
-                    <p className="text-xs font-medium text-foreground">{user?.email}</p>
+                    <p className="text-xs font-medium text-foreground">{getUsernameFromEmail(user?.email)}</p>
                   </div>
                   <Button onClick={handleLogout} variant="outline" size="sm" className="flex items-center gap-2">
                     <LogOut className="w-4 h-4" />
@@ -268,6 +272,7 @@ const Index = () => {
             </p>
           </div>
         </footer>
+      </div>
 
       {/* Printer Edit Dialog */}
       <PrinterFormDialog
