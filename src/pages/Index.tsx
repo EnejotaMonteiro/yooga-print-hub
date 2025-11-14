@@ -245,24 +245,12 @@ const Index = () => {
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsUniversalVideoDialogOpen(true)}
-                  className="absolute top-2 right-12 bg-background/80 hover:bg-background z-10"
+                  className="absolute top-2 right-2 bg-background/80 hover:bg-background z-10"
                   title="Editar vídeo universal"
                 >
                   <Settings className="w-4 h-4" />
                 </Button>
               )}
-              {/* Botão para alternar o chat do assistente, agora ao lado do vídeo */}
-              <Button
-                onClick={() => setShowAIChat(prev => !prev)}
-                className="group absolute top-2 right-2 h-10 px-3 rounded-full shadow-md bg-gradient-primary flex items-center gap-2 transition-all hover:scale-105 z-10"
-                title={showAIChat ? "Esconder Assistente" : "Mostrar Assistente Rogério"}
-              >
-                <Bot className="w-5 h-5 text-white" />
-                <span className="hidden group-hover:inline-block text-sm font-semibold text-white transition-all duration-300">
-                  Assistente Rogério
-                </span>
-              </Button>
-
               {loadingSiteConfig ? (
                 <div className="aspect-video flex items-center justify-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -289,6 +277,20 @@ const Index = () => {
                   {guiaDescription}
                 </p>
               </div>
+            </div>
+
+            {/* AI Chat Button (outside the video card, next to it) */}
+            <div className="absolute top-28 right-4 lg:relative lg:top-0 lg:right-0 flex items-start"> {/* Ajustado para posicionamento relativo em telas grandes */}
+              <Button
+                onClick={() => setShowAIChat(prev => !prev)}
+                className="group h-10 px-3 rounded-full shadow-md bg-gradient-primary flex items-center gap-2 transition-all hover:scale-105 z-10"
+                title={showAIChat ? "Esconder Assistente" : "Mostrar Assistente Rogério"}
+              >
+                <Bot className="w-5 h-5 text-white" />
+                <span className="hidden group-hover:inline-block text-sm font-semibold text-white transition-all duration-300">
+                  Assistente Rogério
+                </span>
+              </Button>
             </div>
 
             {/* AI Chat */}
