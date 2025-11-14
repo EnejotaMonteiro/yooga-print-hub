@@ -235,7 +235,8 @@ const Index = () => {
                       title="Guia Universal de Configuração"
                       className="w-full h-full"
                       frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-m
+                      edia; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
                   </div>
@@ -285,7 +286,7 @@ const Index = () => {
               <Droppable droppableId="printers-list">
                 {(provided) => (
                   <div
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto printers-droppable-area" {/* Adicionada a classe aqui */}
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                   >

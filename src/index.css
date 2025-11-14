@@ -131,3 +131,17 @@ All colors MUST be HSL.
 
   /* Removidas as regras CSS anteriores para pointer-events do iframe */
 }
+
+@layer components {
+  /* Estilo para o placeholder do react-beautiful-dnd */
+  .printers-droppable-area > div[data-rbd-placeholder-context-id] {
+    background-color: hsl(var(--muted)); /* Fundo sutil */
+    border: 2px dashed hsl(var(--border)); /* Borda tracejada */
+    border-radius: var(--radius); /* Arredondamento para combinar com os cartões */
+    opacity: 0.7;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box; /* Garante que padding e border sejam incluídos no tamanho */
+  }
+}
