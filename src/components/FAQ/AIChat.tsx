@@ -16,7 +16,7 @@ export const AIChat = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Olá! Sou Rogério, seu assistente especializado em impressoras de todas as marcas. Como posso ajudá-lo hoje?"
+      content: "Aiai cara, Olá! Sou Rogério, seu assistente especializado em impressoras de todas as marcas. Como posso ajudá-lo hoje?"
     }
   ]);
   const [input, setInput] = useState("");
@@ -38,7 +38,7 @@ export const AIChat = () => {
     setMessages(prev => [...prev, { role: "user", content: userMessage }]);
     setIsLoading(true);
 
-    let assistantContent = "";
+    let assistantContent = "Aiai cara, "; // Inicializa com o bordão
 
     try {
       const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/printer-chat`;
@@ -81,8 +81,8 @@ export const AIChat = () => {
       let textBuffer = "";
       let streamDone = false;
 
-      // Add assistant message placeholder
-      setMessages(prev => [...prev, { role: "assistant", content: "" }]);
+      // Adiciona o placeholder da mensagem do assistente com o bordão inicial
+      setMessages(prev => [...prev, { role: "assistant", content: assistantContent }]);
 
       while (!streamDone) {
         const { done, value } = await reader.read();
@@ -131,7 +131,7 @@ export const AIChat = () => {
         description: "Não foi possível enviar a mensagem. Tente novamente.",
         variant: "destructive",
       });
-      // Remove the assistant placeholder if error
+      // Remove o placeholder do assistente se houver erro
       setMessages(prev => prev.filter((_, i) => i !== prev.length - 1));
     } finally {
       setIsLoading(false);
@@ -177,7 +177,7 @@ export const AIChat = () => {
               )}
             </div>
           ))}
-          {isLoading && messages[messages.length - 1]?.content === "" && (
+          {isLoading && messages[messages.length - 1]?.content === "Aiai cara, " && ( // Verifica se é apenas o bordão
             <div className="flex gap-3 justify-start">
               <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                 <Bot className="h-4 w-4 text-primary animate-pulse" />
