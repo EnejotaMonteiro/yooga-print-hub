@@ -280,16 +280,14 @@ const Index = () => {
             </div>
 
             {/* AI Chat Button (outside the video card, next to it) */}
-            <div className="flex items-start"> {/* Removido posicionamento absoluto para ficar ao lado */}
+            <div className="absolute top-28 right-4 lg:relative lg:top-0 lg:right-0 flex items-start"> {/* Ajustado para posicionamento relativo em telas grandes */}
               <Button
                 onClick={() => setShowAIChat(prev => !prev)}
-                className="group h-10 rounded-full shadow-md bg-gradient-primary flex items-center gap-2 transition-all duration-300 ease-in-out hover:scale-105 z-10"
+                className="group h-10 px-3 rounded-full shadow-md bg-gradient-primary flex items-center gap-2 transition-all hover:scale-105 z-10"
                 title={showAIChat ? "Esconder Assistente" : "Mostrar Assistente Rogério"}
               >
-                <div className="flex items-center justify-center h-full px-3"> {/* Icon container with fixed padding */}
-                  <Bot className="w-5 h-5 text-white" />
-                </div>
-                <span className="w-0 overflow-hidden opacity-0 group-hover:w-auto group-hover:opacity-100 text-sm font-semibold text-white transition-all duration-300 ease-in-out pr-3"> {/* Text with transition and right padding */}
+                <Bot className="w-5 h-5 text-white" />
+                <span className="hidden group-hover:inline-block text-sm font-semibold text-white transition-all duration-300">
                   Assistente Rogério
                 </span>
               </Button>
