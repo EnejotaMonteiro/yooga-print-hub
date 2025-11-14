@@ -50,7 +50,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="w-full max-w-sm bg-white/95 backdrop-blur-sm border-white/30 shadow-2xl">
+      <Card className="w-full max-w-sm bg-card/95 backdrop-blur-sm border-border/30 shadow-2xl">
         <CardHeader className="text-center pb-2">
           <img 
             src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png"

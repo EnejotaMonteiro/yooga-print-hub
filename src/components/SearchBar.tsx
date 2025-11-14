@@ -15,7 +15,7 @@ export const SearchBar = ({ searchTerm, onSearchChange }: SearchBarProps) => {
         placeholder="Buscar impressoras..."
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
-        className="pl-10 bg-white/80 backdrop-blur-sm border-white/20 shadow-elegant transition-smooth focus:shadow-glow"
+        className="pl-10 bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant transition-smooth focus:shadow-glow"
       />
     </div>
   );

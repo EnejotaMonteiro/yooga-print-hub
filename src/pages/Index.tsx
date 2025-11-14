@@ -129,8 +129,27 @@ const Index = () => {
 
           {/* Universal Configuration Video */}
           <div className="mb-8 flex justify-center">
-            <div className="w-full max-w-md bg-white/80 backdrop-blur-sm border border-white/20 rounded-lg shadow-elegant overflow-hidden">
-              
+            <div className="w-full max-w-md bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden">
+              {videoGuiaUrl && (
+                <div className="aspect-video">
+                  <iframe
+                    src={videoGuiaUrl}
+                    title="Guia Universal de Configuração"
+                    className="w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              )}
+              <div className="p-6 text-center">
+                <h2 className="text-xl font-semibold mb-4 text-foreground">
+                  Guia Universal de Configuração
+                </h2>
+                <p className="text-muted-foreground mb-4">
+                  Assista ao vídeo para um guia completo de configuração de impressoras.
+                </p>
+              </div>
             </div>
           </div>
           
@@ -165,7 +184,7 @@ const Index = () => {
         </a>
 
         {/* Footer */}
-        <footer className="bg-card/60 backdrop-blur-sm border-t border-white/20 py-8 mt-12">
+        <footer className="bg-card/60 backdrop-blur-sm border-t border-border/20 py-8 mt-12">
           <div className="container mx-auto px-4 text-center">
             <p className="text-muted-foreground">
               © 2025 Yooga Suporte - Drivers de impressoras

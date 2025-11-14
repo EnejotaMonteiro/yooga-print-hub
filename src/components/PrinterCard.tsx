@@ -16,7 +16,7 @@ export const PrinterCard = ({ name, videoUrl, downloadUrl, networkConnection, re
   };
 
   return (
-    <Card className="group overflow-hidden bg-white/80 backdrop-blur-sm border-white/20 shadow-elegant hover:shadow-glow transition-smooth hover:scale-105">
+    <Card className="group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant hover:shadow-glow transition-smooth hover:scale-105">
       <CardContent className="p-0">
         <div className="aspect-video overflow-hidden">
           <iframe

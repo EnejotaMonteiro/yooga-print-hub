@@ -217,7 +217,7 @@ export const PrinterChat = ({ printerId, user, compact = false }: PrinterChatPro
                       className={`${compact ? "max-w-xs px-3 py-1" : "max-w-xs lg:max-w-md px-4 py-2"} rounded-lg ${
                         isOwnMessage 
                           ? 'bg-gradient-primary text-white' 
-                          : 'bg-white border shadow-sm'
+                          : 'bg-card border shadow-sm' // Alterado de bg-white para bg-card
                       }`}
                     >
                       {!isOwnMessage && (
