@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Edit } from "lucide-react"; // Removido ArrowUp, ArrowDown
+import { Download, Edit, Play } from "lucide-react"; // Adicionado ícone Play
 import { convertToEmbedUrl } from "@/lib/utils";
 
 interface PrinterCardProps {
@@ -36,6 +36,10 @@ export const PrinterCard = ({
 }: PrinterCardProps) => {
   const handleDownload = () => {
     window.open(downloadUrl, '_blank');
+  };
+
+  const handleWatchVideo = () => {
+    window.open(convertToEmbedUrl(videoUrl), '_blank');
   };
 
   return (
@@ -75,14 +79,25 @@ export const PrinterCard = ({
         </div>
         <div className="p-6">
           <h3 className="text-lg font-semibold mb-4 text-foreground">{name}</h3>
-          <Button
-            onClick={handleDownload}
-            className="w-full bg-gradient-primary hover:opacity-90 transition-smooth shadow-elegant mb-4"
-            size="lg"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Download Driver
-          </Button>
+          
+          <div className="flex gap-2 mb-4">
+            <Button
+              onClick={handleWatchVideo}
+              className="flex-1 bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-smooth shadow-elegant"
+              size="lg"
+            >
+              <Play className="w-4 h-4 mr-2" />
+              Ver Vídeo
+            </Button>
+            <Button
+              onClick={handleDownload}
+              className="flex-1 bg-gradient-primary hover:opacity-90 transition-smooth shadow-elegant"
+              size="lg"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Download Driver
+            </Button>
+          </div>
           
           <div className="text-sm text-muted-foreground">
             <strong>Windows recomendado:</strong> {recommendedWindows}
