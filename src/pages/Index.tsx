@@ -268,7 +268,6 @@ const Index = () => {
             </p>
           </div>
         </footer>
-      </div>
 
       {/* Printer Edit Dialog */}
       <PrinterFormDialog
