@@ -1,0 +1,9 @@
+-- Inserir as impressoras existentes
+INSERT INTO public.impressoras (nome, imagem_url, video_url, download_url, conexao_rede, windows_recomendado, ordem)
+VALUES 
+  ('Elgin i7', '/src/assets/printer-elgin-i7.jpg', 'https://www.youtube.com/embed/0qFyfNRpWdk', 'https://www.dropbox.com/scl/fi/2njyubqe8gv0ejl0tn0en/Driver-i7-Elgin.rar?rlkey=wjh8hcbr7uocp4wn2v62jghxg&st=djnm6v3h&dl=1', false, 'Windows 7, 8, 10, 11', 1),
+  ('Elgin i8', '/src/assets/printer-elgin-i8.jpg', 'https://www.youtube.com/embed/0qFyfNRpWdk', 'https://www.dropbox.com/scl/fi/2njyubqe8gv0ejl0tn0en/Driver-i7-Elgin.rar?rlkey=wjh8hcbr7uocp4wn2v62jghxg&st=djnm6v3h&dl=1', false, 'Windows 7, 8, 10, 11', 2),
+  ('Elgin i9', '/src/assets/printer-elgin-i9.jpg', 'https://www.youtube.com/embed/hFUfLYQS-wU', 'https://www.dropbox.com/scl/fi/qknjtbv3vpqnb7b6f85ky/Driver-i9-Elgin.rar?rlkey=wbf75l5v7wgfsxhx30pxqxzwz&st=c1gxebef&dl=1', true, 'Windows 7, 8, 10, 11', 3),
+  ('Elgin L42', '/src/assets/printer-elgin-l42.jpg', 'https://www.youtube.com/embed/Xez5VBuO1Pg', 'https://www.dropbox.com/scl/fi/0i5wm21kdhfpmmfxkj4ji/Driver-L42-Elgin.rar?rlkey=56btlr14xunwvr5w35c04f4p6&st=occ6nzot&dl=1', false, 'Windows 7, 8, 10, 11', 4),
+  ('Elgin L42 PRO', '/src/assets/printer-elgin-l42-pro.jpg', 'https://www.youtube.com/embed/Xez5VBuO1Pg', 'https://www.dropbox.com/scl/fi/0i5wm21kdhfpmmfxkj4ji/Driver-L42-Elgin.rar?rlkey=56btlr14xunwvr5w35c04f4p6&st=occ6nzot&dl=1', false, 'Windows 7, 8, 10, 11', 5),
+  ('Elgin TT042', '/src/assets/printer-elgin-tt042.jpg', 'https://www.youtube.com/embed/1lE6Ps_qZtk', 'https://www.dropbox.com/scl/fi/qknjtbv3vpqnb7b6f85ky/Driver-i9-Elgin.rar?rlkey=wbf75l5v7wgfsxhx30pxqxzwz&st=c1gxebef&dl=1', false, 'Windows 7, 8, 10, 11', 6);
