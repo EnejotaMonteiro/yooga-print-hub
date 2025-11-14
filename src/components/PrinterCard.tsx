@@ -43,8 +43,10 @@ export const PrinterCard = ({
 
   return (
     <Card 
-      className={`group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant hover:shadow-glow transition-smooth relative ${
-        isDragging ? 'shadow-xl scale-105 ring-2 ring-primary/50' : 'hover:scale-105' // Estilo condicional para arrastar
+      className={`group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant relative ${
+        isDragging 
+          ? 'shadow-xl scale-105 ring-2 ring-primary/50' // Estilos para quando está arrastando
+          : 'hover:scale-105 transition-smooth' // Estilos quando não está arrastando, com transição
       }`}
       ref={innerRef}
       {...draggableProps}
