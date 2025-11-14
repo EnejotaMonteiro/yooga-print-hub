@@ -141,7 +141,7 @@ const Index = () => {
     }
 
     const reorderedPrinters = Array.from(printers);
-    const [removed] = reorderedProrderedPrinters.splice(result.source.index, 1);
+    const [removed] = reorderedPrinters.splice(result.source.index, 1);
     reorderedPrinters.splice(result.destination.index, 0, removed);
 
     const updates = reorderedPrinters.map((p, index) => ({
@@ -231,22 +231,6 @@ const Index = () => {
       {/* FAQ Floating Button */}
       <FAQFloatingButton />
 
-      {/* AI Chat Floating Button */}
-      <div className="fixed bottom-6 left-24 z-50"> {/* Ajustado 'left-6' para 'left-24' para não sobrepor o FAQ */}
-        <Button
-          onClick={() => setShowAIChat(prev => !prev)}
-          className="h-14 rounded-full shadow-2xl bg-gradient-primary flex items-center transition-all hover:scale-105 px-0"
-          title={showAIChat ? "Esconder Assistente" : "Mostrar Assistente Rogério"}
-        >
-          <div className="h-14 w-14 flex items-center justify-center flex-shrink-0">
-            <Bot className="w-6 h-6 text-white" />
-          </div>
-          <span className="hidden md:inline-block text-lg font-semibold text-white pr-6">
-            Assistente Rogério
-          </span>
-        </Button>
-      </div>
-
       {/* Header Section */}
       <div className="w-full px-4 pt-28 pb-8">
           {/* Universal Configuration Video and AI Chat */}
@@ -261,12 +245,24 @@ const Index = () => {
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsUniversalVideoDialogOpen(true)}
-                  className="absolute top-2 right-2 bg-background/80 hover:bg-background z-10"
+                  className="absolute top-2 right-12 bg-background/80 hover:bg-background z-10"
                   title="Editar vídeo universal"
                 >
                   <Settings className="w-4 h-4" />
                 </Button>
               )}
+              {/* Botão para alternar o chat do assistente, agora ao lado do vídeo */}
+              <Button
+                onClick={() => setShowAIChat(prev => !prev)}
+                className="group absolute top-2 right-2 h-10 px-3 rounded-full shadow-md bg-gradient-primary flex items-center gap-2 transition-all hover:scale-105 z-10"
+                title={showAIChat ? "Esconder Assistente" : "Mostrar Assistente Rogério"}
+              >
+                <Bot className="w-5 h-5 text-white" />
+                <span className="hidden group-hover:inline-block text-sm font-semibold text-white transition-all duration-300">
+                  Assistente Rogério
+                </span>
+              </Button>
+
               {loadingSiteConfig ? (
                 <div className="aspect-video flex items-center justify-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
