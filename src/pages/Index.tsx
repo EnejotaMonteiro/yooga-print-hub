@@ -238,7 +238,7 @@ const Index = () => {
             {/* Universal Configuration Video */}
             <div className={cn(
                 "bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden relative transition-all duration-300 ease-in-out",
-                showAIChat ? "lg:w-1/2" : "w-full"
+                showAIChat ? "lg:w-1/2" : "lg:w-full"
             )}>
               {isAdmin && (
                 <Button
@@ -279,8 +279,11 @@ const Index = () => {
               </div>
             </div>
 
-            {/* AI Chat Button (outside the video card, next to it) */}
-            <div className="absolute top-28 right-4 lg:relative lg:top-0 lg:right-0 flex items-start"> {/* Ajustado para posicionamento relativo em telas grandes */}
+            {/* AI Chat Button and AI Chat Panel */}
+            <div className={cn(
+                "flex flex-col gap-6",
+                showAIChat ? "lg:w-1/2" : "lg:w-auto"
+            )}>
               <Button
                 onClick={() => setShowAIChat(prev => !prev)}
                 className="group h-10 px-3 rounded-full shadow-md bg-gradient-primary flex items-center gap-2 transition-all hover:scale-105 z-10"
@@ -291,14 +294,13 @@ const Index = () => {
                   Assistente Rogério
                 </span>
               </Button>
-            </div>
 
-            {/* AI Chat */}
-            {showAIChat && (
-                <div className="w-full lg:w-1/2 transition-all duration-300 ease-in-out">
+              {showAIChat && (
+                <div className="w-full transition-all duration-300 ease-in-out">
                     <AIChat />
                 </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
 
