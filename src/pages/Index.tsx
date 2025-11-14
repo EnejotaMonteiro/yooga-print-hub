@@ -7,7 +7,7 @@ import { FAQFloatingButton } from "@/components/FAQFloatingButton";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, LogIn, Shield, Settings, GripVertical } from "lucide-react"; // Adicionado GripVertical
+import { LogOut, LogIn, Shield, Settings, GripVertical } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -22,7 +22,7 @@ const Index = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedPrinterForEdit, setSelectedPrinterForEdit] = useState<any>(null);
   const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false);
-  const [isDragModeActive, setIsDragModeActive] = useState(false); // Novo estado para o modo de arrastar
+  const [isDragModeActive, setIsDragModeActive] = useState(false);
   
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -173,11 +173,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Fixed Logo */}
-      <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="fixed top-4 left-4 h-16 md:h-20 z-50" />
-
-      {/* Fixed top-center Socket Status */}
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+      {/* Fixed Logo and Socket Status */}
+      <div className="fixed top-4 left-4 z-50 flex flex-col items-start gap-2">
+        <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="h-16 md:h-20" />
         <SocketStatus />
       </div>
 
@@ -235,8 +233,7 @@ const Index = () => {
                       title="Guia Universal de Configuração"
                       className="w-full h-full"
                       frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-m
-                      edia; gyroscope; picture-in-picture"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
                   </div>
