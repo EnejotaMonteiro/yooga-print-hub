@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { convertToEmbedUrl } from "@/lib/utils"; // Importar a função de utilidade
 
 interface TutorialFormDialogProps {
   open: boolean;
@@ -82,6 +83,11 @@ export const TutorialFormDialog = ({ open, onOpenChange, tutorial, onSuccess }: 
     }
   };
 
+  const handleVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawUrl = e.target.value;
+    setVideoUrl(convertToEmbedUrl(rawUrl));
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
@@ -120,8 +126,8 @@ export const TutorialFormDialog = ({ open, onOpenChange, tutorial, onSuccess }: 
               id="videoUrl"
               type="url"
               value={videoUrl}
-              onChange={(e) => setVideoUrl(e.target.value)}
-              placeholder="https://www.youtube.com/embed/..."
+              onChange={handleVideoUrlChange} // Usar o novo handler
+              placeholder="https://www.youtube.com/watch?v=..."
               required
             />
             <p className="text-xs text-muted-foreground">

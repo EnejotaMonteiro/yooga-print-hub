@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm } from "@hookform/react-form"; // Corrigido para @hookform/react-form
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { convertToEmbedUrl } from "@/lib/utils"; // Importar a função de utilidade
 
 const printerFormSchema = z.object({
   nome: z.string().optional(),
@@ -190,8 +191,9 @@ export const PrinterFormDialog = ({
                   <FormLabel>URL do Vídeo de Instalação</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="https://www.youtube.com/embed/..."
+                      placeholder="https://www.youtube.com/watch?v=..."
                       {...field}
+                      onChange={(e) => field.onChange(convertToEmbedUrl(e.target.value))} // Converter URL
                     />
                   </FormControl>
                   <FormDescription>

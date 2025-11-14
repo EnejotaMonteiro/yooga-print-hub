@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { convertToEmbedUrl } from "@/lib/utils"; // Importar a função de utilidade
 
 export const SiteConfigForm = () => {
   const [videoUrl, setVideoUrl] = useState("");
@@ -77,6 +78,11 @@ export const SiteConfigForm = () => {
     }
   };
 
+  const handleVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawUrl = e.target.value;
+    setVideoUrl(convertToEmbedUrl(rawUrl));
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
@@ -95,13 +101,13 @@ export const SiteConfigForm = () => {
           id="videoUrl"
           type="url"
           value={videoUrl}
-          onChange={(e) => setVideoUrl(e.target.value)}
-          placeholder="https://www.youtube.com/embed/..."
+          onChange={handleVideoUrlChange} // Usar o novo handler
+          placeholder="https://www.youtube.com/watch?v=..."
           className="w-full"
           required
         />
         <p className="text-xs text-muted-foreground">
-          Insira o URL do YouTube no formato embed (ex: https://www.youtube.com/embed/VIDEO_ID)
+          Insira o URL do YouTube (normal ou embed). Será convertido automaticamente.
         </p>
       </div>
 
