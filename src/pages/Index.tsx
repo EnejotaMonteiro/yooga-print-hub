@@ -4,7 +4,6 @@ import { PrinterCard } from "@/components/PrinterCard";
 import { SearchBar } from "@/components/SearchBar";
 import { SocketStatus } from "@/components/SocketStatus";
 import { FAQFloatingButton } from "@/components/FAQFloatingButton";
-import { AIChatFloatingButton } from "@/components/AIChatFloatingButton"; // Importar o novo componente
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -14,6 +13,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
 import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog";
+import { AIChat } from "@/components/FAQ/AIChat"; // Importar o componente AIChat diretamente
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -181,13 +181,10 @@ const Index = () => {
       {/* FAQ Floating Button */}
       <FAQFloatingButton />
 
-      {/* AI Chat Floating Button */}
-      <AIChatFloatingButton /> {/* Adicionado o novo componente aqui */}
-
       {/* Header Section */}
-      <div className="w-full px-4 pt-8 pb-8"> {/* Alterado de 'container mx-auto' para 'w-full' */}
+      <div className="w-full px-4 pt-8 pb-8">
           {/* Header with Logo and Login/Logout */}
-          <div className="mb-8 flex justify-between items-center max-w-7xl mx-auto"> {/* Adicionado max-w-7xl mx-auto para centralizar o conteúdo interno */}
+          <div className="mb-8 flex justify-between items-center max-w-7xl mx-auto">
             <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="h-16 md:h-20" />
             <div className="flex items-center gap-2">
               <ThemeToggle />
@@ -215,9 +212,10 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Universal Configuration Video */}
-          <div className="mb-8 flex justify-center">
-            <div className="w-full max-w-md bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden relative">
+          {/* Universal Configuration Video and AI Chat */}
+          <div className="mb-8 flex flex-col lg:flex-row justify-center gap-6 max-w-7xl mx-auto">
+            {/* Universal Configuration Video */}
+            <div className="w-full lg:w-1/2 bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden relative">
               {isAdmin && (
                 <Button
                   variant="ghost"
@@ -256,8 +254,12 @@ const Index = () => {
                 </p>
               </div>
             </div>
+
+            {/* AI Chat */}
+            <div className="w-full lg:w-1/2">
+              <AIChat />
+            </div>
           </div>
-          
         </div>
 
         {/* Search Bar */}
