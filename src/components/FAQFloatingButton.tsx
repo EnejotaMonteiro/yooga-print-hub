@@ -49,7 +49,7 @@ export const FAQFloatingButton = () => {
         >
           <BookOpen className="w-6 h-6 text-white" />
         </Button>
-        <span className="hidden md:inline-block text-lg font-semibold text-foreground bg-card/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-elegant border border-border">
+        <span className="hidden md:inline-block text-lg font-semibold bg-gradient-primary text-white px-4 py-2 rounded-lg shadow-2xl hover:scale-105 transition-all">
           Dúvidas Recorrentes
         </span>
       </div>
