@@ -133,21 +133,7 @@ export const SiteConfigForm = () => {
         </p>
       </div>
 
-      {videoUrl && (
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">Preview</Label>
-          <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-            <iframe
-              src={videoUrl}
-              title="Preview do Guia Universal"
-              className="w-full h-full"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </div>
-      )}
+      {/* Removido o bloco de preview do vídeo */}
 
       <Button
         type="submit"
