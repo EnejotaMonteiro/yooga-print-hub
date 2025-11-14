@@ -126,20 +126,20 @@ const Index = () => {
     const [removed] = reorderedPrinters.splice(result.source.index, 1);
     reorderedPrinters.splice(result.destination.index, 0, removed);
 
-    // Update 'ordem' values based on new array index
-    const updates = reorderedPrinters.map((p, index) => ({
-      id: p.id,
-      ordem: index,
-    }));
-
     // Optimistic update
     queryClient.setQueryData(["printers"], reorderedPrinters);
 
     try {
-      // Usando update em vez de upsert para evitar problemas com colunas NOT NULL
-      const { error } = await supabase.from('impressoras').update(updates);
+      // Realiza uma atualização para cada impressora individualmente
+      for (let i = 0; i < reorderedPrinters.length; i++) {
+        const printer = reorderedPrinters[i];
+        const { error } = await supabase
+          .from('impressoras')
+          .update({ ordem: i }) // Atualiza apenas a ordem
+          .eq('id', printer.id); // Especifica o WHERE clause para cada atualização
 
-      if (error) throw error;
+        if (error) throw error;
+      }
 
       toast({
         title: "Ordem atualizada",
