@@ -27,10 +27,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { convertToEmbedUrl } from "@/lib/utils";
 
 const printerFormSchema = z.object({
-  nome: z.string().optional(),
-  video_url: z.string().optional(),
-  download_url: z.string().optional(),
-  imagem_url: z.string().optional(),
+  nome: z.string().min(1, "O nome da impressora é obrigatório."), // Tornando nome obrigatório
+  video_url: z.string().default(""), // Garantindo string vazia se não preenchido
+  download_url: z.string().min(1, "A URL de download do driver é obrigatória."), // Tornando download_url obrigatório
+  imagem_url: z.string().default(""), // Garantindo string vazia se não preenchido
   windows_recomendado: z.string().optional().default("Windows 10 e 11"),
   conexao_rede: z.boolean().optional().default(true),
   ativo: z.boolean().optional().default(true),

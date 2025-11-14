@@ -136,7 +136,8 @@ const Index = () => {
     queryClient.setQueryData(["printers"], reorderedPrinters);
 
     try {
-      const { error } = await supabase.from('impressoras').upsert(updates);
+      // Usando update em vez de upsert para evitar problemas com colunas NOT NULL
+      const { error } = await supabase.from('impressoras').update(updates);
 
       if (error) throw error;
 
