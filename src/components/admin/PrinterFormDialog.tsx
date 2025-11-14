@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form"; // Corrigido para react-hook-form
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { convertToEmbedUrl } from "@/lib/utils"; // Importar a função de utilidade
+import { convertToEmbedUrl } from "@/lib/utils";
 
 const printerFormSchema = z.object({
   nome: z.string().optional(),
@@ -34,7 +34,7 @@ const printerFormSchema = z.object({
   windows_recomendado: z.string().optional().default("Windows 10 e 11"),
   conexao_rede: z.boolean().optional().default(true),
   ativo: z.boolean().optional().default(true),
-  ordem: z.coerce.number().int().min(0).optional().default(0), // Keep in schema for default value on insert
+  ordem: z.coerce.number().int().min(0).optional().default(0),
 });
 
 type PrinterFormValues = z.infer<typeof printerFormSchema>;
@@ -101,9 +101,9 @@ export const PrinterFormDialog = ({
     try {
       const formValuesToSave: Partial<PrinterFormValues> = {
         nome: values.nome,
-        video_url: values.video_url,
+        video_url: values.video_url || "", // Garante string vazia se o campo for limpo
         download_url: values.download_url,
-        imagem_url: values.imagem_url,
+        imagem_url: values.imagem_url || "", // Garante string vazia se o campo for limpo
         windows_recomendado: values.windows_recomendado,
         conexao_rede: values.conexao_rede,
         ativo: values.ativo,
@@ -193,7 +193,7 @@ export const PrinterFormDialog = ({
                     <Input
                       placeholder="https://www.youtube.com/watch?v=..."
                       {...field}
-                      onChange={(e) => field.onChange(convertToEmbedUrl(e.target.value))} // Converter URL
+                      onChange={(e) => field.onChange(convertToEmbedUrl(e.target.value))}
                     />
                   </FormControl>
                   <FormDescription>
@@ -254,8 +254,6 @@ export const PrinterFormDialog = ({
                 </FormItem>
               )}
             />
-
-            {/* REMOVED ORDEM FIELD FROM UI */}
 
             <FormField
               control={form.control}

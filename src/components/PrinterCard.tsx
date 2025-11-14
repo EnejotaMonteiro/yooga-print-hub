@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Edit } from "lucide-react"; // Removido ArrowUp, ArrowDown
+import { Download, Edit } from "lucide-react";
 import { convertToEmbedUrl } from "@/lib/utils";
 
 interface PrinterCardProps {
@@ -14,7 +14,6 @@ interface PrinterCardProps {
   onEdit: (printerId: string) => void;
   imageUrl?: string;
 
-  // Novas props para drag-and-drop
   innerRef?: (element: HTMLElement | null) => void;
   draggableProps?: any;
   dragHandleProps?: any;
@@ -59,7 +58,7 @@ export const PrinterCard = ({
         </div>
       )}
       <CardContent className="p-0">
-        <div className="aspect-video overflow-hidden">
+        <div className="aspect-video overflow-hidden printer-media-wrapper"> {/* Adicionado printer-media-wrapper */}
           {imageUrl ? (
             <img src={imageUrl} alt={name} className="w-full h-full object-cover rounded-t-lg" />
           ) : (
