@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Edit, ArrowUp, ArrowDown } from "lucide-react"; // Import Edit, ArrowUp, ArrowDown
-import { convertToEmbedUrl } from "@/lib/utils"; // Importar a função de utilidade
+import { Download, Edit, ArrowUp, ArrowDown } from "lucide-react";
+import { convertToEmbedUrl } from "@/lib/utils";
 
 interface PrinterCardProps {
   name: string;
@@ -9,12 +9,12 @@ interface PrinterCardProps {
   downloadUrl: string;
   networkConnection: boolean;
   recommendedWindows: string;
-  id: string; // Add id for editing/reordering
-  isAdmin: boolean; // New prop
-  onEdit: (printerId: string) => void; // New prop
-  onMove: (printerId: string, direction: 'up' | 'down') => void; // New prop
-  isFirst: boolean; // New prop to disable 'up' for first item
-  isLast: boolean; // New prop to disable 'down' for last item
+  id: string;
+  isAdmin: boolean;
+  onEdit: (printerId: string) => void;
+  onMove: (printerId: string, direction: 'up' | 'down') => void;
+  isFirst: boolean;
+  isLast: boolean;
 }
 
 export const PrinterCard = ({
@@ -23,7 +23,7 @@ export const PrinterCard = ({
   downloadUrl,
   networkConnection,
   recommendedWindows,
-  id, // Destructure id
+  id,
   isAdmin,
   onEdit,
   onMove,
@@ -35,7 +35,7 @@ export const PrinterCard = ({
   };
 
   return (
-    <Card className="group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant hover:shadow-glow transition-smooth hover:scale-105 relative"> {/* Add relative for absolute positioning of admin controls */}
+    <Card className="group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant hover:shadow-glow transition-smooth hover:scale-105 relative">
       {isAdmin && (
         <div className="absolute top-2 right-2 flex gap-1 z-10">
           <Button
@@ -55,6 +55,8 @@ export const PrinterCard = ({
             disabled={isLast}
             className="bg-background/80 hover:bg-background"
             title="Mover para baixo"
+          >
+            <ArrowDown className="w-4 h-4" />
           </Button>
           <Button
             variant="ghost"
