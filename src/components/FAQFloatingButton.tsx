@@ -40,18 +40,21 @@ export const FAQFloatingButton = () => {
 
   return (
     <>
-      {/* Floating Button with Text */}
-      <div className="fixed bottom-6 left-6 z-50 flex items-center gap-3">
+      {/* Floating Button (combined icon and text) */}
+      <div className="fixed bottom-6 left-6 z-50">
         <Button
           onClick={() => setOpen(true)}
-          className="h-14 w-14 rounded-full shadow-2xl bg-gradient-primary"
-          size="icon"
+          className="h-14 rounded-full shadow-2xl bg-gradient-primary flex items-center transition-all hover:scale-105
+                     px-0" // Remove default horizontal padding
         >
-          <BookOpen className="w-6 h-6 text-white" />
+          {/* Icon container to ensure it's a circle */}
+          <div className="h-14 w-14 flex items-center justify-center flex-shrink-0">
+            <BookOpen className="w-6 h-6 text-white" />
+          </div>
+          <span className="hidden md:inline-block text-lg font-semibold text-white pr-6"> {/* pr-6 for right padding */}
+            Dúvidas Recorrentes
+          </span>
         </Button>
-        <span className="hidden md:inline-block text-lg font-semibold bg-gradient-primary text-white px-4 py-2 rounded-lg shadow-2xl hover:scale-105 transition-all">
-          Dúvidas Recorrentes
-        </span>
       </div>
 
       {/* Dialog */}
