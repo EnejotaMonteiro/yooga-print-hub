@@ -369,7 +369,7 @@ const Index = () => {
                             recommendedWindows={printer.windows_recomendado}
                             isAdmin={isAdmin}
                             onEdit={handleEditPrinter}
-                            imageUrl={printer.imagem_url || undefined}
+                            // imageUrl={printer.imagem_url || undefined} // Linha removida
                             innerRef={provided.innerRef}
                             draggableProps={provided.draggableProps}
                             dragHandleProps={isDragModeActive ? provided.dragHandleProps : null}
