@@ -20,9 +20,10 @@ export const useSuperAdmin = () => {
           .from('user_roles')
           .select('role')
           .eq('user_id', session.user.id)
+          .eq('role', 'super_admin' as any)
           .maybeSingle();
         
-        const isSuperAdmin = data?.role === 'super_admin' as any;
+        const isSuperAdmin = !!data;
 
         if (error) {
           console.error('Erro ao verificar super admin:', error);
