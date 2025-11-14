@@ -33,7 +33,7 @@ const printerFormSchema = z.object({
   windows_recomendado: z.string().optional().default("Windows 10 e 11"),
   conexao_rede: z.boolean().optional().default(true),
   ativo: z.boolean().optional().default(true),
-  ordem: z.coerce.number().int().min(0).optional().default(0),
+  ordem: z.coerce.number().int().min(0).optional().default(0), // Keep in schema for default value on insert
 });
 
 type PrinterFormValues = z.infer<typeof printerFormSchema>;
@@ -69,7 +69,6 @@ export const PrinterFormDialog = ({
     },
   });
 
-  // Resetar o formulário quando a impressora selecionada mudar
   useEffect(() => {
     if (printer) {
       form.reset({
@@ -83,7 +82,6 @@ export const PrinterFormDialog = ({
         ordem: printer.ordem || 0,
       });
     } else {
-      // Limpar o formulário quando não há impressora para editar (modo de criação)
       form.reset({
         nome: "",
         video_url: "",
@@ -100,10 +98,20 @@ export const PrinterFormDialog = ({
   const onSubmit = async (values: PrinterFormValues) => {
     setLoading(true);
     try {
+      const formValuesToSave: Partial<PrinterFormValues> = {
+        nome: values.nome,
+        video_url: values.video_url,
+        download_url: values.download_url,
+        imagem_url: values.imagem_url,
+        windows_recomendado: values.windows_recomendado,
+        conexao_rede: values.conexao_rede,
+        ativo: values.ativo,
+      };
+
       if (isEditing) {
         const { error } = await supabase
           .from("impressoras")
-          .update(values)
+          .update(formValuesToSave)
           .eq("id", printer.id);
 
         if (error) throw error;
@@ -115,16 +123,12 @@ export const PrinterFormDialog = ({
       } else {
         const { error } = await supabase
           .from("impressoras")
-          .insert([{
-            nome: values.nome,
-            video_url: values.video_url,
-            download_url: values.download_url,
-            imagem_url: values.imagem_url,
-            windows_recomendado: values.windows_recomendado,
-            conexao_rede: values.conexao_rede,
-            ativo: values.ativo,
-            ordem: values.ordem,
-          }]);
+          .insert([
+            {
+              ...formValuesToSave,
+              ordem: values.ordem,
+            }
+          ]);
 
         if (error) throw error;
 
@@ -249,26 +253,7 @@ export const PrinterFormDialog = ({
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="ordem"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Ordem de Exibição</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      {...field}
-                      onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Menor número aparece primeiro
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* REMOVED ORDEM FIELD FROM UI */}
 
             <FormField
               control={form.control}
