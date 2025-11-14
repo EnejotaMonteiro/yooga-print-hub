@@ -13,7 +13,8 @@ import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
 import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog";
-import { AIChat } from "@/components/FAQ/AIChat"; // Importar o componente AIChat diretamente
+import { AIChat } from "@/components/FAQ/AIChat";
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd"; // Importar DND
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,10 +26,10 @@ const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isAdmin, loading: adminLoading } = useAdmin();
-  const queryClient = useQueryClient(); // Usar o hook useQueryClient para acessar a instância global
+  const queryClient = useQueryClient();
 
   // Fetch printers using TanStack Query
-  const { data: printers, isLoading: loadingPrinters, refetch } = useQuery({
+  const { data: printers, isLoading: loadingPrinters } = useQuery({
     queryKey: ["printers"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -115,37 +116,25 @@ const Index = () => {
     }
   };
 
-  const handleMovePrinter = async (printerId: string, direction: 'up' | 'down') => {
-    if (!printers) return;
-
-    const currentIndex = printers.findIndex(p => p.id === printerId);
-    if (currentIndex === -1) return;
-
-    const newPrinters = [...printers];
-    const printerToMove = newPrinters[currentIndex];
-
-    let newIndex = currentIndex;
-    if (direction === 'up') {
-      newIndex = Math.max(0, currentIndex - 1);
-    } else {
-      newIndex = Math.min(newPrinters.length - 1, currentIndex + 1);
+  const onDragEnd = async (result: DropResult) => {
+    if (!result.destination || !printers) {
+      return;
     }
 
-    if (newIndex === currentIndex) return; // No change in position
-
-    // Swap elements in the array
-    const temp = newPrinters[currentIndex];
-    newPrinters[currentIndex] = newPrinters[newIndex];
-    newPrinters[newIndex] = temp;
+    const reorderedPrinters = Array.from(printers);
+    const [removed] = reorderedPrinters.splice(result.source.index, 1);
+    reorderedPrinters.splice(result.destination.index, 0, removed);
 
     // Update 'ordem' values based on new array index
-    const updates = newPrinters.map((p, index) => ({
+    const updates = reorderedPrinters.map((p, index) => ({
       id: p.id,
       ordem: index,
     }));
 
+    // Optimistic update
+    queryClient.setQueryData(["printers"], reorderedPrinters);
+
     try {
-      // Perform batch update
       const { error } = await supabase.from('impressoras').upsert(updates);
 
       if (error) throw error;
@@ -162,6 +151,7 @@ const Index = () => {
         description: error.message || "Ocorreu um erro ao reordenar as impressoras",
         variant: "destructive",
       });
+      queryClient.invalidateQueries({ queryKey: ["printers"] }); // Revert optimistic update on error
     }
   };
 
@@ -273,34 +263,50 @@ const Index = () => {
               <p className="text-muted-foreground">Carregando impressoras...</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {filteredPrinters.map((printer, index) => (
-                <PrinterCard
-                  key={printer.id}
-                  id={printer.id}
-                  name={printer.nome}
-                  videoUrl={printer.video_url}
-                  downloadUrl={printer.download_url}
-                  networkConnection={printer.conexao_rede}
-                  recommendedWindows={printer.windows_recomendado}
-                  isAdmin={isAdmin}
-                  onEdit={handleEditPrinter}
-                  onMove={handleMovePrinter}
-                  isFirst={index === 0}
-                  isLast={index === filteredPrinters.length - 1}
-                />
-              ))}
-              {filteredPrinters.length === 0 && searchTerm && (
-                <div className="col-span-full text-center py-8">
-                  <p className="text-muted-foreground">Nenhuma impressora encontrada para "{searchTerm}"</p>
-                </div>
-              )}
-              {printers?.length === 0 && !loadingPrinters && (
-                <div className="col-span-full text-center py-8">
-                  <p className="text-muted-foreground">Nenhuma impressora cadastrada ainda.</p>
-                </div>
-              )}
-            </div>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="printers-list">
+                {(provided) => (
+                  <div
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  >
+                    {filteredPrinters.map((printer, index) => (
+                      <Draggable key={printer.id} draggableId={printer.id} index={index}>
+                        {(provided, snapshot) => (
+                          <PrinterCard
+                            key={printer.id}
+                            id={printer.id}
+                            name={printer.nome}
+                            videoUrl={printer.video_url}
+                            downloadUrl={printer.download_url}
+                            networkConnection={printer.conexao_rede}
+                            recommendedWindows={printer.windows_recomendado}
+                            isAdmin={isAdmin}
+                            onEdit={handleEditPrinter}
+                            imageUrl={printer.imagem_url || undefined}
+                            innerRef={provided.innerRef}
+                            draggableProps={provided.draggableProps}
+                            dragHandleProps={provided.dragHandleProps}
+                          />
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                    {filteredPrinters.length === 0 && searchTerm && (
+                      <div className="col-span-full text-center py-8">
+                        <p className="text-muted-foreground">Nenhuma impressora encontrada para "{searchTerm}"</p>
+                      </div>
+                    )}
+                    {printers?.length === 0 && !loadingPrinters && (
+                      <div className="col-span-full text-center py-8">
+                        <p className="text-muted-foreground">Nenhuma impressora cadastrada ainda.</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
           )}
         </div>
 

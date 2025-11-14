@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Edit, ArrowUp, ArrowDown } from "lucide-react";
+import { Download, Edit } from "lucide-react"; // Removido ArrowUp, ArrowDown
 import { convertToEmbedUrl } from "@/lib/utils";
 
 interface PrinterCardProps {
@@ -12,10 +12,12 @@ interface PrinterCardProps {
   id: string;
   isAdmin: boolean;
   onEdit: (printerId: string) => void;
-  onMove: (printerId: string, direction: 'up' | 'down') => void;
-  isFirst: boolean;
-  isLast: boolean;
-  imageUrl?: string; // Adicionado imageUrl
+  imageUrl?: string;
+
+  // Novas props para drag-and-drop
+  innerRef?: (element: HTMLElement | null) => void;
+  draggableProps?: any;
+  dragHandleProps?: any;
 }
 
 export const PrinterCard = ({
@@ -27,39 +29,24 @@ export const PrinterCard = ({
   id,
   isAdmin,
   onEdit,
-  onMove,
-  isFirst,
-  isLast,
-  imageUrl, // Adicionado imageUrl
+  imageUrl,
+  innerRef,
+  draggableProps,
+  dragHandleProps,
 }: PrinterCardProps) => {
   const handleDownload = () => {
     window.open(downloadUrl, '_blank');
   };
 
   return (
-    <Card className="group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant hover:shadow-glow transition-smooth hover:scale-105 relative">
+    <Card 
+      className="group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant hover:shadow-glow transition-smooth hover:scale-105 relative"
+      ref={innerRef}
+      {...draggableProps}
+      {...dragHandleProps}
+    >
       {isAdmin && (
         <div className="absolute top-2 right-2 flex gap-1 z-10">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onMove(id, 'up')}
-            disabled={isFirst}
-            className="bg-background/80 hover:bg-background"
-            title="Mover para cima"
-          >
-            <ArrowUp className="w-4 h-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onMove(id, 'down')}
-            disabled={isLast}
-            className="bg-background/80 hover:bg-background"
-            title="Mover para baixo"
-          >
-            <ArrowDown className="w-4 h-4" />
-          </Button>
           <Button
             variant="ghost"
             size="icon"
@@ -73,10 +60,9 @@ export const PrinterCard = ({
       )}
       <CardContent className="p-0">
         <div className="aspect-video overflow-hidden">
-          {/* Você pode adicionar uma imagem aqui se imageUrl estiver disponível, por exemplo: */}
-          {/* {imageUrl ? (
+          {imageUrl ? (
             <img src={imageUrl} alt={name} className="w-full h-full object-cover rounded-t-lg" />
-          ) : ( */}
+          ) : (
             <iframe
               src={convertToEmbedUrl(videoUrl)}
               title={`${name} - Configuração e Funcionamento`}
@@ -85,7 +71,7 @@ export const PrinterCard = ({
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
-          {/* )} */}
+          )}
         </div>
         <div className="p-6">
           <h3 className="text-lg font-semibold mb-4 text-foreground">{name}</h3>
