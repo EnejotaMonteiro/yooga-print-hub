@@ -25,7 +25,7 @@ const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isAdmin, loading: adminLoading } = useAdmin();
-  const queryClient = new QueryClient(); // Re-initialize QueryClient here if it's not global
+  const queryClient = useQueryClient(); // Usar o hook useQueryClient para acessar a instância global
 
   // Fetch printers using TanStack Query
   const { data: printers, isLoading: loadingPrinters, refetch } = useQuery({
