@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Bot, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Message {
   role: "user" | "assistant";
@@ -14,7 +16,7 @@ export const AIChat = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Olá! Sou seu assistente especializado em impressoras Elgin. Como posso ajudá-lo hoje?"
+      content: "Olá! Sou Rogério, seu assistente especializado em impressoras Elgin. Como posso ajudá-lo hoje?"
     }
   ]);
   const [input, setInput] = useState("");
@@ -140,7 +142,7 @@ export const AIChat = () => {
     <div className="bg-card/60 backdrop-blur-sm border border-border rounded-lg shadow-elegant p-6 h-[600px] flex flex-col">
       <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
         <Bot className="h-5 w-5 text-primary" />
-        Assistente de Impressoras
+        Assistente Rogério
       </h3>
       
       <ScrollArea className="flex-1 pr-4 mb-4" ref={scrollAreaRef}>
@@ -162,9 +164,11 @@ export const AIChat = () => {
                   message.role === "user"
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted text-foreground"
-                }`}
+                } prose prose-sm dark:prose-invert`}
               >
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {message.content}
+                </ReactMarkdown>
               </div>
               {message.role === "user" && (
                 <div className="flex-shrink-0 w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
