@@ -4,7 +4,8 @@ import { PrinterCard } from "@/components/PrinterCard";
 import { SearchBar } from "@/components/SearchBar";
 import { SocketStatus } from "@/components/SocketStatus";
 import { FAQFloatingButton } from "@/components/FAQFloatingButton";
-import { SuggestionsFloatingButton } from "@/components/SuggestionsFloatingButton"; // Importar o novo componente
+import { SuggestionsFloatingButton } from "@/components/SuggestionsFloatingButton";
+import { WikiFloatingButton } from "@/components/WikiFloatingButton"; // Importar o novo componente WikiFloatingButton
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -386,9 +387,7 @@ const Index = () => {
         </div>
 
         {/* Wiki Floating Button */}
-        <a href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 bg-gradient-primary text-white px-4 py-2 rounded-lg shadow-2xl hover:scale-105 transition-all z-50 font-semibold" title="Acessar Wiki de Suporte">
-          Wiki
-        </a>
+        <WikiFloatingButton wikiUrl="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" />
 
         {/* Footer */}
         <footer className="bg-card/60 backdrop-blur-sm border-t border-border/20 py-8 mt-12">
