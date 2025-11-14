@@ -12,7 +12,7 @@ export const WikiFloatingButton = ({ wikiUrl }: WikiFloatingButtonProps) => {
       href={wikiUrl} 
       target="_blank" 
       rel="noopener noreferrer"
-      className="relative z-10 group-hover:z-30 h-14 rounded-full shadow-2xl bg-gradient-primary flex items-center 
+      className="relative z-10 group-hover:z-20 h-14 rounded-full shadow-2xl bg-gradient-primary flex items-center 
                  transition-all duration-500 ease-in-out hover:scale-105 hover:shadow-xl px-0"
     >
       {/* Icon container to ensure it's a circle */}
