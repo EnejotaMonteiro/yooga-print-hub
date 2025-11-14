@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PrinterCard } from "@/components/PrinterCard";
 import { SearchBar } from "@/components/SearchBar";
-import { SocketStatus } from "@/components/SocketStatus";
+import { SocketStatus } = "@/components/SocketStatus";
 import { FAQFloatingButton } from "@/components/FAQFloatingButton";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,7 +23,8 @@ const Index = () => {
   const [selectedPrinterForEdit, setSelectedPrinterForEdit] = useState<any>(null);
   const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false);
   const [isDragModeActive, setIsDragModeActive] = useState(false);
-  
+  const [showDownloadAllButton, setShowDownloadAllButton] = useState(true); // Novo estado para o botão
+
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -90,6 +91,25 @@ const Index = () => {
       setUser(session?.user || null);
     });
     return () => subscription.unsubscribe();
+  }, []);
+
+  // Efeito para controlar a visibilidade do botão de download
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY < 50) { // Mostra o botão se estiver nos primeiros 50px do topo
+        setShowDownloadAllButton(true);
+      } else {
+        setShowDownloadAllButton(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    // Define o estado inicial ao carregar a página
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const handleLogout = async () => {
@@ -181,16 +201,18 @@ const Index = () => {
 
       {/* Fixed top-right controls */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
-        <a 
-          href="https://drive.google.com/drive/folders/1-pro0D_-06g22xL_1o2N5UAMCGiRAEol?usp=drive_link" 
-          target="_blank" 
-          rel="noopener noreferrer"
-        >
-          <Button variant="outline" size="sm" className="flex items-center gap-2">
-            <Download className="w-4 h-4" />
-            <span className="hidden sm:inline">Download Todos</span>
-          </Button>
-        </a>
+        {showDownloadAllButton && ( // Renderiza condicionalmente
+          <a 
+            href="https://drive.google.com/drive/folders/1-pro0D_-06g22xL_1o2N5UAMCGiRAEol?usp=drive_link" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <Button variant="outline" size="sm" className="flex items-center gap-2">
+              <Download className="w-4 h-4" />
+              <span className="hidden sm:inline">Download Todos</span>
+            </Button>
+          </a>
+        )}
         <ThemeToggle />
         {user ? (
           <>
