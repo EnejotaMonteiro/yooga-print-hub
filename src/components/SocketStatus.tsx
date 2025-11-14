@@ -34,11 +34,13 @@ export const SocketStatus = () => {
 
   return (
     <div
-      className={`px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 ${ // Removed fixed positioning
-        isOnline
-          ? 'bg-gradient-to-r from-green-500 to-green-600'
-          : 'bg-gradient-to-r from-yellow-500 to-yellow-600'
-      }`}
+      className={`px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 transition-all duration-300 ease-in-out cursor-pointer
+        ${isOnline
+          ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700'
+          : 'bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700'
+        }
+        hover:scale-105 hover:shadow-xl
+      `}
     >
       {isOnline ? (
         <>
