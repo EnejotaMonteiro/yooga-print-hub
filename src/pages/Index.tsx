@@ -7,7 +7,7 @@ import { FAQFloatingButton } from "@/components/FAQFloatingButton";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, LogIn, Shield, Settings, GripVertical, Download } from "lucide-react";
+import { LogOut, LogIn, Shield, Settings, GripVertical, Download, Bot } from "lucide-react"; // Importar o ícone Bot
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,6 +15,7 @@ import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
 import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog";
 import { AIChat } from "@/components/FAQ/AIChat";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import { cn } from "@/lib/utils"; // Importar a função cn para classes condicionais
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,7 +24,8 @@ const Index = () => {
   const [selectedPrinterForEdit, setSelectedPrinterForEdit] = useState<any>(null);
   const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false);
   const [isDragModeActive, setIsDragModeActive] = useState(false);
-  const [showDownloadAllButton, setShowDownloadAllButton] = useState(true); // Novo estado para o botão
+  const [showDownloadAllButton, setShowDownloadAllButton] = useState(true);
+  const [showAIChat, setShowAIChat] = useState(false); // Novo estado para controlar a visibilidade do chat
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -241,18 +243,32 @@ const Index = () => {
           {/* Universal Configuration Video and AI Chat */}
           <div className="mb-8 flex flex-col lg:flex-row justify-center gap-6 max-w-7xl mx-auto">
             {/* Universal Configuration Video */}
-            <div className="w-full lg:w-1/2 bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden relative">
+            <div className={cn(
+                "bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden relative transition-all duration-300 ease-in-out",
+                showAIChat ? "lg:w-1/2" : "w-full" // Em telas grandes, ocupa metade se o chat estiver visível, senão largura total
+            )}>
               {isAdmin && (
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsUniversalVideoDialogOpen(true)}
-                  className="absolute top-2 right-2 bg-background/80 hover:bg-background z-10"
+                  className="absolute top-2 right-12 bg-background/80 hover:bg-background z-10" // Ajustado right para dar espaço ao botão do chat
                   title="Editar vídeo universal"
                 >
-                  <Settings className="w-4 h-4" /> {/* Ícone alterado para Settings */}
+                  <Settings className="w-4 h-4" />
                 </Button>
               )}
+              {/* Botão para alternar o chat do assistente */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowAIChat(prev => !prev)}
+                className={`absolute top-2 ${isAdmin ? 'right-2' : 'right-2'} bg-background/80 hover:bg-background z-10`}
+                title={showAIChat ? "Esconder Assistente" : "Mostrar Assistente Rogério"}
+              >
+                <Bot className="w-4 h-4" />
+              </Button>
+
               {loadingSiteConfig ? (
                 <div className="aspect-video flex items-center justify-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -282,9 +298,11 @@ const Index = () => {
             </div>
 
             {/* AI Chat */}
-            <div className="w-full lg:w-1/2">
-              <AIChat />
-            </div>
+            {showAIChat && ( // Renderiza condicionalmente o chat
+                <div className="w-full lg:w-1/2 transition-all duration-300 ease-in-out">
+                    <AIChat />
+                </div>
+            )}
           </div>
         </div>
 
