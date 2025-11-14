@@ -16,7 +16,7 @@ export const AIChat = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Olá! Sou Rogério, seu assistente especializado em impressoras Elgin. Como posso ajudá-lo hoje?"
+      content: "Olá! Sou Rogério, seu assistente especializado em impressoras de todas as marcas. Como posso ajudá-lo hoje?"
     }
   ]);
   const [input, setInput] = useState("");
