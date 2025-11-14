@@ -105,7 +105,10 @@ export const UniversalVideoFormDialog = ({
         .update({ video_guia_universal_url: finalVideoUrl })
         .eq('id', configId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase update error:', error); // Log the specific Supabase error
+        throw new Error(error.message); // Throw with Supabase error message
+      }
 
       toast({
         title: "Salvo com sucesso!",
@@ -118,7 +121,7 @@ export const UniversalVideoFormDialog = ({
       console.error('Erro ao salvar:', error);
       toast({
         title: "Erro ao salvar",
-        description: "Não foi possível salvar as alterações",
+        description: error instanceof Error ? error.message : "Não foi possível salvar as alterações", // Use specific error message
         variant: "destructive"
       });
     } finally {
