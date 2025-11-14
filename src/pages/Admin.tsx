@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PrintersList } from "@/components/admin/PrintersList";
 import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
 import { UserRolesList } from "@/components/admin/UserRolesList";
+import { SiteConfigForm } from "@/components/admin/SiteConfigForm";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Admin = () => {
@@ -143,10 +144,13 @@ const Admin = () => {
 
           {/* Configurações do Site */}
           <div className="bg-card rounded-lg p-6 shadow-elegant">
-            <h2 className="text-xl font-semibold text-foreground mb-4">Configurações do Site</h2>
-            <p className="text-muted-foreground">
-              Funcionalidade de configurações em desenvolvimento...
-            </p>
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-foreground">Configurações do Site</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Gerencie o vídeo do Guia Universal de Configuração
+              </p>
+            </div>
+            <SiteConfigForm />
           </div>
         </div>
       </div>
