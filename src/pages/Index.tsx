@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PrinterCard } from "@/components/PrinterCard";
 import { SearchBar } from "@/components/SearchBar";
-import { SocketStatus } = "@/components/SocketStatus";
+import { SocketStatus } from "@/components/SocketStatus";
 import { FAQFloatingButton } from "@/components/FAQFloatingButton";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
