@@ -231,14 +231,14 @@ const Index = () => {
       </div>
 
       {/* Floating Buttons Container (FAQ, Suggestions, Wiki) */}
-      <div className="fixed bottom-6 left-6 z-50 flex space-x-2">
+      <div className="fixed bottom-6 left-6 z-50 flex"> {/* Removido space-x-2 */}
         <div className="relative group">
           <FAQFloatingButton />
         </div>
-        <div className="relative group">
+        <div className="relative group -ml-4"> {/* Adicionado -ml-4 para sobrepor um pouco */}
           <SuggestionsFloatingButton />
         </div>
-        <div className="relative group">
+        <div className="relative group -ml-4"> {/* Adicionado -ml-4 para sobrepor um pouco */}
           <WikiFloatingButton wikiUrl="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" />
         </div>
       </div>
