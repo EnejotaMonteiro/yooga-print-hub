@@ -7,7 +7,7 @@ import { FAQFloatingButton } from "@/components/FAQFloatingButton";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, LogIn, Shield, Edit } from "lucide-react";
+import { LogOut, LogIn, Shield, Settings } from "lucide-react"; // Alterado Edit para Settings
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -212,7 +212,7 @@ const Index = () => {
                   className="absolute top-2 right-2 bg-background/80 hover:bg-background z-10"
                   title="Editar vídeo universal"
                 >
-                  <Edit className="w-4 h-4" />
+                  <Settings className="w-4 h-4" /> {/* Ícone alterado para Settings */}
                 </Button>
               )}
               {loadingSiteConfig ? (
