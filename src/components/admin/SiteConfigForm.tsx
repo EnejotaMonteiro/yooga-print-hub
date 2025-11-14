@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 import { convertToEmbedUrl } from "@/lib/utils"; // Importar a função de utilidade
 
 export const SiteConfigForm = () => {
-  const [videoUrl, setVideoUrl] = useState("");
+  const [videoUrl, setVideoUrl] = useState(""); // Manter o estado para evitar erros, mas não será usado na UI
   const [configId, setConfigId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -73,20 +73,20 @@ export const SiteConfigForm = () => {
 
     setSaving(true);
 
-    // Ensure videoUrl is not empty, use a placeholder if cleared
-    const finalVideoUrl = videoUrl.trim() === '' ? 'https://www.youtube.com/embed/dQw4w9WgXcQ' : videoUrl;
+    // Manter o valor atual do banco de dados para video_guia_universal_url, já que o campo foi removido da UI
+    // Ou, se preferir, pode definir um valor padrão ou nulo. Por enquanto, manteremos o que já está no banco.
+    // Para simplificar, não faremos nenhuma atualização neste campo se ele não estiver na UI.
+    // Se houver necessidade de atualizar este campo no futuro, ele precisará ser reintroduzido na UI ou gerenciado de outra forma.
 
     try {
-      const { error } = await supabase
-        .from('configuracao_site')
-        .update({ video_guia_universal_url: finalVideoUrl })
-        .eq('id', configId);
-
-      if (error) throw error;
-
+      // Não há campo para atualizar, então a requisição de update não precisa ser feita para este campo.
+      // Se houver outros campos no futuro, eles seriam atualizados aqui.
+      // Por enquanto, a função de salvar não fará nada se não houver outros campos.
+      // Para evitar um erro de "nenhuma linha afetada" ou similar, podemos simplesmente não chamar o update
+      // se não houver campos para atualizar.
       toast({
         title: "Salvo com sucesso!",
-        description: "O URL do vídeo foi atualizado"
+        description: "Não há configurações específicas para salvar no momento."
       });
     } catch (error) {
       console.error('Erro ao salvar:', error);
@@ -100,10 +100,11 @@ export const SiteConfigForm = () => {
     }
   };
 
-  const handleVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawUrl = e.target.value;
-    setVideoUrl(convertToEmbedUrl(rawUrl));
-  };
+  // O handler de mudança de URL não é mais necessário, pois o campo foi removido.
+  // const handleVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const rawUrl = e.target.value;
+  //   setVideoUrl(convertToEmbedUrl(rawUrl));
+  // };
 
   if (loading) {
     return (
@@ -115,25 +116,7 @@ export const SiteConfigForm = () => {
 
   return (
     <form onSubmit={handleSave} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="videoUrl" className="text-sm font-medium">
-          URL do Vídeo - Guia Universal de Configuração
-        </Label>
-        <Input
-          id="videoUrl"
-          type="url"
-          value={videoUrl}
-          onChange={handleVideoUrlChange}
-          placeholder="https://www.youtube.com/watch?v=..."
-          className="w-full"
-          required
-        />
-        <p className="text-xs text-muted-foreground">
-          Insira o URL do YouTube (normal ou embed). Será convertido automaticamente.
-        </p>
-      </div>
-
-      {/* Removido o bloco de preview do vídeo */}
+      {/* O bloco de URL do vídeo foi removido daqui */}
 
       <Button
         type="submit"
