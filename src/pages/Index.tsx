@@ -4,6 +4,7 @@ import { PrinterCard } from "@/components/PrinterCard";
 import { SearchBar } from "@/components/SearchBar";
 import { SocketStatus } from "@/components/SocketStatus";
 import { FAQFloatingButton } from "@/components/FAQFloatingButton";
+import { AIChatFloatingButton } from "@/components/AIChatFloatingButton"; // Importar o novo componente
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -179,6 +180,9 @@ const Index = () => {
 
       {/* FAQ Floating Button */}
       <FAQFloatingButton />
+
+      {/* AI Chat Floating Button */}
+      <AIChatFloatingButton /> {/* Adicionado o novo componente aqui */}
 
       {/* Header Section */}
       <div className="w-full px-4 pt-8 pb-8"> {/* Alterado de 'container mx-auto' para 'w-full' */}
