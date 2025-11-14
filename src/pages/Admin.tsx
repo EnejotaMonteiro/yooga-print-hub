@@ -9,6 +9,7 @@ import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
 import { UserRolesList } from "@/components/admin/UserRolesList";
 import { TutorialsList } from "@/components/admin/TutorialsList";
 import { TutorialFormDialog } from "@/components/admin/TutorialFormDialog";
+import { SuggestionsList } from "@/components/admin/SuggestionsList"; // Importar o novo componente
 import { useQueryClient } from "@tanstack/react-query";
 
 const Admin = () => {
@@ -172,6 +173,11 @@ const Admin = () => {
               </Button>
             </div>
             <TutorialsList />
+          </div>
+
+          {/* Gerenciar Sugestões */}
+          <div className="bg-card rounded-lg p-6 shadow-elegant">
+            <SuggestionsList />
           </div>
         </div>
       </div>

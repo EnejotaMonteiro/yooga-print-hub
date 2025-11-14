@@ -4,6 +4,7 @@ import { PrinterCard } from "@/components/PrinterCard";
 import { SearchBar } from "@/components/SearchBar";
 import { SocketStatus } from "@/components/SocketStatus";
 import { FAQFloatingButton } from "@/components/FAQFloatingButton";
+import { SuggestionsFloatingButton } from "@/components/SuggestionsFloatingButton"; // Importar o novo componente
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -230,6 +231,9 @@ const Index = () => {
 
       {/* FAQ Floating Button */}
       <FAQFloatingButton />
+
+      {/* Suggestions Floating Button */}
+      <SuggestionsFloatingButton />
 
       {/* Header Section */}
       <div className="w-full px-4 pt-28 pb-8">
