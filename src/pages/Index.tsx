@@ -192,7 +192,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Fixed Logo and Socket Status */}
       <div className="fixed top-4 left-4 z-50 flex flex-col items-start gap-2">
-        <img src="/lovable-uploads/yooprint.png" alt="Yooga Suporte Logo" className="h-16 md:h-20" />
+        <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="h-16 md:h-20" />
         <SocketStatus />
       </div>
 
