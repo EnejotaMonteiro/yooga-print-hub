@@ -181,9 +181,9 @@ const Index = () => {
       <FAQFloatingButton />
 
       {/* Header Section */}
-      <div className="container mx-auto px-4 pt-8 pb-8">
+      <div className="w-full px-4 pt-8 pb-8"> {/* Alterado de 'container mx-auto' para 'w-full' */}
           {/* Header with Logo and Login/Logout */}
-          <div className="mb-8 flex justify-between items-center">
+          <div className="mb-8 flex justify-between items-center max-w-7xl mx-auto"> {/* Adicionado max-w-7xl mx-auto para centralizar o conteúdo interno */}
             <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="h-16 md:h-20" />
             <div className="flex items-center gap-2">
               <ThemeToggle />
