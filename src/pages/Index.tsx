@@ -272,19 +272,18 @@ const Index = () => {
             </p>
           </div>
         </footer>
-      </div>
 
-      {/* Printer Edit Dialog */}
-      <PrinterFormDialog
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-        printer={selectedPrinterForEdit}
-        onSuccess={() => {
-          queryClient.invalidateQueries({ queryKey: ["printers"] }); // Invalidate to refetch after edit
-          setEditDialogOpen(false);
-          setSelectedPrinterForEdit(null);
-        }}
-      />
+        {/* Printer Edit Dialog */}
+        <PrinterFormDialog
+          open={editDialogOpen}
+          onOpenChange={setEditDialogOpen}
+          printer={selectedPrinterForEdit}
+          onSuccess={() => {
+            queryClient.invalidateQueries({ queryKey: ["printers"] }); // Invalidate to refetch after edit
+            setEditDialogOpen(false);
+            setSelectedPrinterForEdit(null);
+          }}
+        />
     </div>
   );
 };
