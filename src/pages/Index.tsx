@@ -188,10 +188,7 @@ const Index = () => {
               <Shield className="w-4 h-4" />
               Admin
             </Button>
-            <div className="text-right hidden md:block">
-              <p className="text-xs text-muted-foreground">Logado como:</p>
-              <p className="text-xs font-medium text-foreground">{getUsernameFromEmail(user?.email)}</p>
-            </div>
+            {/* Removido o bloco "Logado como:" */}
             <Button onClick={handleLogout} variant="outline" size="sm" className="flex items-center gap-2">
               <LogOut className="w-4 h-4" />
               <span className="hidden sm:inline">Sair</span>
