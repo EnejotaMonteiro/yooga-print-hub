@@ -49,8 +49,8 @@ export const SuggestionsFloatingButton = () => {
     <>
       <Button
         onClick={() => setOpen(true)}
-        className="relative z-10 group-hover:z-20 h-12 w-12 rounded-full shadow-2xl bg-gradient-primary flex items-center transition-all duration-500 ease-in-out hover:scale-105
-                   "
+        className="relative z-10 group-hover:z-20 h-12 rounded-full shadow-2xl bg-gradient-primary flex items-center transition-all duration-500 ease-in-out hover:scale-105
+                   pl-1"
       >
         {/* Icon container to ensure it's a circle and icon is centered */}
         <div className="h-10 w-10 flex items-center justify-center flex-shrink-0">
