@@ -17,16 +17,16 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 4%;
 
-    --primary: 240 84% 45%;
+    --primary: 200 100% 45%; /* Novo azul primário */
     --primary-foreground: 0 0% 98%;
 
     --secondary: 240 40% 96%;
-    --secondary-foreground: 240 84% 45%;
+    --secondary-foreground: 200 100% 45%; /* Novo azul primário */
 
     --muted: 240 40% 96%;
     --muted-foreground: 240 16% 46%;
 
-    --accent: 280 84% 65%;
+    --accent: 180 100% 40%; /* Novo ciano de destaque */
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84% 60%;
@@ -34,15 +34,15 @@ All colors MUST be HSL.
 
     --border: 240 20% 90%;
     --input: 240 20% 90%;
-    --ring: 240 84% 45%;
+    --ring: 200 100% 45%; /* Novo azul primário */
 
     --radius: 0.75rem;
 
     /* Custom design tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(240 84% 45%), hsl(280 84% 65%));
-    --gradient-subtle: linear-gradient(180deg, hsl(240 10% 98%), hsl(240 20% 96%));
-    --shadow-elegant: 0 10px 30px -10px hsl(240 84% 45% / 0.2);
-    --shadow-glow: 0 0 40px hsl(240 84% 45% / 0.15);
+    --gradient-primary: linear-gradient(135deg, hsl(200 100% 45%), hsl(180 100% 40%)); /* Novo gradiente azul/ciano */
+    --gradient-subtle: linear-gradient(180deg, hsl(200 60% 98%), hsl(200 70% 96%)); /* Gradiente sutil de azul claro */
+    --shadow-elegant: 0 10px 30px -10px hsl(200 100% 45% / 0.2); /* Sombra com novo azul primário */
+    --shadow-glow: 0 0 40px hsl(200 100% 45% / 0.15); /* Brilho com novo azul primário */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
@@ -65,16 +65,16 @@ All colors MUST be HSL.
     --popover: 240 10% 8%;
     --popover-foreground: 240 10% 98%;
 
-    --primary: 240 84% 55%;
+    --primary: 200 100% 55%; /* Novo azul primário (dark) */
     --primary-foreground: 0 0% 4%;
 
     --secondary: 240 20% 16%;
-    --secondary-foreground: 240 10% 98%;
+    --secondary-foreground: 240 10% 98%; /* Mantido para contraste */
 
     --muted: 240 20% 16%;
     --muted-foreground: 240 20% 65%;
 
-    --accent: 280 84% 75%;
+    --accent: 180 100% 50%; /* Novo ciano de destaque (dark) */
     --accent-foreground: 0 0% 4%;
 
     --destructive: 0 84% 70%;
@@ -82,13 +82,13 @@ All colors MUST be HSL.
 
     --border: 240 20% 16%;
     --input: 240 20% 16%;
-    --ring: 240 84% 55%;
+    --ring: 200 100% 55%; /* Novo azul primário (dark) */
 
     /* Dark theme gradients and effects */
-    --gradient-primary: linear-gradient(135deg, hsl(240 84% 55%), hsl(280 84% 75%));
-    --gradient-subtle: linear-gradient(180deg, hsl(240 10% 4%), hsl(240 20% 8%));
-    --shadow-elegant: 0 10px 30px -10px hsl(240 84% 55% / 0.3);
-    --shadow-glow: 0 0 40px hsl(240 84% 55% / 0.2);
+    --gradient-primary: linear-gradient(135deg, hsl(200 100% 55%), hsl(180 100% 50%)); /* Novo gradiente azul/ciano (dark) */
+    --gradient-subtle: linear-gradient(180deg, hsl(200 10% 8%), hsl(200 15% 12%)); /* Gradiente sutil de azul escuro */
+    --shadow-elegant: 0 10px 30px -10px hsl(200 100% 55% / 0.3); /* Sombra com novo azul primário (dark) */
+    --shadow-glow: 0 0 40px hsl(200 100% 55% / 0.2); /* Brilho com novo azul primário (dark) */
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;

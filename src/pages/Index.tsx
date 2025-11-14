@@ -309,7 +309,7 @@ const Index = () => {
         </div>
 
         {/* Wiki Floating Button */}
-        <a href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-4 py-2 rounded-lg shadow-2xl hover:scale-105 transition-all z-50 font-semibold" title="Acessar Wiki de Suporte">
+        <a href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 bg-gradient-primary text-white px-4 py-2 rounded-lg shadow-2xl hover:scale-105 transition-all z-50 font-semibold" title="Acessar Wiki de Suporte">
           Wiki
         </a>
 

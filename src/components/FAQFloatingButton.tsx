@@ -43,7 +43,7 @@ export const FAQFloatingButton = () => {
       {/* Floating Button */}
       <Button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 left-6 h-14 w-14 rounded-full shadow-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 z-50"
+        className="fixed bottom-6 left-6 h-14 w-14 rounded-full shadow-2xl bg-gradient-primary z-50"
         size="icon"
       >
         <BookOpen className="w-6 h-6 text-white" />
