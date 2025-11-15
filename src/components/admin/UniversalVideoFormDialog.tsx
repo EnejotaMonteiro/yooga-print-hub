@@ -119,7 +119,7 @@ export const UniversalVideoFormDialog = ({
         .eq('id', configId);
 
       if (error) {
-        console.error('Supabase update error:', error);
+        console.error('Supabase update error details:', error); // Log mais detalhado
         throw new Error(error.message);
       }
 
@@ -129,7 +129,7 @@ export const UniversalVideoFormDialog = ({
       onSuccess(); // Chama a função onSuccess do componente pai
       onOpenChange(false);
     } catch (error) {
-      console.error('Erro ao salvar:', error);
+      console.error('Erro ao salvar no Supabase:', error); // Log mais detalhado
       toast.error("Erro ao salvar", {
         description: error instanceof Error ? error.message : "Não foi possível salvar as alterações",
       });
