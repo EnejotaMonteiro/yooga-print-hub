@@ -5,10 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner"; // Usar toast do sonner
+import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
-import { Home } from "lucide-react"; // Importar ícone Home
-import { ThemeToggle } from "@/components/ThemeToggle"; // Importar o componente ThemeToggle
+import { ChevronLeft } from "lucide-react"; // Importar ícone ChevronLeft para 'Voltar'
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,7 +25,6 @@ const Login = () => {
         .single();
 
       if (error && error.code === 'PGRST116') {
-        // If no config found, return default value
         return {
           logo_login_url: '/lovable-uploads/default-login-logo.jpg',
         };
@@ -34,7 +33,7 @@ const Login = () => {
       }
       return data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
   });
 
   const loginLogoSrc = siteConfig?.logo_login_url || '/lovable-uploads/default-login-logo.jpg';
@@ -70,15 +69,16 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative">
-      {/* Botões de navegação e tema */}
-      <div className="absolute top-4 right-4 flex gap-2">
+      {/* Botões de navegação e tema no canto superior esquerdo */}
+      <div className="absolute top-4 left-4 flex gap-2">
         <Button 
           variant="outline" 
-          size="icon" 
+          size="sm" // Alterado para 'sm' para acomodar texto
           onClick={() => navigate("/")} 
           title="Voltar para a Página Inicial"
         >
-          <Home className="h-4 w-4" />
+          <ChevronLeft className="h-4 w-4 mr-2" /> {/* Ícone de seta para a esquerda */}
+          Voltar
         </Button>
         <ThemeToggle />
       </div>
