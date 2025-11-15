@@ -100,13 +100,13 @@ export const Sidebar = () => {
       <div className="flex items-center justify-center group-hover:justify-start h-20 mb-6 px-2 relative">
         {/* Logo para barra lateral minimizada */}
         <img 
-          src="/lovable-uploads/suportinho-min-v2.png" 
+          src="/lovable-uploads/suportinho-min-v2.jpg" 
           alt="Yooga Suporte Logo Minimizado" 
           className="h-12 w-auto absolute opacity-100 group-hover:opacity-0 transition-all duration-300 ease-in-out" 
         />
         {/* Logo para barra lateral expandida */}
         <img 
-          src="/lovable-uploads/suportinho-full-v2.png" 
+          src="/lovable-uploads/suportinho-full-v2.jpg" 
           alt="Yooga Suporte Logo Completo" 
           className="h-12 w-auto opacity-0 group-hover:opacity-100 group-hover:h-16 transition-all duration-300 ease-in-out" 
         />
