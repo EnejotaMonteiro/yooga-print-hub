@@ -1,4 +1,4 @@
-import { Download, Tool } from "lucide-react";
+import { Download, Wrench } from "lucide-react"; // Alterado de Tool para Wrench
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { utilities } from "@/data/utilities"; // Importar os dados dos utilitários
@@ -7,7 +7,7 @@ const UtilitiesPage = () => {
   return (
     <div className="container mx-auto px-4 py-8 md:pl-8">
       <h1 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
-        <Tool className="h-7 w-7 text-primary" />
+        <Wrench className="h-7 w-7 text-primary" /> {/* Alterado de Tool para Wrench */}
         Utilitários
       </h1>
 

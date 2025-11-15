@@ -10,7 +10,7 @@ import {
   LogOut,
   Shield,
   Bot,
-  Tool, // Importar o ícone Tool
+  Wrench, // Importar o ícone Wrench (substituindo Tool)
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/use-admin";
@@ -150,7 +150,7 @@ export const Sidebar = () => {
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
         <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" />
-        <SidebarLink to="/utilities" icon={<Tool className="h-4 w-4" />} label="Utilitários" /> {/* Novo link */}
+        <SidebarLink to="/utilities" icon={<Wrench className="h-4 w-4" />} label="Utilitários" /> {/* Novo link com Wrench */}
         <a 
           href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
           target="_blank" 
