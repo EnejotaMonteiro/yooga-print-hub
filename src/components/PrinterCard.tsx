@@ -16,7 +16,7 @@ interface PrinterCardProps {
 
   innerRef?: (element: HTMLElement | null) => void;
   draggableProps?: any;
-  dragHandleProps?: any;
+  dragHandleProps?: any; // Esta prop será aplicada ao botão do handle
   isDragModeActive: boolean; // Adicionado para controlar a ativação do dragHandleProps
   isDragging?: boolean; // Adicionado para estilo visual durante o arrasto
 }
@@ -33,7 +33,7 @@ export const PrinterCard = ({
   imageUrl,
   innerRef,
   draggableProps,
-  dragHandleProps,
+  dragHandleProps, // Esta prop é agora para o botão do handle
   isDragModeActive,
   isDragging,
 }: PrinterCardProps) => {
@@ -47,8 +47,8 @@ export const PrinterCard = ({
         ${isDragging ? "border-primary shadow-glow" : "hover:scale-105"}
       `}
       ref={innerRef}
-      {...draggableProps}
-      {...dragHandleProps}
+      {...draggableProps} // draggableProps ainda se aplicam ao cartão inteiro para posicionamento
+      // dragHandleProps removido daqui para ser aplicado apenas ao botão GripVertical
     >
       {isAdmin && (
         <div className="absolute top-2 right-2 flex gap-1 z-10">
@@ -58,6 +58,7 @@ export const PrinterCard = ({
               size="icon"
               className="bg-background/80 hover:bg-background cursor-grab"
               title="Arrastar para reordenar"
+              {...dragHandleProps} // Aplicado aqui ao botão GripVertical
             >
               <GripVertical className="w-4 h-4" />
             </Button>
