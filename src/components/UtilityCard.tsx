@@ -1,12 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Edit, GripVertical } from "lucide-react";
+import { Download, Edit, GripVertical, Trash2 } from "lucide-react"; // Importar Trash2
 import { Utility } from "@/data/utilities"; // Importar a interface Utility
 
 interface UtilityCardProps {
   utility: Utility;
   isAdmin: boolean;
   onEdit: (utility: Utility) => void;
+  onDelete: (utility: Utility) => void; // Nova prop para exclusão
   isDragModeActive: boolean;
   innerRef?: (element: HTMLElement | null) => void;
   draggableProps?: any;
@@ -18,6 +19,7 @@ export const UtilityCard = ({
   utility,
   isAdmin,
   onEdit,
+  onDelete, // Receber a nova prop
   isDragModeActive,
   innerRef,
   draggableProps,
@@ -57,6 +59,15 @@ export const UtilityCard = ({
             title="Editar utilitário"
           >
             <Edit className="w-4 h-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onDelete(utility)} // Chamar onDelete
+            className="bg-background/80 hover:bg-background text-destructive"
+            title="Excluir utilitário"
+          >
+            <Trash2 className="w-4 h-4" />
           </Button>
         </div>
       )}

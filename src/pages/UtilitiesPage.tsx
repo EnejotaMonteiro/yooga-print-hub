@@ -1,15 +1,25 @@
-import { Download, Wrench, Pencil, Loader2, Plus, GripVertical } from "lucide-react"; // Adicionado GripVertical
+import { Download, Wrench, Pencil, Loader2, Plus, GripVertical, Trash2 } from "lucide-react"; // Adicionado Trash2
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query"; // Importar useMutation
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { UtilityFormDialog } from "@/components/admin/UtilityFormDialog";
 import { useState } from "react";
 import { Utility } from "@/data/utilities";
-import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd"; // Importar DND
-import { UtilityCard } from "@/components/UtilityCard"; // Importar o novo UtilityCard
-import { toast } from "sonner"; // Importar toast para feedback
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import { UtilityCard } from "@/components/UtilityCard";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"; // Importar AlertDialog
 
 const UtilitiesPage = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -17,7 +27,9 @@ const UtilitiesPage = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [selectedUtility, setSelectedUtility] = useState<Utility | null>(null);
-  const [isDragModeActive, setIsDragModeActive] = useState(false); // Estado para o modo de arrastar
+  const [isDragModeActive, setIsDragModeActive] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false); // Estado para o diálogo de exclusão
+  const [utilityToDelete, setUtilityToDelete] = useState<Utility | null>(null); // Utilitário a ser excluído
 
   const { data: utilities, isLoading } = useQuery<Utility[]>({
     queryKey: ["utilities"],
@@ -30,12 +42,48 @@ const UtilitiesPage = () => {
       if (error) throw error;
       return data;
     },
-    staleTime: 1000 * 60 * 5, // Dados são considerados 'frescos' por 5 minutos
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from("utilitarios")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["utilities"] });
+      toast.success("Utilitário excluído", {
+        description: "O utilitário foi removido com sucesso",
+      });
+      setDeleteDialogOpen(false);
+      setUtilityToDelete(null);
+    },
+    onError: (error: any) => {
+      console.error("Erro ao excluir utilitário:", error);
+      toast.error("Erro ao excluir", {
+        description: error.message || "Ocorreu um erro ao excluir o utilitário",
+      });
+    },
   });
 
   const handleEdit = (utility: Utility) => {
     setSelectedUtility(utility);
     setEditDialogOpen(true);
+  };
+
+  const handleDelete = (utility: Utility) => {
+    setUtilityToDelete(utility);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (utilityToDelete) {
+      deleteMutation.mutate(utilityToDelete.id);
+    }
   };
 
   const handleAddSuccess = () => {
@@ -58,7 +106,7 @@ const UtilitiesPage = () => {
     const [removed] = reorderedUtilities.splice(result.source.index, 1);
     reorderedUtilities.splice(result.destination.index, 0, removed);
 
-    queryClient.setQueryData(["utilities"], reorderedUtilities); // Otimistic update
+    queryClient.setQueryData(["utilities"], reorderedUtilities);
 
     try {
       for (let i = 0; i < reorderedUtilities.length; i++) {
@@ -74,13 +122,13 @@ const UtilitiesPage = () => {
       toast.success("Ordem atualizada", {
         description: "A ordem dos utilitários foi salva com sucesso",
       });
-      queryClient.invalidateQueries({ queryKey: ["utilities"] }); // Refetch para garantir consistência
+      queryClient.invalidateQueries({ queryKey: ["utilities"] });
     } catch (error: any) {
       console.error('Erro ao reordenar utilitários:', error);
       toast.error("Erro ao reordenar", {
         description: error.message || "Ocorreu um erro ao reordenar os utilitários",
       });
-      queryClient.invalidateQueries({ queryKey: ["utilities"] }); // Reverter em caso de erro
+      queryClient.invalidateQueries({ queryKey: ["utilities"] });
     }
   };
 
@@ -127,7 +175,7 @@ const UtilitiesPage = () => {
           <Droppable droppableId="utilities-list">
             {(provided) => (
               <div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto printers-droppable-area" // Reutilizando a classe para estilo de placeholder
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto printers-droppable-area"
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
@@ -143,6 +191,7 @@ const UtilitiesPage = () => {
                         utility={utility}
                         isAdmin={isAdmin}
                         onEdit={handleEdit}
+                        onDelete={handleDelete} // Passar a função de exclusão
                         isDragModeActive={isDragModeActive}
                         innerRef={provided.innerRef}
                         draggableProps={provided.draggableProps}
@@ -176,6 +225,36 @@ const UtilitiesPage = () => {
         utility={selectedUtility}
         onSuccess={handleEditSuccess}
       />
+
+      {/* AlertDialog para confirmação de exclusão */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja excluir o utilitário "
+              <strong>{utilityToDelete?.name}</strong>"? Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={deleteMutation.isPending}
+            >
+              {deleteMutation.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Excluindo...
+                </>
+              ) : (
+                "Excluir"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
