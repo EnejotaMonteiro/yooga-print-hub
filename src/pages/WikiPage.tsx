@@ -1,5 +1,6 @@
 import { Book } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const WikiPage = () => {
   const wikiUrl = "https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da";
@@ -18,13 +19,18 @@ const WikiPage = () => {
             Artigos detalhados, guias e soluções para suas dúvidas, diretamente da nossa Wiki.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex-1 p-0">
-          <iframe
-            src={wikiUrl}
-            title="Wiki de Suporte Yooga"
-            className="w-full h-full border-none"
-            allowFullScreen
-          />
+        <CardContent className="flex-1 p-6 flex flex-col items-center justify-center text-center">
+          <p className="text-muted-foreground mb-4">
+            Devido a restrições de segurança do Notion, não é possível incorporar o conteúdo da Wiki diretamente aqui.
+          </p>
+          <p className="text-muted-foreground mb-6">
+            Por favor, clique no botão abaixo para abrir a Wiki em uma nova aba.
+          </p>
+          <a href={wikiUrl} target="_blank" rel="noopener noreferrer">
+            <Button className="bg-gradient-primary hover:opacity-90 transition-smooth">
+              Abrir Wiki de Suporte
+            </Button>
+          </a>
         </CardContent>
       </Card>
     </div>

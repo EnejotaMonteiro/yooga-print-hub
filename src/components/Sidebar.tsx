@@ -111,7 +111,19 @@ export const Sidebar = () => {
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
         <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" />
-        <SidebarLink to="/wiki" icon={<Book className="h-4 w-4" />} label="Wiki de Suporte" /> {/* Alterado para SidebarLink */}
+        {/* Revertendo para link externo */}
+        <a 
+          href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center justify-center h-10 w-10 rounded-lg text-muted-foreground transition-all hover:text-foreground
+                     group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent group-hover:gap-2"
+        >
+          <Book className="h-4 w-4" />
+          <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap group-hover:opacity-100 group-hover:w-auto transition-all duration-300 ease-in-out">
+            Wiki de Suporte
+          </span>
+        </a>
         <SidebarLink to="/chat-geral" icon={<MessageSquareText className="h-4 w-4" />} label="Chat Geral" />
       </nav>
       <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
