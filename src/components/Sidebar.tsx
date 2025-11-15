@@ -32,9 +32,9 @@ const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
     className={({ isActive }) =>
       `flex items-center rounded-lg transition-all duration-300 ease-in-out
        ${isActive 
-         ? "bg-primary/10 text-primary font-semibold" // Estilo para link ativo
-         : "text-muted-foreground hover:text-foreground group-hover:bg-transparent group-hover:text-foreground" // Estilo para link inativo, com efeitos de group-hover
-       }`
+         ? "bg-primary/10 text-primary font-semibold" 
+         : "text-muted-foreground hover:text-foreground"}
+       group-hover:bg-transparent group-hover:text-foreground`
     }
   >
     <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
@@ -158,7 +158,7 @@ export const Sidebar = () => {
         </a>
       </nav>
       <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
-        <div className="flex items-center justify-center group-hover:justify-start group-hover:gap-2">
+        <div className="flex items-center justify-center group-hover:justify-end group-hover:gap-2">
           <ThemeToggle />
           {user ? (
             <>
