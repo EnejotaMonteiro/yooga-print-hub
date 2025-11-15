@@ -13,6 +13,7 @@ import FAQPage from "./pages/FAQPage";
 import SuggestionsPage from "./pages/SuggestionsPage";
 import WikiPage from "./pages/WikiPage";
 import GeneralChatPage from "./pages/GeneralChatPage";
+import AIChatPage from "./pages/AIChatPage"; // Importar a nova página
 import { Sidebar } from "./components/Sidebar";
 
 const queryClient = new QueryClient();
@@ -21,7 +22,7 @@ const queryClient = new QueryClient();
 const LayoutWithSidebar = () => (
   <div className="flex min-h-screen bg-background">
     <Sidebar />
-    <main className="flex-1"> {/* Removido md:ml-64 para ajuste dinâmico */}
+    <main className="flex-1">
       <Outlet /> {/* Renders the matched child route */}
     </main>
   </div>
@@ -45,6 +46,7 @@ const App = () => (
               <Route path="/suggestions" element={<SuggestionsPage />} />
               <Route path="/wiki" element={<WikiPage />} />
               <Route path="/chat-geral" element={<GeneralChatPage />} />
+              <Route path="/ai-chat" element={<AIChatPage />} /> {/* Nova rota para o AI Chat */}
             </Route>
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

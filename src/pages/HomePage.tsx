@@ -1,15 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Settings, Bot } from "lucide-react";
+import { Settings } from "lucide-react";
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery } from "@tanstack/react-query";
 import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog";
-import { AIChat } from "@/components/FAQ/AIChat";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client"; // Importar supabase
 
 const HomePage = () => {
   const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false);
-  const [showAIChat, setShowAIChat] = useState(true); // Mostrar o chat por padrão
 
   const { isAdmin } = useAdmin();
 
@@ -52,11 +51,11 @@ const HomePage = () => {
     <div className="container mx-auto px-4 py-8 md:pl-8">
       <h1 className="text-3xl font-bold text-foreground mb-8">Página Inicial</h1>
 
-      <div className="mb-8 flex flex-col lg:flex-row justify-center gap-6 max-w-7xl mx-auto">
+      <div className="mb-8 flex flex-col justify-center gap-6 max-w-7xl mx-auto">
         {/* Universal Configuration Video */}
         <div className={cn(
             "bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden relative transition-all duration-300 ease-in-out",
-            showAIChat ? "lg:w-1/2" : "lg:w-full"
+            "w-full" // Ocupa a largura total agora
         )}>
           {isAdmin && (
             <Button
@@ -95,29 +94,6 @@ const HomePage = () => {
               {guiaDescription}
             </p>
           </div>
-        </div>
-
-        {/* AI Chat Button and AI Chat Panel */}
-        <div className={cn(
-            "flex flex-col gap-6",
-            showAIChat ? "lg:w-1/2" : "lg:w-auto"
-        )}>
-          <Button
-            onClick={() => setShowAIChat(prev => !prev)}
-            className="group h-10 px-3 rounded-full shadow-md bg-gradient-primary flex items-center gap-2 transition-all hover:scale-105 z-10"
-            title={showAIChat ? "Esconder Assistente" : "Mostrar Assistente Rogério"}
-          >
-            <Bot className="w-5 h-5 text-white" />
-            <span className="hidden group-hover:inline-block text-sm font-semibold text-white transition-all duration-300">
-              Assistente Rogério
-            </span>
-          </Button>
-
-          {showAIChat && (
-            <div className="w-full transition-all duration-300 ease-in-out">
-                <AIChat />
-            </div>
-          )}
         </div>
       </div>
 

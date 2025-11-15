@@ -10,6 +10,7 @@ import {
   LogOut,
   Shield,
   MessageSquareText,
+  Bot, // Importar o ícone Bot
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/use-admin";
@@ -89,7 +90,7 @@ export const Sidebar = () => {
           className="h-12 w-auto opacity-0 group-hover:opacity-100 group-hover:h-16 transition-all duration-300 ease-in-out" 
         />
       </div>
-      <nav className="flex-1 grid items-start gap-1"> {/* Alterado de gap-2 para gap-1 */}
+      <nav className="flex-1 grid items-start gap-1">
         <SidebarLink to="/" icon={<Home className="h-4 w-4" />} label="Página Inicial" end />
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
@@ -107,6 +108,7 @@ export const Sidebar = () => {
           </span>
         </a>
         <SidebarLink to="/chat-geral" icon={<MessageSquareText className="h-4 w-4" />} label="Chat Geral" />
+        <SidebarLink to="/ai-chat" icon={<Bot className="h-4 w-4" />} label="Assistente Rogério" /> {/* Novo link */}
       </nav>
       <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
         <div className="flex justify-between items-center">
