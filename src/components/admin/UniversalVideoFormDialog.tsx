@@ -12,10 +12,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner"; // Usar toast do sonner
+import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { convertToEmbedUrl } from "@/lib/utils";
-import { useQueryClient } from "@tanstack/react-query";
+// Removido: import { useQueryClient } from "@tanstack/react-query"; // Não é mais necessário aqui
 
 interface UniversalVideoFormDialogProps {
   open: boolean;
@@ -34,7 +34,7 @@ export const UniversalVideoFormDialog = ({
   const [configId, setConfigId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const queryClient = useQueryClient();
+  // Removido: const queryClient = useQueryClient(); // Não é mais necessário aqui
 
   useEffect(() => {
     if (open) {
@@ -126,8 +126,7 @@ export const UniversalVideoFormDialog = ({
       toast.success("Salvo com sucesso!", {
         description: "O URL, título e descrição do vídeo foram atualizados"
       });
-      queryClient.invalidateQueries({ queryKey: ["site-config"] });
-      onSuccess();
+      onSuccess(); // Chama a função onSuccess do componente pai
       onOpenChange(false);
     } catch (error) {
       console.error('Erro ao salvar:', error);
