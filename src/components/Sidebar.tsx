@@ -155,7 +155,7 @@ export const Sidebar = () => {
           </span>
         </a>
       </nav>
-      <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
+      <div className="mt-auto pt-4 bg-gradient-primary text-white rounded-lg flex flex-col gap-2">
         <div className="flex items-center justify-center group-hover:justify-end group-hover:gap-2">
           <ThemeToggle />
           {user ? (
@@ -166,17 +166,17 @@ export const Sidebar = () => {
                   variant="ghost"
                   size="icon"
                   title="Painel Admin"
-                  className="opacity-0 w-0 overflow-hidden group-hover:opacity-100 group-hover:w-auto transition-all duration-300 ease-in-out"
+                  className="opacity-0 w-0 overflow-hidden group-hover:opacity-100 group-hover:w-auto transition-all duration-300 ease-in-out text-white hover:bg-white/20"
                 >
                   <Shield className="h-4 w-4" />
                 </Button>
               )}
-              <Button onClick={handleLogout} variant="ghost" size="icon" title="Sair">
+              <Button onClick={handleLogout} variant="ghost" size="icon" title="Sair" className="text-white hover:bg-white/20">
                 <LogOut className="w-4 h-4" />
               </Button>
             </>
           ) : (
-            <Button onClick={() => navigate("/login")} variant="ghost" size="icon" title="Login Admin">
+            <Button onClick={() => navigate("/login")} variant="ghost" size="icon" title="Login Admin" className="text-white hover:bg-white/20">
               <LogIn className="w-4 h-4" />
             </Button>
           )}
