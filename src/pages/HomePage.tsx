@@ -43,7 +43,8 @@ const HomePage = () => {
     },
   });
 
-  const videoGuiaUrl = siteConfig?.video_guia_universal_url || '';
+  const defaultFallbackVideoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ'; // URL de fallback
+  const videoGuiaUrl = siteConfig?.video_guia_universal_url || defaultFallbackVideoUrl;
   const guiaTitle = siteConfig?.titulo_guia_universal || 'Guia Universal de Configuração';
   const guiaDescription = siteConfig?.descricao_guia_universal || 'Assista ao vídeo para um guia completo de configuração de impressoras.';
 
@@ -73,18 +74,16 @@ const HomePage = () => {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
           ) : (
-            videoGuiaUrl && (
-              <div className="aspect-video">
-                <iframe
-                  src={videoGuiaUrl}
-                  title="Guia Universal de Configuração"
-                  className="w-full h-full"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-            )
+            <div className="aspect-video">
+              <iframe
+                src={videoGuiaUrl}
+                title="Guia Universal de Configuração"
+                className="w-full h-full"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
           )}
           <div className="p-6 text-center">
             <h2 className="text-xl font-semibold mb-4 text-foreground">
@@ -102,7 +101,7 @@ const HomePage = () => {
         open={isUniversalVideoDialogOpen}
         onOpenChange={setIsUniversalVideoDialogOpen}
         onSuccess={() => {
-          // Invalidate site-config query to refetch updated data
+          // Invalidar site-config query to refetch updated data
           queryClient.invalidateQueries({ queryKey: ["site-config"] });
         }}
       />
