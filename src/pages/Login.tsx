@@ -9,12 +9,13 @@ import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { ForgotPasswordDialog } from "@/components/ForgotPasswordDialog"; // Importar o novo diálogo
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false); // Novo estado para o botão de esqueci a senha
+  const [forgotPasswordDialogOpen, setForgotPasswordDialogOpen] = useState(false); // Estado para controlar o diálogo
   const navigate = useNavigate();
 
   const { data: siteConfig } = useQuery({
@@ -65,38 +66,6 @@ const Login = () => {
       });
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleForgotPassword = async () => {
-    if (!email) {
-      toast.error("Email necessário", {
-        description: "Por favor, digite seu email para redefinir a senha.",
-      });
-      return;
-    }
-
-    setForgotPasswordLoading(true);
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`, // Redireciona para uma página de redefinição de senha
-      });
-
-      if (error) {
-        toast.error("Erro ao enviar email", {
-          description: error.message,
-        });
-      } else {
-        toast.success("Email enviado!", {
-          description: "Verifique sua caixa de entrada para instruções de redefinição de senha.",
-        });
-      }
-    } catch (error) {
-      toast.error("Erro inesperado", {
-        description: "Tente novamente em alguns instantes",
-      });
-    } finally {
-      setForgotPasswordLoading(false);
     }
   };
 
@@ -163,15 +132,19 @@ const Login = () => {
             <Button
               type="button"
               variant="link"
-              onClick={handleForgotPassword}
-              disabled={forgotPasswordLoading}
+              onClick={() => setForgotPasswordDialogOpen(true)} // Abre o diálogo
               className="w-full text-sm text-muted-foreground hover:text-primary-foreground p-0 h-auto"
             >
-              {forgotPasswordLoading ? "Enviando..." : "Esqueci a senha?"}
+              Esqueci a senha?
             </Button>
           </form>
         </CardContent>
       </Card>
+
+      <ForgotPasswordDialog
+        open={forgotPasswordDialogOpen}
+        onOpenChange={setForgotPasswordDialogOpen}
+      />
     </div>
   );
 };
