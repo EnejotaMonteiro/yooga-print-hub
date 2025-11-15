@@ -33,8 +33,7 @@ const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
       `flex items-center rounded-lg transition-all duration-300 ease-in-out
        ${isActive 
          ? "bg-primary/10 text-primary font-semibold" 
-         : "text-muted-foreground hover:text-foreground"}
-       group-hover:bg-transparent group-hover:text-foreground`
+         : "text-muted-foreground hover:text-foreground group-hover:bg-transparent group-hover:text-foreground"}`
     }
   >
     <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
@@ -107,7 +106,7 @@ export const Sidebar = () => {
   const mainLogoSrc = siteConfig?.logo_full_url || '/lovable-uploads/default-full-logo.png';
 
   return (
-    <div className="fixed left-0 top-0 z-50 flex flex-col h-screen w-20 group border-r bg-card p-4 shadow-md transition-all duration-300 ease-in-out hover:w-64">
+    <div className="fixed left-0 top-0 z-50 flex flex-col h-screen w-20 group border-r bg-card/60 backdrop-blur-sm p-4 shadow-md transition-all duration-300 ease-in-out hover:w-64">
       <div className="flex items-center justify-center group-hover:justify-start h-20 mb-6 px-2 relative">
         {/* Ícone para barra lateral minimizada */}
         <Printer className="h-8 w-8 text-primary absolute opacity-100 group-hover:opacity-0 transition-all duration-300 ease-in-out" />
