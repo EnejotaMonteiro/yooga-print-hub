@@ -23,7 +23,6 @@ interface SidebarLinkProps {
   icon: React.ReactNode;
   label: string;
   end?: boolean;
-  // Removido: alwaysGradient?: boolean; // Não é mais necessário
 }
 
 const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
@@ -123,7 +122,6 @@ export const Sidebar = () => {
           to="/ai-chat" 
           icon={<Bot className="h-4 w-4" />} 
           label="Assistente Rogério" 
-          // Removido: alwaysGradient // Não é mais necessário
         />
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
@@ -154,8 +152,9 @@ export const Sidebar = () => {
                   variant="ghost"
                   size="icon"
                   title="Painel Admin"
+                  className="opacity-0 w-0 overflow-hidden group-hover:opacity-100 group-hover:w-auto transition-all duration-300 ease-in-out"
                 >
-                  <Shield className="w-4 h-4" />
+                  <Shield className="h-4 w-4" />
                 </Button>
               )}
               <Button onClick={handleLogout} variant="ghost" size="icon" title="Sair">
