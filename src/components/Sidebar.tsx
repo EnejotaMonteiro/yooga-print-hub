@@ -17,7 +17,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query"; // Importar useQuery
 
 interface SidebarLinkProps {
   to: string;
@@ -76,6 +76,28 @@ export const Sidebar = () => {
     };
   }, []);
 
+  const { data: siteConfig } = useQuery({
+    queryKey: ["site-config"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('configuracao_site')
+        .select('logo_min_url, logo_full_url')
+        .single();
+
+      if (error && error.code === 'PGRST116') {
+        // If no config found, return default values
+        return {
+          logo_min_url: '/lovable-uploads/logo-min.jpg',
+          logo_full_url: '/lovable-uploads/logo-full.jpg',
+        };
+      } else if (error) {
+        throw error;
+      }
+      return data;
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
@@ -95,18 +117,21 @@ export const Sidebar = () => {
     }
   };
 
+  const minLogoSrc = siteConfig?.logo_min_url || '/lovable-uploads/logo-min.jpg';
+  const fullLogoSrc = siteConfig?.logo_full_url || '/lovable-uploads/logo-full.jpg';
+
   return (
     <div className="flex flex-col h-screen w-20 group border-r bg-card/60 backdrop-blur-sm p-4 shadow-md transition-all duration-300 ease-in-out hover:w-64">
       <div className="flex items-center justify-center group-hover:justify-start h-20 mb-6 px-2 relative">
         {/* Logo para barra lateral minimizada */}
         <img 
-          src="/lovable-uploads/logo-min.jpg" 
+          src={minLogoSrc} 
           alt="Yooga Suporte Logo Minimizado" 
           className="h-12 w-auto absolute opacity-100 group-hover:opacity-0 transition-all duration-300 ease-in-out" 
         />
         {/* Logo para barra lateral expandida */}
         <img 
-          src="/lovable-uploads/logo-full.jpg" 
+          src={fullLogoSrc} 
           alt="Yooga Suporte Logo Completo" 
           className="h-12 w-auto opacity-0 group-hover:opacity-100 group-hover:h-16 transition-all duration-300 ease-in-out" 
         />

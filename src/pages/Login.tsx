@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useQuery } from "@tanstack/react-query"; // Importar useQuery
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,6 +14,29 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const { data: siteConfig } = useQuery({
+    queryKey: ["site-config"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('configuracao_site')
+        .select('logo_login_url')
+        .single();
+
+      if (error && error.code === 'PGRST116') {
+        // If no config found, return default value
+        return {
+          logo_login_url: '/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png',
+        };
+      } else if (error) {
+        throw error;
+      }
+      return data;
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  const loginLogoSrc = siteConfig?.logo_login_url || '/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png';
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +77,7 @@ const Login = () => {
       <Card className="w-full max-w-sm bg-card/95 backdrop-blur-sm border-border/30 shadow-2xl">
         <CardHeader className="text-center pb-2">
           <img 
-            src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png"
+            src={loginLogoSrc}
             alt="Yooga Suporte Logo" 
             className="h-14 mx-auto mb-6"
           />

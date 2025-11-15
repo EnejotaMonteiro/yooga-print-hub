@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus, Home } from "lucide-react";
+import { LogOut, Plus, Home, Image } from "lucide-react"; // Adicionado Image
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PrintersList } from "@/components/admin/PrintersList";
@@ -9,7 +9,8 @@ import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
 import { UserRolesList } from "@/components/admin/UserRolesList";
 import { TutorialsList } from "@/components/admin/TutorialsList";
 import { TutorialFormDialog } from "@/components/admin/TutorialFormDialog";
-import { SuggestionsList } from "@/components/admin/SuggestionsList"; // Importar o novo componente
+import { SuggestionsList } from "@/components/admin/SuggestionsList";
+import { LogoSettingsDialog } from "@/components/admin/LogoSettingsDialog"; // Importar o novo componente
 import { useQueryClient } from "@tanstack/react-query";
 
 const Admin = () => {
@@ -20,6 +21,7 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [addTutorialDialogOpen, setAddTutorialDialogOpen] = useState(false);
+  const [logoSettingsDialogOpen, setLogoSettingsDialogOpen] = useState(false); // Novo estado para o diálogo de logos
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -70,6 +72,11 @@ const Admin = () => {
     setAddTutorialDialogOpen(false);
   };
 
+  const handleLogoSettingsSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["site-config"] }); // Invalidar para atualizar logos
+    setLogoSettingsDialogOpen(false);
+  };
+
   const getUsernameFromEmail = (email: string | undefined) => {
     return email ? email.split('@')[0] : 'Usuário';
   };
@@ -112,6 +119,15 @@ const Admin = () => {
               >
                 <Home className="w-4 h-4" />
                 Página Inicial
+              </Button>
+              <Button
+                onClick={() => setLogoSettingsDialogOpen(true)} // Botão para abrir o diálogo de logos
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2"
+              >
+                <Image className="w-4 h-4" />
+                Logos
               </Button>
               <Button
                 onClick={handleLogout}
@@ -192,6 +208,12 @@ const Admin = () => {
         open={addTutorialDialogOpen}
         onOpenChange={setAddTutorialDialogOpen}
         onSuccess={handleTutorialSuccess}
+      />
+
+      <LogoSettingsDialog
+        open={logoSettingsDialogOpen}
+        onOpenChange={setLogoSettingsDialogOpen}
+        onSuccess={handleLogoSettingsSuccess}
       />
     </div>
   );
