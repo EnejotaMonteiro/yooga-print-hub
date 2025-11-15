@@ -39,7 +39,10 @@ const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
     <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
       {icon}
     </div>
-    <span className="opacity-0 max-w-0 overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-out group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2">
+    <span className="opacity-0 max-w-0 overflow-hidden whitespace-nowrap 
+                 transition-[max-width] duration-500 ease-in-out 
+                 group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2
+                 group-hover:transition-[max-width,opacity,margin] group-hover:duration-500 group-hover:ease-in-out">
       {label}
     </span>
   </NavLink>
@@ -131,7 +134,10 @@ export const Sidebar = () => {
           <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
             <Bot className="h-4 w-4" />
           </div>
-          <span className="opacity-0 max-w-0 overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-out group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2">
+          <span className="opacity-0 max-w-0 overflow-hidden whitespace-nowrap 
+                 transition-[max-width] duration-500 ease-in-out 
+                 group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2
+                 group-hover:transition-[max-width,opacity,margin] group-hover:duration-500 group-hover:ease-in-out">
             Assistente Rogério
           </span>
         </NavLink>
@@ -150,7 +156,10 @@ export const Sidebar = () => {
           <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
             <Book className="h-4 w-4" />
           </div>
-          <span className="opacity-0 max-w-0 overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-out group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2">
+          <span className="opacity-0 max-w-0 overflow-hidden whitespace-nowrap 
+                 transition-[max-width] duration-500 ease-in-out 
+                 group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2
+                 group-hover:transition-[max-width,opacity,margin] group-hover:duration-500 group-hover:ease-in-out">
             Wiki de Suporte
           </span>
         </a>
@@ -166,17 +175,31 @@ export const Sidebar = () => {
                   variant="ghost"
                   size="icon"
                   title="Painel Admin"
-                  className="opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-full transition-all duration-500 ease-in-out text-white hover:bg-white/20"
+                  className="opacity-0 max-w-0 overflow-hidden 
+                             transition-[max-width] duration-500 ease-in-out 
+                             group-hover:opacity-100 group-hover:max-w-full 
+                             group-hover:transition-[max-width,opacity] group-hover:duration-500 group-hover:ease-in-out
+                             text-white hover:bg-white/20"
                 >
                   <Shield className="h-4 w-4" />
                 </Button>
               )}
-              <Button onClick={handleLogout} variant="ghost" size="icon" title="Sair" className="opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-full transition-all duration-500 ease-in-out text-white hover:bg-white/20">
+              <Button onClick={handleLogout} variant="ghost" size="icon" title="Sair" 
+                      className="opacity-0 max-w-0 overflow-hidden 
+                                 transition-[max-width] duration-500 ease-in-out 
+                                 group-hover:opacity-100 group-hover:max-w-full 
+                                 group-hover:transition-[max-width,opacity] group-hover:duration-500 group-hover:ease-in-out
+                                 text-white hover:bg-white/20">
                 <LogOut className="w-4 h-4" />
               </Button>
             </>
           ) : (
-            <Button onClick={() => navigate("/login")} variant="ghost" size="icon" title="Login Admin" className="opacity-0 max-w-0 overflow-hidden group-hover:opacity-100 group-hover:max-w-full transition-all duration-500 ease-in-out text-white hover:bg-white/20">
+            <Button onClick={() => navigate("/login")} variant="ghost" size="icon" title="Login Admin" 
+                    className="opacity-0 max-w-0 overflow-hidden 
+                               transition-[max-width] duration-500 ease-in-out 
+                               group-hover:opacity-100 group-hover:max-w-full 
+                               group-hover:transition-[max-width,opacity] group-hover:duration-500 group-hover:ease-in-out
+                               text-white hover:bg-white/20">
               <LogIn className="w-4 h-4" />
             </Button>
           )}
