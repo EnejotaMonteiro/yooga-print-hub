@@ -11,9 +11,8 @@ import PrintersPage from "./pages/PrintersPage";
 import FAQPage from "./pages/FAQPage";
 import SuggestionsPage from "./pages/SuggestionsPage";
 import WikiPage from "./pages/WikiPage";
-import GeneralChatPage from "./pages/GeneralChatPage";
 import AIChatPage from "./pages/AIChatPage";
-import ResetPassword from "./pages/ResetPassword"; // Importar a nova página
+import ResetPassword from "./pages/ResetPassword";
 import { Sidebar } from "./components/Sidebar";
 
 const queryClient = new QueryClient();
@@ -37,7 +36,7 @@ const App = () => (
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/admin" element={<Admin />} /> {/* Admin page without sidebar */}
-            <Route path="/reset-password" element={<ResetPassword />} /> {/* Nova rota para redefinição de senha */}
+            <Route path="/reset-password" element={<ResetPassword />} />
             
             <Route element={<LayoutWithSidebar />}>
               <Route path="/" element={<HomePage />} />
@@ -46,7 +45,7 @@ const App = () => (
               <Route path="/suggestions" element={<SuggestionsPage />} />
               {/* Revertendo para link externo */}
               <Route path="/wiki" element={<WikiPage />} />
-              <Route path="/chat-geral" element={<GeneralChatPage />} />
+              {/* <Route path="/chat-geral" element={<GeneralChatPage />} /> */} {/* Rota removida */}
               <Route path="/ai-chat" element={<AIChatPage />} />
             </Route>
 

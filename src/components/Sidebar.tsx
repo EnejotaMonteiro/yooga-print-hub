@@ -9,7 +9,7 @@ import {
   LogIn,
   LogOut,
   Shield,
-  MessageSquareText,
+  MessageSquareText, // Manter se ainda for usado em outro lugar, senão remover
   Bot,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -156,7 +156,7 @@ export const Sidebar = () => {
             Wiki de Suporte
           </span>
         </a>
-        <SidebarLink to="/chat-geral" icon={<MessageSquareText className="h-4 w-4" />} label="Chat Geral" />
+        {/* <SidebarLink to="/chat-geral" icon={<MessageSquareText className="h-4 w-4" />} label="Chat Geral" /> */} {/* Link removido */}
       </nav>
       <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
         <div className="flex justify-between items-center">
