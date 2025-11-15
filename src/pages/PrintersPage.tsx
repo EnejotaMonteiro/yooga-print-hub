@@ -123,7 +123,7 @@ const PrintersPage = () => {
       <div className="flex items-center justify-between mb-8">
         <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
         <div className="flex items-center gap-4">
-          {showDownloadAll && (
+          {showDownloadAllButton && ( {/* CORREÇÃO AQUI */}
             <a 
               href="https://drive.google.com/drive/folders/1-pro0D_-06g22xL_1o2N5UAMCGiRAEol?usp=drive_link" 
               target="_blank" 
