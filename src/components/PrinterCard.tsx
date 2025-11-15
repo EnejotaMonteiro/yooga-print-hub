@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Edit } from "lucide-react";
+import { Download, Edit, GripVertical } from "lucide-react";
 import { convertToEmbedUrl } from "@/lib/utils";
 
 interface PrinterCardProps {
@@ -17,6 +17,8 @@ interface PrinterCardProps {
   innerRef?: (element: HTMLElement | null) => void;
   draggableProps?: any;
   dragHandleProps?: any;
+  isDragModeActive: boolean; // Adicionado para controlar a ativação do dragHandleProps
+  isDragging?: boolean; // Adicionado para estilo visual durante o arrasto
 }
 
 export const PrinterCard = ({
@@ -32,6 +34,8 @@ export const PrinterCard = ({
   innerRef,
   draggableProps,
   dragHandleProps,
+  isDragModeActive,
+  isDragging,
 }: PrinterCardProps) => {
   const handleDownload = () => {
     window.open(downloadUrl, '_blank');
@@ -39,13 +43,26 @@ export const PrinterCard = ({
 
   return (
     <Card 
-      className={`group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant relative hover:scale-105 transition-smooth`}
+      className={`group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant relative transition-smooth
+        ${isDragging ? "border-primary shadow-glow" : "hover:scale-105"}
+      `}
       ref={innerRef}
       {...draggableProps}
-      {...dragHandleProps}
+      {...(isDragModeActive ? dragHandleProps : {})} {/* Aplicar dragHandleProps ao Card quando o modo de arrastar está ativo */}
     >
       {isAdmin && (
         <div className="absolute top-2 right-2 flex gap-1 z-10">
+          {isDragModeActive && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-background/80 hover:bg-background cursor-grab"
+              title="Arrastar para reordenar"
+              // dragHandleProps removido daqui, agora está no Card principal
+            >
+              <GripVertical className="w-4 h-4" />
+            </Button>
+          )}
           <Button
             variant="ghost"
             size="icon"
