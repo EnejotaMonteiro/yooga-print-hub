@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, Edit, GripVertical } from "lucide-react";
 import { convertToEmbedUrl } from "@/lib/utils";
-import { cn } from "@/lib/utils"; // Importar cn para aplicar classes de botão ao div
+import { cn } from "@/lib/utils";
 
 interface PrinterCardProps {
   name: string;
@@ -46,7 +46,7 @@ export const PrinterCard = ({
     <Card 
       className={cn(
         `group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant relative transition-smooth`,
-        isDragging ? "border-primary shadow-glow z-50 rotate-2" : "hover:scale-105", // Adicionado z-50 e rotate-2 para feedback visual
+        isDragging ? "border-primary shadow-glow z-[100] rotate-3 scale-105" : "hover:scale-105", // Aumentado z-index e rotação, adicionado scale
         isDragModeActive && "cursor-grab" // Indica que o cartão é arrastável
       )}
       ref={innerRef}
@@ -63,7 +63,6 @@ export const PrinterCard = ({
                 "h-8 w-8 bg-background/80 hover:bg-background cursor-grab",
               )}
               title="Arrastar para reordenar"
-              // dragHandleProps removido daqui, pois agora está no Card
             >
               <GripVertical className="w-4 h-4" />
             </div>
