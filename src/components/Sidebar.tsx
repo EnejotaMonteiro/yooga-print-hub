@@ -23,17 +23,16 @@ interface SidebarLinkProps {
   icon: React.ReactNode;
   label: string;
   end?: boolean;
-  activeGradient?: boolean; // Reintroduzindo esta prop
 }
 
-const SidebarLink = ({ to, icon, label, end, activeGradient }: SidebarLinkProps) => (
+const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
   <NavLink
     to={to}
     end={end}
     className={({ isActive }) =>
       `flex items-center rounded-lg transition-all duration-300 ease-in-out
        ${isActive 
-         ? (activeGradient ? "bg-gradient-primary text-white" : "bg-primary/10 text-primary font-semibold") 
+         ? "bg-primary/10 text-primary font-semibold" 
          : "text-muted-foreground hover:text-foreground"}
        group-hover:bg-transparent group-hover:text-foreground`
     }
@@ -121,12 +120,25 @@ export const Sidebar = () => {
       </div>
       <nav className="flex-1 grid items-start gap-1">
         <SidebarLink to="/" icon={<Home className="h-4 w-4" />} label="Página Inicial" end />
-        <SidebarLink 
-          to="/ai-chat" 
-          icon={<Bot className="h-4 w-4" />} 
-          label="Assistente Rogério" 
-          activeGradient // Ativa o gradiente para este link
-        />
+        
+        {/* Link customizado para Assistente Rogério com gradiente permanente */}
+        <NavLink
+          to="/ai-chat"
+          className={({ isActive }) =>
+            `flex items-center rounded-lg transition-all duration-300 ease-in-out
+             bg-gradient-primary text-white
+             ${isActive ? "font-semibold" : ""}
+             group-hover:bg-gradient-primary group-hover:text-white` // Garante que o gradiente e texto branco persistam no hover
+          }
+        >
+          <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
+            <Bot className="h-4 w-4" />
+          </div>
+          <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:w-auto group-hover:ml-2">
+            Assistente Rogério
+          </span>
+        </NavLink>
+
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
         <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" />
@@ -146,7 +158,7 @@ export const Sidebar = () => {
         </a>
       </nav>
       <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
-        <div className="flex items-center justify-center group-hover:justify-start group-hover:gap-2"> {/* Revertido para justify-start */}
+        <div className="flex items-center justify-center group-hover:justify-start group-hover:gap-2">
           <ThemeToggle />
           {user ? (
             <>
