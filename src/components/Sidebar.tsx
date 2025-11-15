@@ -1,0 +1,132 @@
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  Home,
+  Printer,
+  BookOpen,
+  Lightbulb,
+  Book,
+  LogIn,
+  LogOut,
+  Shield,
+  Settings,
+  Bot,
+  MessageSquareText,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAdmin } from "@/hooks/use-admin";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { useQueryClient } from "@tanstack/react-query";
+
+interface SidebarLinkProps {
+  to: string;
+  icon: React.ReactNode;
+  label: string;
+  end?: boolean;
+}
+
+const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
+  <NavLink
+    to={to}
+    end={end}
+    className={({ isActive }) =>
+      `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-foreground ${
+        isActive ? "bg-primary/10 text-primary font-semibold" : ""
+      }`
+    }
+  >
+    {icon}
+    {label}
+  </NavLink>
+);
+
+export const Sidebar = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { isAdmin } = useAdmin();
+  const queryClient = useQueryClient();
+  const [user, setUser] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    const getUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user);
+    };
+    getUser();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast({
+        title: "Logout realizado",
+        description: "Você foi desconectado com sucesso"
+      });
+      navigate("/login");
+    } catch (error) {
+      toast({
+        title: "Erro no logout",
+        description: "Tente novamente",
+        variant: "destructive"
+      });
+    } finally {
+      queryClient.invalidateQueries({ queryKey: ["users-with-roles"] });
+    }
+  };
+
+  return (
+    <div className="hidden md:flex flex-col h-screen w-64 border-r bg-card/60 backdrop-blur-sm p-4 shadow-md fixed left-0 top-0 z-40">
+      <div className="flex items-center justify-center h-20 mb-6">
+        <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="h-16" />
+      </div>
+      <nav className="flex-1 grid items-start gap-2">
+        <SidebarLink to="/" icon={<Home className="h-4 w-4" />} label="Página Inicial" end />
+        <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
+        <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
+        <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" />
+        <a 
+          href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-foreground"
+        >
+          <Book className="h-4 w-4" />
+          Wiki de Suporte
+        </a>
+        <SidebarLink to="/chat-geral" icon={<MessageSquareText className="h-4 w-4" />} label="Chat Geral" />
+      </nav>
+      <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
+        <div className="flex justify-between items-center">
+          <ThemeToggle />
+          {user ? (
+            <div className="flex items-center gap-2">
+              {isAdmin && (
+                <Button
+                  onClick={() => navigate("/admin")}
+                  variant="ghost"
+                  size="icon"
+                  title="Painel Admin"
+                >
+                  <Shield className="w-4 h-4" />
+                </Button>
+              )}
+              <Button onClick={handleLogout} variant="ghost" size="icon" title="Sair">
+                <LogOut className="w-4 h-4" />
+              </Button>
+            </div>
+          ) : (
+            <Button onClick={() => navigate("/login")} variant="ghost" size="icon" title="Login Admin">
+              <LogIn className="w-4 h-4" />
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};

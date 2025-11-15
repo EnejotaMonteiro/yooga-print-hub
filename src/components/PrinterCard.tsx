@@ -13,12 +13,10 @@ interface PrinterCardProps {
   isAdmin: boolean;
   onEdit: (printerId: string) => void;
   imageUrl?: string;
-  isDragModeActive: boolean; // Nova prop
 
   innerRef?: (element: HTMLElement | null) => void;
   draggableProps?: any;
   dragHandleProps?: any;
-  isDragging?: boolean; // Adicionada prop para indicar se está sendo arrastado
 }
 
 export const PrinterCard = ({
@@ -31,11 +29,9 @@ export const PrinterCard = ({
   isAdmin,
   onEdit,
   imageUrl,
-  isDragModeActive,
   innerRef,
   draggableProps,
   dragHandleProps,
-  isDragging, // Usando a nova prop
 }: PrinterCardProps) => {
   const handleDownload = () => {
     window.open(downloadUrl, '_blank');
@@ -43,11 +39,7 @@ export const PrinterCard = ({
 
   return (
     <Card 
-      className={`group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant relative ${
-        isDragging 
-          ? 'shadow-xl scale-105 ring-2 ring-primary/50' // Estilos para quando está arrastando
-          : 'hover:scale-105 transition-smooth' // Estilos quando não está arrastando, com transição
-      }`}
+      className={`group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant relative hover:scale-105 transition-smooth`}
       ref={innerRef}
       {...draggableProps}
       {...dragHandleProps}
@@ -77,7 +69,6 @@ export const PrinterCard = ({
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              style={{ pointerEvents: isDragModeActive ? 'none' : 'auto' }}
             />
           )}
         </div>
