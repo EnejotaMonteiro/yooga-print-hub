@@ -30,9 +30,9 @@ const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
     to={to}
     end={end}
     className={({ isActive }) =>
-      `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-foreground ${
-        isActive ? "bg-primary/10 text-primary font-semibold" : ""
-      }`
+      `flex items-center justify-center h-10 w-10 rounded-lg text-muted-foreground transition-all hover:text-foreground
+       group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent
+       ${isActive ? "bg-primary/10 text-primary font-semibold" : ""}`
     }
   >
     {icon}
@@ -98,7 +98,8 @@ export const Sidebar = () => {
           href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-foreground"
+          className="flex items-center justify-center h-10 w-10 rounded-lg text-muted-foreground transition-all hover:text-foreground
+                     group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent"
         >
           <Book className="h-4 w-4" />
           <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap group-hover:opacity-100 group-hover:w-auto transition-all duration-300 ease-in-out">
