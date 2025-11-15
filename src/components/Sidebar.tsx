@@ -89,7 +89,7 @@ export const Sidebar = () => {
           className="h-12 w-auto opacity-0 group-hover:opacity-100 group-hover:h-16 transition-all duration-300 ease-in-out" 
         />
       </div>
-      <nav className="flex-1 grid items-start gap-2">
+      <nav className="flex-1 grid items-start gap-1"> {/* Alterado de gap-2 para gap-1 */}
         <SidebarLink to="/" icon={<Home className="h-4 w-4" />} label="Página Inicial" end />
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
