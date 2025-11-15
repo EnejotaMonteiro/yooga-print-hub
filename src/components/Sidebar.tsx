@@ -23,15 +23,18 @@ interface SidebarLinkProps {
   icon: React.ReactNode;
   label: string;
   end?: boolean;
+  activeGradient?: boolean; // Reintroduzindo esta prop
 }
 
-const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
+const SidebarLink = ({ to, icon, label, end, activeGradient }: SidebarLinkProps) => (
   <NavLink
     to={to}
     end={end}
     className={({ isActive }) =>
       `flex items-center rounded-lg transition-all duration-300 ease-in-out
-       ${isActive ? "bg-primary/10 text-primary font-semibold" : "text-muted-foreground hover:text-foreground"}
+       ${isActive 
+         ? (activeGradient ? "bg-gradient-primary text-white" : "bg-primary/10 text-primary font-semibold") 
+         : "text-muted-foreground hover:text-foreground"}
        group-hover:bg-transparent group-hover:text-foreground`
     }
   >
@@ -122,6 +125,7 @@ export const Sidebar = () => {
           to="/ai-chat" 
           icon={<Bot className="h-4 w-4" />} 
           label="Assistente Rogério" 
+          activeGradient // Ativa o gradiente para este link
         />
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
@@ -142,7 +146,7 @@ export const Sidebar = () => {
         </a>
       </nav>
       <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
-        <div className="flex items-center justify-center group-hover:justify-end group-hover:gap-2"> {/* Alterado para group-hover:justify-end */}
+        <div className="flex items-center justify-center group-hover:justify-start group-hover:gap-2"> {/* Revertido para justify-start */}
           <ThemeToggle />
           {user ? (
             <>
