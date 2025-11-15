@@ -2,29 +2,29 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Home,
-  Printer,
+  Printer, // Importar o ícone Printer
   BookOpen,
   Lightbulb,
   Book,
   LogIn,
   LogOut,
   Shield,
-  MessageSquareText, // Manter se ainda for usado em outro lugar, senão remover
+  MessageSquareText,
   Bot,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner"; // Importar toast diretamente do sonner
+import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { useQueryClient, useQuery } from "@tanstack/react-query"; // Importar useQuery
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 
 interface SidebarLinkProps {
   to: string;
   icon: React.ReactNode;
   label: string;
   end?: boolean;
-  alwaysGradient?: boolean; // Nova prop para gradiente sempre ativo
+  alwaysGradient?: boolean;
 }
 
 const SidebarLink = ({ to, icon, label, end, alwaysGradient }: SidebarLinkProps) => (
@@ -80,36 +80,47 @@ export const Sidebar = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('configuracao_site')
-        .select('logo_full_url') // Agora buscando apenas logo_full_url para ser o logo principal
+        .select('logo_full_url')
         .single();
 
       if (error && error.code === 'PGRST116') {
-        // If no config found, return default values
         return {
-          logo_full_url: '/lovable-uploads/default-full-logo.png', // Usar o mesmo default universal
+          logo_full_url: '/lovable-uploads/default-full-logo.png',
         };
       } else if (error) {
         throw error;
       }
       return data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
   });
 
-  const mainLogoSrc = siteConfig?.logo_full_url || '/lovable-uploads/default-full-logo.png'; // Usar logo_full_url como o logo principal
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast.success("Logout realizado", {
+        description: "Você foi desconectado com sucesso"
+      });
+      navigate("/login");
+    } catch (error) {
+      toast.error("Erro no logout", {
+        description: "Tente novamente",
+      });
+    } finally {
+      queryClient.invalidateQueries({ queryKey: ["users-with-roles"] });
+    }
+  };
+
+  const mainLogoSrc = siteConfig?.logo_full_url || '/lovable-uploads/default-full-logo.png';
 
   return (
     <div className="flex flex-col h-screen w-20 group border-r bg-card/60 backdrop-blur-sm p-4 shadow-md transition-all duration-300 ease-in-out hover:w-64">
       <div className="flex items-center justify-center group-hover:justify-start h-20 mb-6 px-2 relative">
-        {/* Logo para barra lateral minimizada */}
-        <img 
-          src={mainLogoSrc} // Usar o logo principal
-          alt="Yooga Suporte Logo Minimizado" 
-          className="h-12 w-auto absolute opacity-100 group-hover:opacity-0 transition-all duration-300 ease-in-out" 
-        />
+        {/* Ícone para barra lateral minimizada */}
+        <Printer className="h-8 w-8 text-primary absolute opacity-100 group-hover:opacity-0 transition-all duration-300 ease-in-out" />
         {/* Logo para barra lateral expandida */}
         <img 
-          src={mainLogoSrc} // Usar o logo principal
+          src={mainLogoSrc} 
           alt="Yooga Suporte Logo Completo" 
           className="h-12 w-auto opacity-0 group-hover:opacity-100 group-hover:h-16 transition-all duration-300 ease-in-out" 
         />
@@ -125,7 +136,6 @@ export const Sidebar = () => {
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
         <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" />
-        {/* Revertendo para link externo */}
         <a 
           href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
           target="_blank" 
@@ -138,7 +148,6 @@ export const Sidebar = () => {
             Wiki de Suporte
           </span>
         </a>
-        {/* <SidebarLink to="/chat-geral" icon={<MessageSquareText className="h-4 w-4" />} label="Chat Geral" /> */} {/* Link removido */}
       </nav>
       <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
         <div className="flex justify-between items-center">
