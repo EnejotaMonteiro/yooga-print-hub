@@ -30,7 +30,7 @@ const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
     to={to}
     end={end}
     className={({ isActive }) =>
-      `flex items-center rounded-lg transition-all duration-300 ease-in-out
+      `flex items-center rounded-lg transition-all duration-500 ease-in-out
        ${isActive 
          ? "bg-primary/10 text-primary font-semibold" 
          : "text-muted-foreground hover:text-foreground group-hover:bg-transparent group-hover:text-foreground"}`
@@ -39,7 +39,7 @@ const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
     <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
       {icon}
     </div>
-    <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:w-auto group-hover:ml-2">
+    <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-out group-hover:opacity-100 group-hover:w-auto group-hover:ml-2">
       {label}
     </span>
   </NavLink>
@@ -106,23 +106,23 @@ export const Sidebar = () => {
   const mainLogoSrc = siteConfig?.logo_full_url || '/lovable-uploads/default-full-logo.png';
 
   return (
-    <div className="fixed left-0 top-0 z-50 flex flex-col h-screen w-20 group bg-card shadow-md transition-all duration-300 ease-in-out hover:w-64">
-      <div className="flex items-center justify-center group-hover:justify-start h-20 mb-6 p-4 relative">
+    <div className="fixed left-0 top-0 z-50 flex flex-col h-screen w-20 group bg-card shadow-md transition-all duration-500 ease-in-out hover:w-64 px-4">
+      <div className="flex items-center justify-center group-hover:justify-start h-20 mb-6 py-4 relative">
         {/* Ícone para barra lateral minimizada */}
-        <Printer className="h-8 w-8 text-primary absolute opacity-100 group-hover:opacity-0 transition-all duration-300 ease-in-out" />
+        <Printer className="h-8 w-8 text-primary absolute opacity-100 group-hover:opacity-0 transition-all duration-500 ease-in-out" />
         {/* Logo para barra lateral expandida */}
         <img 
           src={mainLogoSrc} 
           alt="Yooga Suporte Logo Completo" 
-          className="h-12 w-auto opacity-0 group-hover:opacity-100 group-hover:h-16 transition-all duration-300 ease-in-out" 
+          className="h-12 w-auto opacity-0 group-hover:opacity-100 group-hover:h-16 transition-all duration-500 ease-in-out" 
         />
       </div>
-      <nav className="flex-1 grid items-start gap-1 px-4">
+      <nav className="flex-1 grid items-start gap-1">
         {/* Link customizado para Assistente Rogério com gradiente permanente */}
         <NavLink
           to="/ai-chat"
           className={({ isActive }) =>
-            `flex items-center rounded-lg transition-all duration-300 ease-in-out
+            `flex items-center rounded-lg transition-all duration-500 ease-in-out
              bg-gradient-primary text-white
              ${isActive ? "font-semibold" : ""}
              group-hover:bg-gradient-primary group-hover:text-white`
@@ -131,7 +131,7 @@ export const Sidebar = () => {
           <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
             <Bot className="h-4 w-4" />
           </div>
-          <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:w-auto group-hover:ml-2">
+          <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-out group-hover:opacity-100 group-hover:w-auto group-hover:ml-2">
             Assistente Rogério
           </span>
         </NavLink>
@@ -150,12 +150,12 @@ export const Sidebar = () => {
           <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
             <Book className="h-4 w-4" />
           </div>
-          <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:w-auto group-hover:ml-2">
+          <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-out group-hover:opacity-100 group-hover:w-auto group-hover:ml-2">
             Wiki de Suporte
           </span>
         </a>
       </nav>
-      <div className="mt-auto py-4 px-4 bg-gradient-primary text-white flex flex-col gap-2">
+      <div className="mt-auto py-4 bg-gradient-primary text-white flex flex-col gap-2">
         <div className="flex items-center justify-center group-hover:justify-end group-hover:gap-2">
           <ThemeToggle />
           {user ? (
@@ -166,7 +166,7 @@ export const Sidebar = () => {
                   variant="ghost"
                   size="icon"
                   title="Painel Admin"
-                  className="opacity-0 w-0 overflow-hidden group-hover:opacity-100 group-hover:w-auto transition-all duration-300 ease-in-out text-white hover:bg-white/20"
+                  className="opacity-0 w-0 overflow-hidden group-hover:opacity-100 group-hover:w-auto transition-all duration-500 ease-in-out text-white hover:bg-white/20"
                 >
                   <Shield className="h-4 w-4" />
                 </Button>
