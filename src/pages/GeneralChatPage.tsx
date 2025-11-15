@@ -50,7 +50,7 @@ const GeneralChatPage = () => {
             <CardDescription>
               Você precisa estar logado para participar do chat geral.
             </CardDescription>
-          </CardDescription>
+          </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
               Por favor, faça login para enviar e visualizar mensagens.
