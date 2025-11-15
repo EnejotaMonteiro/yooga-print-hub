@@ -83,7 +83,11 @@ export const Sidebar = () => {
   return (
     <div className="flex flex-col h-screen w-20 group border-r bg-card/60 backdrop-blur-sm p-4 shadow-md transition-all duration-300 ease-in-out hover:w-64">
       <div className="flex items-center justify-center group-hover:justify-start h-20 mb-6 px-2">
-        <img src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" alt="Yooga Suporte Logo" className="h-12 w-auto group-hover:h-16 transition-all duration-300 ease-in-out" />
+        <img 
+          src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" 
+          alt="Yooga Suporte Logo" 
+          className="h-12 w-auto opacity-0 group-hover:opacity-100 group-hover:h-16 transition-all duration-300 ease-in-out" 
+        />
       </div>
       <nav className="flex-1 grid items-start gap-2">
         <SidebarLink to="/" icon={<Home className="h-4 w-4" />} label="Página Inicial" end />
