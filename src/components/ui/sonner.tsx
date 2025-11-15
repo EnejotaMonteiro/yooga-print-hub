@@ -23,7 +23,7 @@ export function Toaster() {
         },
       }}
       icons={{
-        info: <Printer className="h-4 w-4" />, // Ícone de impressora para toasts de informação
+        info: undefined, // Remove o ícone de informação
         success: <Printer className="h-4 w-4" />, // Ícone de impressora para toasts de sucesso
         warning: <Printer className="h-4 w-4" />, // Ícone de impressora para toasts de aviso
         error: <Printer className="h-4 w-4" />, // Ícone de impressora para toasts de erro
