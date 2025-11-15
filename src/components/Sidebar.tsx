@@ -32,9 +32,9 @@ const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
     className={({ isActive }) =>
       `flex items-center rounded-lg transition-all duration-300 ease-in-out
        ${isActive 
-         ? "bg-primary/10 text-primary font-semibold" 
-         : "text-muted-foreground hover:text-foreground"}
-       group-hover:bg-transparent group-hover:text-foreground`
+         ? "bg-primary/10 text-primary font-semibold" // Estilo para link ativo
+         : "text-muted-foreground hover:text-foreground group-hover:bg-transparent group-hover:text-foreground" // Estilo para link inativo, com efeitos de group-hover
+       }`
     }
   >
     <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
@@ -128,7 +128,7 @@ export const Sidebar = () => {
             `flex items-center rounded-lg transition-all duration-300 ease-in-out
              bg-gradient-primary text-white
              ${isActive ? "font-semibold" : ""}
-             group-hover:bg-gradient-primary group-hover:text-white` // Garante que o gradiente e texto branco persistam no hover
+             group-hover:bg-gradient-primary group-hover:text-white`
           }
         >
           <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
