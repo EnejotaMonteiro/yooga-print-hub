@@ -2,14 +2,13 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Home,
-  Printer, // Importar o ícone Printer
+  Printer,
   BookOpen,
   Lightbulb,
   Book,
   LogIn,
   LogOut,
   Shield,
-  MessageSquareText,
   Bot,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,30 +23,23 @@ interface SidebarLinkProps {
   icon: React.ReactNode;
   label: string;
   end?: boolean;
-  alwaysGradient?: boolean;
+  // Removido: alwaysGradient?: boolean; // Não é mais necessário
 }
 
-const SidebarLink = ({ to, icon, label, end, alwaysGradient }: SidebarLinkProps) => (
+const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
   <NavLink
     to={to}
     end={end}
-    className={({ isActive }) => {
-      const baseClasses = "flex items-center justify-center h-10 w-10 rounded-lg transition-all group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent group-hover:gap-2";
-      
-      let currentClasses = "";
-      if (alwaysGradient) {
-        currentClasses = "bg-gradient-primary text-white";
-      } else if (isActive) {
-        currentClasses = "bg-primary/10 text-primary font-semibold";
-      } else {
-        currentClasses = "text-muted-foreground hover:text-foreground";
-      }
-
-      return `${baseClasses} ${currentClasses}`;
-    }}
+    className={({ isActive }) =>
+      `flex items-center rounded-lg transition-all duration-300 ease-in-out
+       ${isActive ? "bg-primary/10 text-primary font-semibold" : "text-muted-foreground hover:text-foreground"}
+       group-hover:bg-transparent group-hover:text-foreground`
+    }
   >
-    {icon}
-    <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap group-hover:opacity-100 group-hover:w-auto transition-all duration-300 ease-in-out">
+    <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
+      {icon}
+    </div>
+    <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:w-auto group-hover:ml-2">
       {label}
     </span>
   </NavLink>
@@ -131,7 +123,7 @@ export const Sidebar = () => {
           to="/ai-chat" 
           icon={<Bot className="h-4 w-4" />} 
           label="Assistente Rogério" 
-          alwaysGradient 
+          // Removido: alwaysGradient // Não é mais necessário
         />
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
@@ -140,20 +132,22 @@ export const Sidebar = () => {
           href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="flex items-center justify-center h-10 w-10 rounded-lg text-muted-foreground transition-all hover:text-foreground
-                     group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent group-hover:gap-2"
+          className="flex items-center rounded-lg text-muted-foreground transition-all hover:text-foreground
+                     group-hover:bg-transparent group-hover:text-foreground"
         >
-          <Book className="h-4 w-4" />
-          <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap group-hover:opacity-100 group-hover:w-auto transition-all duration-300 ease-in-out">
+          <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
+            <Book className="h-4 w-4" />
+          </div>
+          <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:w-auto group-hover:ml-2">
             Wiki de Suporte
           </span>
         </a>
       </nav>
       <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-center group-hover:justify-start group-hover:gap-2">
           <ThemeToggle />
           {user ? (
-            <div className="flex items-center gap-2">
+            <>
               {isAdmin && (
                 <Button
                   onClick={() => navigate("/admin")}
@@ -167,7 +161,7 @@ export const Sidebar = () => {
               <Button onClick={handleLogout} variant="ghost" size="icon" title="Sair">
                 <LogOut className="w-4 h-4" />
               </Button>
-            </div>
+            </>
           ) : (
             <Button onClick={() => navigate("/login")} variant="ghost" size="icon" title="Login Admin">
               <LogIn className="w-4 h-4" />
