@@ -118,8 +118,6 @@ export const Sidebar = () => {
         />
       </div>
       <nav className="flex-1 grid items-start gap-1">
-        <SidebarLink to="/" icon={<Home className="h-4 w-4" />} label="Página Inicial" end />
-        
         {/* Link customizado para Assistente Rogério com gradiente permanente */}
         <NavLink
           to="/ai-chat"
@@ -138,6 +136,7 @@ export const Sidebar = () => {
           </span>
         </NavLink>
 
+        <SidebarLink to="/" icon={<Home className="h-4 w-4" />} label="Página Inicial" end />
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
         <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" />
