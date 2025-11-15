@@ -168,7 +168,7 @@ const PrintersPage = () => {
                           onEdit={handleEditPrinter}
                           innerRef={provided.innerRef}
                           draggableProps={provided.draggableProps}
-                          dragHandleProps={isDragModeActive ? provided.dragHandleProps : null}
+                          dragHandleProps={isDragModeActive ? provided.dragHandleProps : {}} // Sempre passa um objeto
                           isDragModeActive={isDragModeActive}
                           isDragging={snapshot.isDragging}
                         />
