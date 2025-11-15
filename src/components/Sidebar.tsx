@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"; // Importar toast diretamente do sonner
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useQueryClient, useQuery } from "@tanstack/react-query"; // Importar useQuery
 
@@ -55,7 +55,6 @@ const SidebarLink = ({ to, icon, label, end, alwaysGradient }: SidebarLinkProps)
 
 export const Sidebar = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { isAdmin } = useAdmin();
   const queryClient = useQueryClient();
   const [user, setUser] = React.useState<any>(null);
@@ -101,16 +100,13 @@ export const Sidebar = () => {
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      toast({
-        title: "Logout realizado",
+      toast.success("Logout realizado", {
         description: "Você foi desconectado com sucesso"
       });
       navigate("/login");
     } catch (error) {
-      toast({
-        title: "Erro no logout",
+      toast.error("Erro no logout", {
         description: "Tente novamente",
-        variant: "destructive"
       });
     } finally {
       queryClient.invalidateQueries({ queryKey: ["users-with-roles"] });
