@@ -80,14 +80,13 @@ export const Sidebar = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('configuracao_site')
-        .select('logo_min_url, logo_full_url')
+        .select('logo_full_url') // Agora buscando apenas logo_full_url para ser o logo principal
         .single();
 
       if (error && error.code === 'PGRST116') {
         // If no config found, return default values
         return {
-          logo_min_url: '/lovable-uploads/default-min-logo.jpg',
-          logo_full_url: '/lovable-uploads/default-full-logo.png',
+          logo_full_url: '/lovable-uploads/default-full-logo.png', // Usar o mesmo default universal
         };
       } else if (error) {
         throw error;
@@ -97,37 +96,20 @@ export const Sidebar = () => {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
-  const handleLogout = async () => {
-    try {
-      await supabase.auth.signOut();
-      toast.success("Logout realizado", {
-        description: "Você foi desconectado com sucesso"
-      });
-      navigate("/login");
-    } catch (error) {
-      toast.error("Erro no logout", {
-        description: "Tente novamente",
-      });
-    } finally {
-      queryClient.invalidateQueries({ queryKey: ["users-with-roles"] });
-    }
-  };
-
-  const minLogoSrc = siteConfig?.logo_min_url || '/lovable-uploads/default-min-logo.jpg';
-  const fullLogoSrc = siteConfig?.logo_full_url || '/lovable-uploads/default-full-logo.png';
+  const mainLogoSrc = siteConfig?.logo_full_url || '/lovable-uploads/default-full-logo.png'; // Usar logo_full_url como o logo principal
 
   return (
     <div className="flex flex-col h-screen w-20 group border-r bg-card/60 backdrop-blur-sm p-4 shadow-md transition-all duration-300 ease-in-out hover:w-64">
       <div className="flex items-center justify-center group-hover:justify-start h-20 mb-6 px-2 relative">
         {/* Logo para barra lateral minimizada */}
         <img 
-          src={minLogoSrc} 
+          src={mainLogoSrc} // Usar o logo principal
           alt="Yooga Suporte Logo Minimizado" 
           className="h-12 w-auto absolute opacity-100 group-hover:opacity-0 transition-all duration-300 ease-in-out" 
         />
         {/* Logo para barra lateral expandida */}
         <img 
-          src={fullLogoSrc} 
+          src={mainLogoSrc} // Usar o logo principal
           alt="Yooga Suporte Logo Completo" 
           className="h-12 w-auto opacity-0 group-hover:opacity-100 group-hover:h-16 transition-all duration-300 ease-in-out" 
         />

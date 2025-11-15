@@ -23,12 +23,12 @@ const Login = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('configuracao_site')
-        .select('logo_login_url')
+        .select('logo_full_url') // Agora buscando logo_full_url para ser o logo principal
         .single();
 
       if (error && error.code === 'PGRST116') {
         return {
-          logo_login_url: '/lovable-uploads/default-login-logo.jpg',
+          logo_full_url: '/lovable-uploads/default-full-logo.png', // Usar o mesmo default universal
         };
       } else if (error) {
         throw error;
@@ -38,7 +38,7 @@ const Login = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  const loginLogoSrc = siteConfig?.logo_login_url || '/lovable-uploads/default-login-logo.jpg';
+  const loginLogoSrc = siteConfig?.logo_full_url || '/lovable-uploads/default-full-logo.png'; // Usar logo_full_url
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

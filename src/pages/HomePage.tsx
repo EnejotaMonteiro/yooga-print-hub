@@ -18,13 +18,14 @@ const HomePage = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('configuracao_site')
-        .select('video_guia_universal_url, titulo_guia_universal, descricao_guia_universal')
+        .select('video_guia_universal_url, titulo_guia_universal, descricao_guia_universal, logo_full_url') // Incluindo logo_full_url para consistência
         .single();
 
       if (error && error.code === 'PGRST116') {
         const defaultVideoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
         const defaultTitle = 'Guia Universal de Configuração';
         const defaultDescription = 'Assista ao vídeo para um guia completo de configuração de impressoras.';
+        const defaultLogoUrl = '/lovable-uploads/default-full-logo.png';
 
         const { data: newConfig, error: insertError } = await supabase
           .from('configuracao_site')
@@ -32,8 +33,11 @@ const HomePage = () => {
             video_guia_universal_url: defaultVideoUrl,
             titulo_guia_universal: defaultTitle,
             descricao_guia_universal: defaultDescription,
+            logo_min_url: defaultLogoUrl, // Definindo todos os logos para o mesmo default
+            logo_full_url: defaultLogoUrl,
+            logo_login_url: defaultLogoUrl,
           })
-          .select('video_guia_universal_url, titulo_guia_universal, descricao_guia_universal')
+          .select('video_guia_universal_url, titulo_guia_universal, descricao_guia_universal, logo_full_url')
           .single();
         if (insertError) throw insertError;
         return newConfig;

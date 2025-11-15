@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, UploadCloud, XCircle } from "lucide-react"; // Adicionado XCircle para o botão de remover
+import { Loader2, UploadCloud, XCircle } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface LogoSettingsDialogProps {
@@ -26,12 +26,8 @@ export const LogoSettingsDialog = ({
   onOpenChange,
   onSuccess,
 }: LogoSettingsDialogProps) => {
-  const [minLogoFile, setMinLogoFile] = useState<File | null>(null);
-  const [fullLogoFile, setFullLogoFile] = useState<File | null>(null);
-  const [loginLogoFile, setLoginLogoFile] = useState<File | null>(null);
-  const [currentMinLogoUrl, setCurrentMinLogoUrl] = useState<string | null>(null); // Pode ser null
-  const [currentFullLogoUrl, setCurrentFullLogoUrl] = useState<string | null>(null); // Pode ser null
-  const [currentLoginLogoUrl, setCurrentLoginLogoUrl] = useState<string | null>(null); // Pode ser null
+  const [mainLogoFile, setMainLogoFile] = useState<File | null>(null);
+  const [currentMainLogoUrl, setCurrentMainLogoUrl] = useState<string | null>(null);
   const [configId, setConfigId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -48,36 +44,33 @@ export const LogoSettingsDialog = ({
     try {
       const { data, error } = await supabase
         .from('configuracao_site')
-        .select('id, logo_min_url, logo_full_url, logo_login_url')
+        .select('id, logo_full_url') // Usaremos logo_full_url como o logo principal
         .single();
 
       if (error && error.code === 'PGRST116') { // No rows found
-        // Insert a default configuration if none exists
+        const defaultLogoUrl = '/lovable-uploads/default-full-logo.png';
+
         const { data: newConfig, error: insertError } = await supabase
           .from('configuracao_site')
           .insert({
-            logo_min_url: '/lovable-uploads/default-min-logo.jpg',
-            logo_full_url: '/lovable-uploads/default-full-logo.png',
-            logo_login_url: '/lovable-uploads/default-login-logo.jpg',
+            logo_min_url: defaultLogoUrl,
+            logo_full_url: defaultLogoUrl,
+            logo_login_url: defaultLogoUrl,
           })
-          .select('id, logo_min_url, logo_full_url, logo_login_url')
+          .select('id, logo_full_url')
           .single();
 
         if (insertError) throw insertError;
         setConfigId(newConfig?.id || null);
-        setCurrentMinLogoUrl(newConfig?.logo_min_url || null);
-        setCurrentFullLogoUrl(newConfig?.logo_full_url || null);
-        setCurrentLoginLogoUrl(newConfig?.logo_login_url || null);
+        setCurrentMainLogoUrl(newConfig?.logo_full_url || null);
         toast.info("Configuração inicial criada", {
-          description: "Uma configuração padrão de logos foi criada automaticamente.",
+          description: "Uma configuração padrão de logo foi criada automaticamente.",
         });
       } else if (error) {
-        throw error; // Other errors
+        throw error;
       } else {
         setConfigId(data?.id || null);
-        setCurrentMinLogoUrl(data?.logo_min_url || null);
-        setCurrentFullLogoUrl(data?.logo_full_url || null);
-        setCurrentLoginLogoUrl(data?.logo_login_url || null);
+        setCurrentMainLogoUrl(data?.logo_full_url || null);
       }
     } catch (error) {
       console.error('Erro ao buscar/criar configuração de logos:', error);
@@ -117,35 +110,21 @@ export const LogoSettingsDialog = ({
     }
 
     setSaving(true);
-    let newMinLogoUrlToSave: string | null = currentMinLogoUrl;
-    let newFullLogoUrlToSave: string | null = currentFullLogoUrl;
-    let newLoginLogoUrlToSave: string | null = currentLoginLogoUrl;
+    let newMainLogoUrlToSave: string | null = currentMainLogoUrl;
 
     try {
-      if (minLogoFile) {
-        newMinLogoUrlToSave = await uploadFile(minLogoFile, `min-logo-${Date.now()}.${minLogoFile.name.split('.').pop()}`);
-      } else if (currentMinLogoUrl === null) { // Se o usuário clicou em remover
-        newMinLogoUrlToSave = null;
-      }
-
-      if (fullLogoFile) {
-        newFullLogoUrlToSave = await uploadFile(fullLogoFile, `full-logo-${Date.now()}.${fullLogoFile.name.split('.').pop()}`);
-      } else if (currentFullLogoUrl === null) { // Se o usuário clicou em remover
-        newFullLogoUrlToSave = null;
-      }
-
-      if (loginLogoFile) {
-        newLoginLogoUrlToSave = await uploadFile(loginLogoFile, `login-logo-${Date.now()}.${loginLogoFile.name.split('.').pop()}`);
-      } else if (currentLoginLogoUrl === null) { // Se o usuário clicou em remover
-        newLoginLogoUrlToSave = null;
+      if (mainLogoFile) {
+        newMainLogoUrlToSave = await uploadFile(mainLogoFile, `main-logo-${Date.now()}.${mainLogoFile.name.split('.').pop()}`);
+      } else if (currentMainLogoUrl === null) { // Se o usuário clicou em remover
+        newMainLogoUrlToSave = null;
       }
 
       const { error } = await supabase
         .from('configuracao_site')
         .update({
-          logo_min_url: newMinLogoUrlToSave,
-          logo_full_url: newFullLogoUrlToSave,
-          logo_login_url: newLoginLogoUrlToSave,
+          logo_min_url: newMainLogoUrlToSave,
+          logo_full_url: newMainLogoUrlToSave,
+          logo_login_url: newMainLogoUrlToSave,
         })
         .eq('id', configId);
 
@@ -155,7 +134,7 @@ export const LogoSettingsDialog = ({
       }
 
       toast.success("Salvo com sucesso!", {
-        description: "Os logos foram atualizados."
+        description: "O logo principal foi atualizado em todas as instâncias."
       });
       queryClient.invalidateQueries({ queryKey: ["site-config"] });
       onSuccess();
@@ -163,13 +142,11 @@ export const LogoSettingsDialog = ({
     } catch (error) {
       console.error('Erro ao salvar logos:', error);
       toast.error("Erro ao salvar", {
-        description: error instanceof Error ? error.message : "Não foi possível salvar os logos",
+        description: error instanceof Error ? error.message : "Não foi possível salvar o logo",
       });
     } finally {
       setSaving(false);
-      setMinLogoFile(null);
-      setFullLogoFile(null);
-      setLoginLogoFile(null);
+      setMainLogoFile(null);
     }
   };
 
@@ -177,9 +154,9 @@ export const LogoSettingsDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Configurações de Logos</DialogTitle>
+          <DialogTitle>Configurações de Logo</DialogTitle>
           <DialogDescription>
-            Atualize as imagens dos logos para a barra lateral e página de login.
+            Atualize a imagem do logo principal que será usada em toda a aplicação.
           </DialogDescription>
         </DialogHeader>
         {loading ? (
@@ -188,76 +165,24 @@ export const LogoSettingsDialog = ({
           </div>
         ) : (
           <form onSubmit={handleSave} className="space-y-6 py-4">
-            {/* Logo Minimizado */}
+            {/* Logo Principal */}
             <div className="space-y-2">
-              <Label htmlFor="minLogo">Logo Minimizado (Barra Lateral)</Label>
+              <Label htmlFor="mainLogo">Logo Principal</Label>
               <Input
-                id="minLogo"
+                id="mainLogo"
                 type="file"
                 accept="image/*"
-                onChange={(e) => setMinLogoFile(e.target.files ? e.target.files[0] : null)}
+                onChange={(e) => setMainLogoFile(e.target.files ? e.target.files[0] : null)}
               />
-              {currentMinLogoUrl && (
+              {currentMainLogoUrl && (
                 <div className="mt-2 flex items-center gap-2">
                   <p className="text-sm text-muted-foreground">Logo atual:</p>
-                  <img src={currentMinLogoUrl} alt="Logo Minimizado Atual" className="h-10 w-auto object-contain" />
+                  <img src={currentMainLogoUrl} alt="Logo Principal Atual" className="h-10 w-auto object-contain" />
                   <Button
                     type="button"
                     variant="ghost"
                     size="icon"
-                    onClick={() => setCurrentMinLogoUrl(null)} // Define como null para remover
-                    title="Remover imagem atual"
-                  >
-                    <XCircle className="w-4 h-4 text-destructive" />
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            {/* Logo Completo */}
-            <div className="space-y-2">
-              <Label htmlFor="fullLogo">Logo Completo (Barra Lateral Expandida)</Label>
-              <Input
-                id="fullLogo"
-                type="file"
-                accept="image/*"
-                onChange={(e) => setFullLogoFile(e.target.files ? e.target.files[0] : null)}
-              />
-              {currentFullLogoUrl && (
-                <div className="mt-2 flex items-center gap-2">
-                  <p className="text-sm text-muted-foreground">Logo atual:</p>
-                  <img src={currentFullLogoUrl} alt="Logo Completo Atual" className="h-10 w-auto object-contain" />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setCurrentFullLogoUrl(null)} // Define como null para remover
-                    title="Remover imagem atual"
-                  >
-                    <XCircle className="w-4 h-4 text-destructive" />
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            {/* Logo Página de Login */}
-            <div className="space-y-2">
-              <Label htmlFor="loginLogo">Logo Página de Login</Label>
-              <Input
-                id="loginLogo"
-                type="file"
-                accept="image/*"
-                onChange={(e) => setLoginLogoFile(e.target.files ? e.target.files[0] : null)}
-              />
-              {currentLoginLogoUrl && (
-                <div className="mt-2 flex items-center gap-2">
-                  <p className="text-sm text-muted-foreground">Logo atual:</p>
-                  <img src={currentLoginLogoUrl} alt="Logo Login Atual" className="h-10 w-auto object-contain" />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setCurrentLoginLogoUrl(null)} // Define como null para remover
+                    onClick={() => setCurrentMainLogoUrl(null)} // Define como null para remover
                     title="Remover imagem atual"
                   >
                     <XCircle className="w-4 h-4 text-destructive" />
@@ -284,7 +209,7 @@ export const LogoSettingsDialog = ({
                 ) : (
                   <>
                     <UploadCloud className="w-4 h-4 mr-2" />
-                    Salvar Logos
+                    Salvar Logo
                   </>
                 )}
               </Button>
