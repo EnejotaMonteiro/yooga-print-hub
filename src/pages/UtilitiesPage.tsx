@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Utility } from "@/data/utilities";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd"; // Importar DND
 import { UtilityCard } from "@/components/UtilityCard"; // Importar o novo UtilityCard
+import { toast } from "sonner"; // Importar toast para feedback
 
 const UtilitiesPage = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -29,6 +30,7 @@ const UtilitiesPage = () => {
       if (error) throw error;
       return data;
     },
+    staleTime: 1000 * 60 * 5, // Dados são considerados 'frescos' por 5 minutos
   });
 
   const handleEdit = (utility: Utility) => {
