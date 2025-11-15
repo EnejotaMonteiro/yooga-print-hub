@@ -31,7 +31,7 @@ const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
     end={end}
     className={({ isActive }) =>
       `flex items-center justify-center h-10 w-10 rounded-lg text-muted-foreground transition-all hover:text-foreground
-       group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent
+       group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent group-hover:gap-2
        ${isActive ? "bg-primary/10 text-primary font-semibold" : ""}`
     }
   >
@@ -99,7 +99,7 @@ export const Sidebar = () => {
           target="_blank" 
           rel="noopener noreferrer"
           className="flex items-center justify-center h-10 w-10 rounded-lg text-muted-foreground transition-all hover:text-foreground
-                     group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent"
+                     group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent group-hover:gap-2"
         >
           <Book className="h-4 w-4" />
           <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap group-hover:opacity-100 group-hover:w-auto transition-all duration-300 ease-in-out">
