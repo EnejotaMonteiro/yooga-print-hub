@@ -24,21 +24,27 @@ interface SidebarLinkProps {
   icon: React.ReactNode;
   label: string;
   end?: boolean;
-  activeBgClass?: string; // Nova prop para classe de fundo ativa personalizada
+  alwaysGradient?: boolean; // Nova prop para gradiente sempre ativo
 }
 
-const SidebarLink = ({ to, icon, label, end, activeBgClass }: SidebarLinkProps) => (
+const SidebarLink = ({ to, icon, label, end, alwaysGradient }: SidebarLinkProps) => (
   <NavLink
     to={to}
     end={end}
-    className={({ isActive }) =>
-      `flex items-center justify-center h-10 w-10 rounded-lg transition-all
-       group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent group-hover:gap-2
-       ${isActive 
-          ? (activeBgClass || "bg-primary/10 text-primary font-semibold") 
-          : "text-muted-foreground hover:text-foreground"
-       }`
-    }
+    className={({ isActive }) => {
+      const baseClasses = "flex items-center justify-center h-10 w-10 rounded-lg transition-all group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent group-hover:gap-2";
+      
+      let currentClasses = "";
+      if (alwaysGradient) {
+        currentClasses = "bg-gradient-primary text-white";
+      } else if (isActive) {
+        currentClasses = "bg-primary/10 text-primary font-semibold";
+      } else {
+        currentClasses = "text-muted-foreground hover:text-foreground";
+      }
+
+      return `${baseClasses} ${currentClasses}`;
+    }}
   >
     {icon}
     <span className="opacity-0 w-0 overflow-hidden whitespace-nowrap group-hover:opacity-100 group-hover:w-auto transition-all duration-300 ease-in-out">
@@ -100,7 +106,7 @@ export const Sidebar = () => {
           to="/ai-chat" 
           icon={<Bot className="h-4 w-4" />} 
           label="Assistente Rogério" 
-          activeBgClass="bg-gradient-primary text-white" // Aplicando o gradiente e texto branco
+          alwaysGradient // Usando a nova prop
         />
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
