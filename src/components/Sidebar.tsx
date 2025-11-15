@@ -10,7 +10,7 @@ import {
   LogOut,
   Shield,
   MessageSquareText,
-  Bot, // Importar o ícone Bot
+  Bot,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/use-admin";
@@ -24,16 +24,20 @@ interface SidebarLinkProps {
   icon: React.ReactNode;
   label: string;
   end?: boolean;
+  activeBgClass?: string; // Nova prop para classe de fundo ativa personalizada
 }
 
-const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
+const SidebarLink = ({ to, icon, label, end, activeBgClass }: SidebarLinkProps) => (
   <NavLink
     to={to}
     end={end}
     className={({ isActive }) =>
-      `flex items-center justify-center h-10 w-10 rounded-lg text-muted-foreground transition-all hover:text-foreground
+      `flex items-center justify-center h-10 w-10 rounded-lg transition-all
        group-hover:w-auto group-hover:justify-start group-hover:px-3 group-hover:py-2 group-hover:h-auto group-hover:bg-transparent group-hover:gap-2
-       ${isActive ? "bg-primary/10 text-primary font-semibold" : ""}`
+       ${isActive 
+          ? (activeBgClass || "bg-primary/10 text-primary font-semibold") 
+          : "text-muted-foreground hover:text-foreground"
+       }`
     }
   >
     {icon}
@@ -92,6 +96,12 @@ export const Sidebar = () => {
       </div>
       <nav className="flex-1 grid items-start gap-1">
         <SidebarLink to="/" icon={<Home className="h-4 w-4" />} label="Página Inicial" end />
+        <SidebarLink 
+          to="/ai-chat" 
+          icon={<Bot className="h-4 w-4" />} 
+          label="Assistente Rogério" 
+          activeBgClass="bg-gradient-primary text-white" // Aplicando o gradiente e texto branco
+        />
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
         <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" />
@@ -108,7 +118,6 @@ export const Sidebar = () => {
           </span>
         </a>
         <SidebarLink to="/chat-geral" icon={<MessageSquareText className="h-4 w-4" />} label="Chat Geral" />
-        <SidebarLink to="/ai-chat" icon={<Bot className="h-4 w-4" />} label="Assistente Rogério" /> {/* Novo link */}
       </nav>
       <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
         <div className="flex justify-between items-center">
