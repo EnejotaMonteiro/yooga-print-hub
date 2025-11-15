@@ -155,7 +155,7 @@ export const Sidebar = () => {
           </span>
         </a>
       </nav>
-      <div className="mt-auto pt-4 bg-gradient-primary text-white rounded-lg flex flex-col gap-2">
+      <div className="mt-auto pt-4 bg-gradient-primary text-white flex flex-col gap-2">
         <div className="flex items-center justify-center group-hover:justify-end group-hover:gap-2">
           <ThemeToggle />
           {user ? (
