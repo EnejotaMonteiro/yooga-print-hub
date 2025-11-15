@@ -106,7 +106,7 @@ export const Sidebar = () => {
         />
         {/* Logo para barra lateral expandida */}
         <img 
-          src="/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png" 
+          src="/lovable-uploads/SUPORTINHO.png" 
           alt="Yooga Suporte Logo Completo" 
           className="h-12 w-auto opacity-0 group-hover:opacity-100 group-hover:h-16 transition-all duration-300 ease-in-out" 
         />
