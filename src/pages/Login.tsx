@@ -7,13 +7,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronLeft } from "lucide-react"; // Importar ícone ChevronLeft para 'Voltar'
+import { ChevronLeft } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false); // Novo estado para o botão de esqueci a senha
   const navigate = useNavigate();
 
   const { data: siteConfig } = useQuery({
@@ -67,17 +68,49 @@ const Login = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast.error("Email necessário", {
+        description: "Por favor, digite seu email para redefinir a senha.",
+      });
+      return;
+    }
+
+    setForgotPasswordLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`, // Redireciona para uma página de redefinição de senha
+      });
+
+      if (error) {
+        toast.error("Erro ao enviar email", {
+          description: error.message,
+        });
+      } else {
+        toast.success("Email enviado!", {
+          description: "Verifique sua caixa de entrada para instruções de redefinição de senha.",
+        });
+      }
+    } catch (error) {
+      toast.error("Erro inesperado", {
+        description: "Tente novamente em alguns instantes",
+      });
+    } finally {
+      setForgotPasswordLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative">
       {/* Botões de navegação e tema no canto superior esquerdo */}
       <div className="absolute top-4 left-4 flex gap-2">
         <Button 
           variant="outline" 
-          size="sm" // Alterado para 'sm' para acomodar texto
+          size="sm"
           onClick={() => navigate("/")} 
           title="Voltar para a Página Inicial"
         >
-          <ChevronLeft className="h-4 w-4 mr-2" /> {/* Ícone de seta para a esquerda */}
+          <ChevronLeft className="h-4 w-4 mr-2" />
           Voltar
         </Button>
         <ThemeToggle />
@@ -126,6 +159,15 @@ const Login = () => {
               disabled={loading}
             >
               {loading ? "Entrando..." : "Entrar"}
+            </Button>
+            <Button
+              type="button"
+              variant="link"
+              onClick={handleForgotPassword}
+              disabled={forgotPasswordLoading}
+              className="w-full text-sm text-muted-foreground hover:text-primary-foreground p-0 h-auto"
+            >
+              {forgotPasswordLoading ? "Enviando..." : "Esqueci a senha?"}
             </Button>
           </form>
         </CardContent>
