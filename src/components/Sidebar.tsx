@@ -31,9 +31,10 @@ const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
     end={end}
     className={({ isActive }) =>
       `flex items-center rounded-lg transition-all duration-500 ease-in-out
+       w-10 group-hover:w-full // Aplica a largura base e a transição de hover para todos os links
        ${isActive 
-         ? "bg-primary/10 text-primary font-semibold w-full" 
-         : "text-muted-foreground hover:text-foreground group-hover:bg-transparent group-hover:text-foreground w-10 group-hover:w-full"}`
+         ? "bg-primary/10 text-primary font-semibold" // Estilo para link ativo
+         : "text-muted-foreground hover:text-foreground group-hover:bg-transparent group-hover:text-foreground"}` // Estilo para link inativo
     }
   >
     <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
@@ -129,7 +130,7 @@ export const Sidebar = () => {
             `flex items-center rounded-lg transition-all duration-500 ease-in-out
              bg-gradient-primary text-white
              ${isActive ? "font-semibold" : ""}
-             w-10 group-hover:w-full` // Adicionado w-10 e group-hover:w-full aqui
+             w-10 group-hover:w-full`
           }
         >
           <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
@@ -153,7 +154,7 @@ export const Sidebar = () => {
           target="_blank" 
           rel="noopener noreferrer"
           className="flex items-center rounded-lg text-muted-foreground transition-all hover:text-foreground
-                     group-hover:bg-transparent group-hover:text-foreground w-10 group-hover:w-full" // Adicionado w-10 e group-hover:w-full aqui também
+                     group-hover:bg-transparent group-hover:text-foreground w-10 group-hover:w-full"
         >
           <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
             <Book className="h-4 w-4" />
