@@ -21,7 +21,7 @@ const queryClient = new QueryClient();
 const LayoutWithSidebar = () => (
   <div className="flex min-h-screen bg-background">
     <Sidebar />
-    <main className="flex-1 md:ml-64"> {/* Adjust margin for sidebar width */}
+    <main className="flex-1"> {/* Removido md:ml-64 para ajuste dinâmico */}
       <Outlet /> {/* Renders the matched child route */}
     </main>
   </div>
