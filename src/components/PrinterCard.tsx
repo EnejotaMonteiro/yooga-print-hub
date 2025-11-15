@@ -48,7 +48,7 @@ export const PrinterCard = ({
       `}
       ref={innerRef}
       {...draggableProps}
-      {...dragHandleProps} {/* Espalha dragHandleProps diretamente */}
+      {...dragHandleProps}
     >
       {isAdmin && (
         <div className="absolute top-2 right-2 flex gap-1 z-10">
