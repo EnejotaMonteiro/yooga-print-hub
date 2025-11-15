@@ -87,8 +87,8 @@ export const Sidebar = () => {
       if (error && error.code === 'PGRST116') {
         // If no config found, return default values
         return {
-          logo_min_url: '/lovable-uploads/logo-min.jpg',
-          logo_full_url: '/lovable-uploads/logo-full.jpg',
+          logo_min_url: '/lovable-uploads/default-min-logo.jpg',
+          logo_full_url: '/lovable-uploads/default-full-logo.png',
         };
       } else if (error) {
         throw error;
@@ -117,8 +117,8 @@ export const Sidebar = () => {
     }
   };
 
-  const minLogoSrc = siteConfig?.logo_min_url || '/lovable-uploads/logo-min.jpg';
-  const fullLogoSrc = siteConfig?.logo_full_url || '/lovable-uploads/logo-full.jpg';
+  const minLogoSrc = siteConfig?.logo_min_url || '/lovable-uploads/default-min-logo.jpg';
+  const fullLogoSrc = siteConfig?.logo_full_url || '/lovable-uploads/default-full-logo.png';
 
   return (
     <div className="flex flex-col h-screen w-20 group border-r bg-card/60 backdrop-blur-sm p-4 shadow-md transition-all duration-300 ease-in-out hover:w-64">

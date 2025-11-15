@@ -26,7 +26,7 @@ const Login = () => {
       if (error && error.code === 'PGRST116') {
         // If no config found, return default value
         return {
-          logo_login_url: '/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png',
+          logo_login_url: '/lovable-uploads/default-login-logo.jpg',
         };
       } else if (error) {
         throw error;
@@ -36,7 +36,7 @@ const Login = () => {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
-  const loginLogoSrc = siteConfig?.logo_login_url || '/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png';
+  const loginLogoSrc = siteConfig?.logo_login_url || '/lovable-uploads/default-login-logo.jpg';
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

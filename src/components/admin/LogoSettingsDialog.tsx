@@ -57,9 +57,9 @@ export const LogoSettingsDialog = ({
         const { data: newConfig, error: insertError } = await supabase
           .from('configuracao_site')
           .insert({
-            logo_min_url: '/lovable-uploads/logo-min.jpg',
-            logo_full_url: '/lovable-uploads/logo-full.jpg',
-            logo_login_url: '/lovable-uploads/31bbabfd-0146-4c41-84be-fc271db11663.png',
+            logo_min_url: '/lovable-uploads/default-min-logo.jpg',
+            logo_full_url: '/lovable-uploads/default-full-logo.png',
+            logo_login_url: '/lovable-uploads/default-login-logo.jpg',
           })
           .select('id, logo_min_url, logo_full_url, logo_login_url')
           .single();
