@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"; // Usar toast do sonner
 import { Loader2, UploadCloud } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -35,7 +35,6 @@ export const LogoSettingsDialog = ({
   const [configId, setConfigId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -69,8 +68,7 @@ export const LogoSettingsDialog = ({
         setCurrentMinLogoUrl(newConfig?.logo_min_url || '');
         setCurrentFullLogoUrl(newConfig?.logo_full_url || '');
         setCurrentLoginLogoUrl(newConfig?.logo_login_url || '');
-        toast({
-          title: "Configuração inicial criada",
+        toast.info("Configuração inicial criada", {
           description: "Uma configuração padrão de logos foi criada automaticamente.",
         });
       } else if (error) {
@@ -83,10 +81,8 @@ export const LogoSettingsDialog = ({
       }
     } catch (error) {
       console.error('Erro ao buscar/criar configuração de logos:', error);
-      toast({
-        title: "Erro ao carregar",
+      toast.error("Erro ao carregar", {
         description: "Não foi possível carregar as configurações de logos",
-        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -114,10 +110,8 @@ export const LogoSettingsDialog = ({
     e.preventDefault();
     
     if (!configId) {
-      toast({
-        title: "Erro",
+      toast.error("Erro", {
         description: "ID de configuração não encontrado. Tente recarregar a página.",
-        variant: "destructive"
       });
       return;
     }
@@ -152,8 +146,7 @@ export const LogoSettingsDialog = ({
         throw new Error(error.message);
       }
 
-      toast({
-        title: "Salvo com sucesso!",
+      toast.success("Salvo com sucesso!", {
         description: "Os logos foram atualizados."
       });
       queryClient.invalidateQueries({ queryKey: ["site-config"] });
@@ -161,10 +154,8 @@ export const LogoSettingsDialog = ({
       onOpenChange(false);
     } catch (error) {
       console.error('Erro ao salvar logos:', error);
-      toast({
-        title: "Erro ao salvar",
+      toast.error("Erro ao salvar", {
         description: error instanceof Error ? error.message : "Não foi possível salvar os logos",
-        variant: "destructive"
       });
     } finally {
       setSaving(false);

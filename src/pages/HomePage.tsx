@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client"; // Importar supabase
+import { toast } from "sonner"; // Importar toast do sonner
 
 const HomePage = () => {
   const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false);

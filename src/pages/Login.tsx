@@ -5,15 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
-import { useQuery } from "@tanstack/react-query"; // Importar useQuery
+import { toast } from "sonner"; // Usar toast do sonner
+import { useQuery } from "@tanstack/react-query";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   const { data: siteConfig } = useQuery({
     queryKey: ["site-config"],
@@ -49,23 +48,18 @@ const Login = () => {
       });
 
       if (error) {
-        toast({
-          title: "Erro no login",
+        toast.error("Erro no login", {
           description: error.message,
-          variant: "destructive"
         });
       } else {
-        toast({
-          title: "Login realizado com sucesso!",
+        toast.success("Login realizado com sucesso!", {
           description: "Redirecionando para o painel..."
         });
         navigate("/");
       }
     } catch (error) {
-      toast({
-        title: "Erro inesperado",
+      toast.error("Erro inesperado", {
         description: "Tente novamente em alguns instantes",
-        variant: "destructive"
       });
     } finally {
       setLoading(false);

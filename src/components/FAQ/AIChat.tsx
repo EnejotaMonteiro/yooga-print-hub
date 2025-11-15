@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Bot, User } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"; // Usar toast do sonner
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -22,7 +22,6 @@ export const AIChat = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const { toast } = useToast();
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -54,19 +53,15 @@ export const AIChat = () => {
 
       if (!resp.ok) {
         if (resp.status === 429) {
-          toast({
-            title: "Limite excedido",
+          toast.error("Limite excedido", {
             description: "Muitas requisições. Aguarde um momento e tente novamente.",
-            variant: "destructive",
           });
           setIsLoading(false);
           return;
         }
         if (resp.status === 402) {
-          toast({
-            title: "Créditos insuficientes",
+          toast.error("Créditos insuficientes", {
             description: "Entre em contato com o administrador do sistema.",
-            variant: "destructive",
           });
           setIsLoading(false);
           return;
@@ -126,10 +121,8 @@ export const AIChat = () => {
       }
     } catch (error) {
       console.error("Chat error:", error);
-      toast({
-        title: "Erro",
+      toast.error("Erro", {
         description: "Não foi possível enviar a mensagem. Tente novamente.",
-        variant: "destructive",
       });
       // Remove o placeholder do assistente se houver erro
       setMessages(prev => prev.filter((_, i) => i !== prev.length - 1));
@@ -177,7 +170,7 @@ export const AIChat = () => {
               )}
             </div>
           ))}
-          {isLoading && messages[messages.length - 1]?.content === "Aiai cara, " && ( // Verifica se é apenas o bordão
+          {isLoading && messages[messages.length - 1]?.content === "Aiai cara, " && (
             <div className="flex gap-3 justify-start">
               <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                 <Bot className="h-4 w-4 text-primary animate-pulse" />

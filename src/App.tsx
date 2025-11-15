@@ -1,4 +1,3 @@
-import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -13,7 +12,7 @@ import FAQPage from "./pages/FAQPage";
 import SuggestionsPage from "./pages/SuggestionsPage";
 import WikiPage from "./pages/WikiPage";
 import GeneralChatPage from "./pages/GeneralChatPage";
-import AIChatPage from "./pages/AIChatPage"; // Importar a nova página
+import AIChatPage from "./pages/AIChatPage";
 import { Sidebar } from "./components/Sidebar";
 
 const queryClient = new QueryClient();
@@ -32,8 +31,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="system" attribute="class">
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
+        <Sonner /> {/* Usando apenas o Toaster do Sonner */}
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -46,7 +44,7 @@ const App = () => (
               <Route path="/suggestions" element={<SuggestionsPage />} />
               <Route path="/wiki" element={<WikiPage />} />
               <Route path="/chat-geral" element={<GeneralChatPage />} />
-              <Route path="/ai-chat" element={<AIChatPage />} /> {/* Nova rota para o AI Chat */}
+              <Route path="/ai-chat" element={<AIChatPage />} />
             </Route>
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

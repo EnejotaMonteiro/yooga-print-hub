@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"; // Usar toast do sonner
 import { Send } from "lucide-react";
 
 interface Message {
@@ -40,7 +40,6 @@ export const PrinterChat = ({ printerId, user, compact = false }: PrinterChatPro
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { toast } = useToast();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -172,10 +171,8 @@ export const PrinterChat = ({ printerId, user, compact = false }: PrinterChatPro
 
       if (error) {
         console.error('Erro ao enviar mensagem:', error);
-        toast({
-          title: "Erro ao enviar mensagem",
+        toast.error("Erro ao enviar mensagem", {
           description: error.message,
-          variant: "destructive"
         });
         return;
       }
@@ -185,10 +182,8 @@ export const PrinterChat = ({ printerId, user, compact = false }: PrinterChatPro
       
     } catch (error) {
       console.error('Erro inesperado ao enviar mensagem:', error);
-      toast({
-        title: "Erro inesperado",
+      toast.error("Erro inesperado", {
         description: "Tente novamente em alguns instantes",
-        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -217,7 +212,7 @@ export const PrinterChat = ({ printerId, user, compact = false }: PrinterChatPro
                       className={`${compact ? "max-w-xs px-3 py-1" : "max-w-xs lg:max-w-md px-4 py-2"} rounded-lg ${
                         isOwnMessage 
                           ? 'bg-gradient-primary text-white' 
-                          : 'bg-card border shadow-sm' // Alterado de bg-white para bg-card
+                          : 'bg-card border shadow-sm'
                       }`}
                     >
                       {!isOwnMessage && (

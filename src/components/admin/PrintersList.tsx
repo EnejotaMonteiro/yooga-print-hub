@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Edit, Trash2, ExternalLink } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"; // Usar toast do sonner
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,7 +26,6 @@ import {
 import { PrinterFormDialog } from "./PrinterFormDialog";
 
 export const PrintersList = () => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedPrinter, setSelectedPrinter] = useState<any>(null);
@@ -56,18 +55,15 @@ export const PrintersList = () => {
 
       if (error) throw error;
 
-      toast({
-        title: "Impressora excluída",
+      toast.success("Impressora excluída", {
         description: "A impressora foi removida com sucesso",
       });
 
       queryClient.invalidateQueries({ queryKey: ["admin-printers"] });
       queryClient.invalidateQueries({ queryKey: ["printers"] });
     } catch (error: any) {
-      toast({
-        title: "Erro ao excluir",
+      toast.error("Erro ao excluir", {
         description: error.message || "Ocorreu um erro ao excluir a impressora",
-        variant: "destructive",
       });
     } finally {
       setDeleteDialogOpen(false);

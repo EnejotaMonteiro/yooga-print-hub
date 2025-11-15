@@ -12,10 +12,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"; // Usar toast do sonner
 import { Loader2 } from "lucide-react";
 import { convertToEmbedUrl } from "@/lib/utils";
-import { useQueryClient } from "@tanstack/react-query"; // Importar useQueryClient
+import { useQueryClient } from "@tanstack/react-query";
 
 interface UniversalVideoFormDialogProps {
   open: boolean;
@@ -34,8 +34,7 @@ export const UniversalVideoFormDialog = ({
   const [configId, setConfigId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const { toast } = useToast();
-  const queryClient = useQueryClient(); // Inicializar useQueryClient
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (open) {
@@ -72,8 +71,7 @@ export const UniversalVideoFormDialog = ({
         setVideoUrl(newConfig?.video_guia_universal_url || '');
         setTitle(newConfig?.titulo_guia_universal || '');
         setDescription(newConfig?.descricao_guia_universal || '');
-        toast({
-          title: "Configuração inicial criada",
+        toast.info("Configuração inicial criada", {
           description: "Uma configuração padrão foi criada automaticamente.",
         });
       } else if (error) {
@@ -86,10 +84,8 @@ export const UniversalVideoFormDialog = ({
       }
     } catch (error) {
       console.error('Erro ao buscar/criar configuração:', error);
-      toast({
-        title: "Erro ao carregar",
+      toast.error("Erro ao carregar", {
         description: "Não foi possível carregar as configurações",
-        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -100,10 +96,8 @@ export const UniversalVideoFormDialog = ({
     e.preventDefault();
     
     if (!configId) {
-      toast({
-        title: "Erro",
+      toast.error("Erro", {
         description: "ID de configuração não encontrado. Tente recarregar a página.",
-        variant: "destructive"
       });
       return;
     }
@@ -129,8 +123,7 @@ export const UniversalVideoFormDialog = ({
         throw new Error(error.message);
       }
 
-      toast({
-        title: "Salvo com sucesso!",
+      toast.success("Salvo com sucesso!", {
         description: "O URL, título e descrição do vídeo foram atualizados"
       });
       queryClient.invalidateQueries({ queryKey: ["site-config"] });
@@ -138,10 +131,8 @@ export const UniversalVideoFormDialog = ({
       onOpenChange(false);
     } catch (error) {
       console.error('Erro ao salvar:', error);
-      toast({
-        title: "Erro ao salvar",
+      toast.error("Erro ao salvar", {
         description: error instanceof Error ? error.message : "Não foi possível salvar as alterações",
-        variant: "destructive"
       });
     } finally {
       setSaving(false);

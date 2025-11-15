@@ -4,7 +4,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { SocketStatus } from "@/components/SocketStatus";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"; // Usar toast do sonner
 import { Download, GripVertical } from "lucide-react";
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -18,7 +18,6 @@ const PrintersPage = () => {
   const [isDragModeActive, setIsDragModeActive] = useState(false);
   const [showDownloadAllButton, setShowDownloadAllButton] = useState(true);
 
-  const { toast } = useToast();
   const { isAdmin, loading: adminLoading } = useAdmin();
   const queryClient = useQueryClient();
 
@@ -83,17 +82,14 @@ const PrintersPage = () => {
         if (error) throw error;
       }
 
-      toast({
-        title: "Ordem atualizada",
+      toast.success("Ordem atualizada", {
         description: "A ordem das impressoras foi salva com sucesso",
       });
       queryClient.invalidateQueries({ queryKey: ["printers"] });
     } catch (error: any) {
       console.error('Erro ao reordenar impressoras:', error);
-      toast({
-        title: "Erro ao reordenar",
+      toast.error("Erro ao reordenar", {
         description: error.message || "Ocorreu um erro ao reordenar as impressoras",
-        variant: "destructive",
       });
       queryClient.invalidateQueries({ queryKey: ["printers"] });
     }

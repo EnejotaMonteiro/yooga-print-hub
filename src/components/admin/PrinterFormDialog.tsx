@@ -22,15 +22,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"; // Usar toast do sonner
 import { supabase } from "@/integrations/supabase/client";
 import { convertToEmbedUrl } from "@/lib/utils";
 
 const printerFormSchema = z.object({
-  nome: z.string().min(1, "O nome da impressora é obrigatório."), // Tornando nome obrigatório
-  video_url: z.string().default(""), // Garantindo string vazia se não preenchido
-  download_url: z.string().min(1, "A URL de download do driver é obrigatória."), // Tornando download_url obrigatório
-  imagem_url: z.string().default(""), // Garantindo string vazia se não preenchido
+  nome: z.string().min(1, "O nome da impressora é obrigatório."),
+  video_url: z.string().default(""),
+  download_url: z.string().min(1, "A URL de download do driver é obrigatória."),
+  imagem_url: z.string().default(""),
   windows_recomendado: z.string().optional().default("Windows 10 e 11"),
   conexao_rede: z.boolean().optional().default(true),
   ativo: z.boolean().optional().default(true),
@@ -53,7 +53,6 @@ export const PrinterFormDialog = ({
   onSuccess,
 }: PrinterFormDialogProps) => {
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
   const isEditing = !!printer;
 
   const form = useForm<PrinterFormValues>({
@@ -101,9 +100,9 @@ export const PrinterFormDialog = ({
     try {
       const formValuesToSave: Partial<PrinterFormValues> = {
         nome: values.nome,
-        video_url: values.video_url || "", // Garante string vazia se o campo for limpo
+        video_url: values.video_url || "",
         download_url: values.download_url,
-        imagem_url: values.imagem_url || "", // Garante string vazia se o campo for limpo
+        imagem_url: values.imagem_url || "",
         windows_recomendado: values.windows_recomendado,
         conexao_rede: values.conexao_rede,
         ativo: values.ativo,
@@ -117,8 +116,7 @@ export const PrinterFormDialog = ({
 
         if (error) throw error;
 
-        toast({
-          title: "Impressora atualizada",
+        toast.success("Impressora atualizada", {
           description: "As informações foram atualizadas com sucesso",
         });
       } else {
@@ -133,8 +131,7 @@ export const PrinterFormDialog = ({
 
         if (error) throw error;
 
-        toast({
-          title: "Impressora adicionada",
+        toast.success("Impressora adicionada", {
           description: "A nova impressora foi cadastrada com sucesso",
         });
       }
@@ -143,10 +140,8 @@ export const PrinterFormDialog = ({
       onOpenChange(false);
       onSuccess();
     } catch (error: any) {
-      toast({
-        title: "Erro",
+      toast.error("Erro", {
         description: error.message || "Ocorreu um erro ao salvar a impressora",
-        variant: "destructive",
       });
     } finally {
       setLoading(false);

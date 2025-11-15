@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { MessageSquareText } from "lucide-react";
 import { PrinterChat } from "@/components/PrinterChat";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"; // Usar toast do sonner
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 
@@ -11,7 +11,6 @@ const GENERAL_CHAT_PRINTER_ID = "general-chat-id"; // ID fictício para o chat g
 const GeneralChatPage = () => {
   const [user, setUser] = useState<any>(null);
   const [loadingUser, setLoadingUser] = useState(true);
-  const { toast } = useToast();
 
   useEffect(() => {
     const getUser = async () => {
@@ -19,10 +18,8 @@ const GeneralChatPage = () => {
       const { data: { session }, error } = await supabase.auth.getSession();
       if (error) {
         console.error("Erro ao buscar sessão:", error);
-        toast({
-          title: "Erro de autenticação",
+        toast.error("Erro de autenticação", {
           description: "Não foi possível carregar as informações do usuário.",
-          variant: "destructive",
         });
       }
       setUser(session?.user || null);
@@ -53,7 +50,7 @@ const GeneralChatPage = () => {
             <CardDescription>
               Você precisa estar logado para participar do chat geral.
             </CardDescription>
-          </CardHeader>
+          </CardDescription>
           <CardContent>
             <p className="text-muted-foreground">
               Por favor, faça login para enviar e visualizar mensagens.

@@ -1,37 +1,34 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus, Home, Image } from "lucide-react"; // Adicionado Image
+import { LogOut, Plus, Home, Image } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"; // Usar toast do sonner
 import { PrintersList } from "@/components/admin/PrintersList";
 import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
 import { UserRolesList } from "@/components/admin/UserRolesList";
 import { TutorialsList } from "@/components/admin/TutorialsList";
 import { TutorialFormDialog } from "@/components/admin/TutorialFormDialog";
 import { SuggestionsList } from "@/components/admin/SuggestionsList";
-import { LogoSettingsDialog } from "@/components/admin/LogoSettingsDialog"; // Importar o novo componente
+import { LogoSettingsDialog } from "@/components/admin/LogoSettingsDialog";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Admin = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [addTutorialDialogOpen, setAddTutorialDialogOpen] = useState(false);
-  const [logoSettingsDialogOpen, setLogoSettingsDialogOpen] = useState(false); // Novo estado para o diálogo de logos
+  const [logoSettingsDialogOpen, setLogoSettingsDialogOpen] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        toast({
-          title: "Acesso negado",
+        toast.error("Acesso negado", {
           description: "Você precisa estar logado para acessar esta área",
-          variant: "destructive"
         });
         navigate("/login");
         return;
@@ -42,21 +39,18 @@ const Admin = () => {
     };
     
     checkAuth();
-  }, [navigate, toast]);
+  }, [navigate]);
 
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      toast({
-        title: "Logout realizado",
+      toast.success("Logout realizado", {
         description: "Você foi desconectado com sucesso"
       });
       navigate("/");
     } catch (error) {
-      toast({
-        title: "Erro no logout",
+      toast.error("Erro no logout", {
         description: "Tente novamente",
-        variant: "destructive"
       });
     }
   };
@@ -73,7 +67,7 @@ const Admin = () => {
   };
 
   const handleLogoSettingsSuccess = () => {
-    queryClient.invalidateQueries({ queryKey: ["site-config"] }); // Invalidar para atualizar logos
+    queryClient.invalidateQueries({ queryKey: ["site-config"] });
     setLogoSettingsDialogOpen(false);
   };
 
@@ -121,7 +115,7 @@ const Admin = () => {
                 Página Inicial
               </Button>
               <Button
-                onClick={() => setLogoSettingsDialogOpen(true)} // Botão para abrir o diálogo de logos
+                onClick={() => setLogoSettingsDialogOpen(true)}
                 variant="outline"
                 size="sm"
                 className="flex items-center gap-2"
