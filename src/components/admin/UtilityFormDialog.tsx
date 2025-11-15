@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, UploadCloud, XCircle } from "lucide-react";
 import { Utility } from "@/data/utilities"; // Importar a interface Utility
+import { Label } from "@/components/ui/label"; // Adicionando a importação do Label
 
 const utilityFormSchema = z.object({
   name: z.string().min(1, "O nome do utilitário é obrigatório."),
