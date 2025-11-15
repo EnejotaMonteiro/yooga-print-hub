@@ -41,9 +41,9 @@ const SidebarLink = ({ to, icon, label, end }: SidebarLinkProps) => (
     </div>
     <span className="opacity-0 max-w-0 overflow-hidden whitespace-nowrap 
                  transition-opacity duration-75 ease-out 
-                 transition-[max-width,margin-left] duration-500 ease-in-out 
+                 transition-[max-width,margin-left] duration-500 ease-in-out delay-75
                  group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2
-                 group-hover:duration-500">
+                 group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out group-hover:delay-0">
       {label}
     </span>
   </NavLink>
@@ -137,9 +137,9 @@ export const Sidebar = () => {
           </div>
           <span className="opacity-0 max-w-0 overflow-hidden whitespace-nowrap 
                  transition-opacity duration-75 ease-out 
-                 transition-[max-width,margin-left] duration-500 ease-in-out 
+                 transition-[max-width,margin-left] duration-500 ease-in-out delay-75
                  group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2
-                 group-hover:duration-500">
+                 group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out group-hover:delay-0">
             Assistente Rogério
           </span>
         </NavLink>
@@ -160,9 +160,9 @@ export const Sidebar = () => {
           </div>
           <span className="opacity-0 max-w-0 overflow-hidden whitespace-nowrap 
                  transition-opacity duration-75 ease-out 
-                 transition-[max-width,margin-left] duration-500 ease-in-out 
+                 transition-[max-width,margin-left] duration-500 ease-in-out delay-75
                  group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2
-                 group-hover:duration-500">
+                 group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out group-hover:delay-0">
             Wiki de Suporte
           </span>
         </a>
@@ -180,9 +180,9 @@ export const Sidebar = () => {
                   title="Painel Admin"
                   className="opacity-0 max-w-0 overflow-hidden 
                              transition-opacity duration-75 ease-out 
-                             transition-[max-width] duration-500 ease-in-out 
+                             transition-[max-width] duration-500 ease-in-out delay-75
                              group-hover:opacity-100 group-hover:max-w-full 
-                             group-hover:duration-500
+                             group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out group-hover:delay-0
                              text-white hover:bg-white/20"
                 >
                   <Shield className="h-4 w-4" />
@@ -191,9 +191,9 @@ export const Sidebar = () => {
               <Button onClick={handleLogout} variant="ghost" size="icon" title="Sair" 
                       className="opacity-0 max-w-0 overflow-hidden 
                                  transition-opacity duration-75 ease-out 
-                                 transition-[max-width] duration-500 ease-in-out 
+                                 transition-[max-width] duration-500 ease-in-out delay-75
                                  group-hover:opacity-100 group-hover:max-w-full 
-                                 group-hover:duration-500
+                                 group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out group-hover:delay-0
                                  text-white hover:bg-white/20">
                 <LogOut className="w-4 h-4" />
               </Button>
@@ -202,9 +202,9 @@ export const Sidebar = () => {
             <Button onClick={() => navigate("/login")} variant="ghost" size="icon" title="Login Admin" 
                     className="opacity-0 max-w-0 overflow-hidden 
                                transition-opacity duration-75 ease-out 
-                               transition-[max-width] duration-500 ease-in-out 
+                               transition-[max-width] duration-500 ease-in-out delay-75
                                group-hover:opacity-100 group-hover:max-w-full 
-                               group-hover:duration-500
+                               group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out group-hover:delay-0
                                text-white hover:bg-white/20">
               <LogIn className="w-4 h-4" />
             </Button>
