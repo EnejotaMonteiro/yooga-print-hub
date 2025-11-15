@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Sheet,
   SheetContent,
@@ -31,9 +31,9 @@ export const PrinterOrderSheet = ({
   const [isSaving, setIsSaving] = useState(false);
 
   // Atualiza a lista local quando as props de impressoras mudam (ex: após um save)
-  useState(() => {
+  useEffect(() => {
     setLocalPrinters(printers);
-  }, [printers]);
+  }, [printers]); // Dependência na prop 'printers'
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
@@ -82,30 +82,36 @@ export const PrinterOrderSheet = ({
                     ref={provided.innerRef}
                     className="space-y-2"
                   >
-                    {localPrinters.map((printer, index) => (
-                      <Draggable key={printer.id} draggableId={printer.id} index={index}>
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            className={cn(
-                              "flex items-center gap-3 p-3 border rounded-md bg-card text-foreground",
-                              snapshot.isDragging && "bg-primary/10 border-primary shadow-md"
-                            )}
-                          >
+                    {localPrinters.length > 0 ? ( // Verifica se há impressoras para exibir
+                      localPrinters.map((printer, index) => (
+                        <Draggable key={printer.id} draggableId={printer.id} index={index}>
+                          {(provided, snapshot) => (
                             <div
-                              {...provided.dragHandleProps}
-                              className="cursor-grab text-muted-foreground hover:text-foreground"
-                              title="Arrastar para reordenar"
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              className={cn(
+                                "flex items-center gap-3 p-3 border rounded-md bg-card text-foreground",
+                                snapshot.isDragging && "bg-primary/10 border-primary shadow-md"
+                              )}
                             >
-                              <GripVertical className="h-5 w-5" />
+                              <div
+                                {...provided.dragHandleProps}
+                                className="cursor-grab text-muted-foreground hover:text-foreground"
+                                title="Arrastar para reordenar"
+                              >
+                                <GripVertical className="h-5 w-5" />
+                              </div>
+                              <span className="flex-1 font-medium">{printer.nome}</span>
+                              <span className="text-sm text-muted-foreground">{index + 1}</span>
                             </div>
-                            <span className="flex-1 font-medium">{printer.nome}</span>
-                            <span className="text-sm text-muted-foreground">{index + 1}</span>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
+                          )}
+                        </Draggable>
+                      ))
+                    ) : (
+                      <div className="text-center py-8 text-muted-foreground">
+                        Nenhuma impressora cadastrada.
+                      </div>
+                    )}
                     {provided.placeholder}
                   </div>
                 )}
