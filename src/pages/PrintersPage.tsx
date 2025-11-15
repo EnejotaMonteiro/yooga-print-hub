@@ -124,7 +124,7 @@ const PrintersPage = () => {
         <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
         <div className="flex items-center gap-4">
           {showDownloadAllButton && (
-            <> {/* Adicionado fragmento React aqui */}
+            <> {/* Fragmento React adicionado aqui */}
               <a 
                 href="https://drive.google.com/drive/folders/1-pro0D_-06g22xL_1o2N5UAMCGiRAEol?usp=drive_link" 
                 target="_blank" 
