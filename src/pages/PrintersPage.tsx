@@ -123,17 +123,19 @@ const PrintersPage = () => {
       <div className="flex items-center justify-between mb-8">
         <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
         <div className="flex items-center gap-4">
-          {showDownloadAllButton && ( {/* CORREÇÃO AQUI */}
-            <a 
-              href="https://drive.google.com/drive/folders/1-pro0D_-06g22xL_1o2N5UAMCGiRAEol?usp=drive_link" 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              <Button variant="outline" size="sm" className="flex items-center gap-2">
-                <Download className="w-4 h-4" />
-                <span className="hidden sm:inline">Download Todos</span>
-              </Button>
-            </a>
+          {showDownloadAllButton && (
+            <> {/* Adicionado fragmento React aqui */}
+              <a 
+                href="https://drive.google.com/drive/folders/1-pro0D_-06g22xL_1o2N5UAMCGiRAEol?usp=drive_link" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Download className="w-4 h-4" />
+                  <span className="hidden sm:inline">Download Todos</span>
+                </Button>
+              </a>
+            </>
           )}
           <SocketStatus />
           {isAdmin && (
