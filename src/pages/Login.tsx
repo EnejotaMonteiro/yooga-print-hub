@@ -7,6 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner"; // Usar toast do sonner
 import { useQuery } from "@tanstack/react-query";
+import { Home } from "lucide-react"; // Importar ícone Home
+import { ThemeToggle } from "@/components/ThemeToggle"; // Importar o componente ThemeToggle
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -67,7 +69,20 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative">
+      {/* Botões de navegação e tema */}
+      <div className="absolute top-4 right-4 flex gap-2">
+        <Button 
+          variant="outline" 
+          size="icon" 
+          onClick={() => navigate("/")} 
+          title="Voltar para a Página Inicial"
+        >
+          <Home className="h-4 w-4" />
+        </Button>
+        <ThemeToggle />
+      </div>
+
       <Card className="w-full max-w-sm bg-card/95 backdrop-blur-sm border-border/30 shadow-2xl">
         <CardHeader className="text-center pb-2">
           <img 
