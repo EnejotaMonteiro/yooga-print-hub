@@ -95,20 +95,28 @@ export const Sidebar = () => {
     }
   };
 
+  const minimizedLogoSrc = "/lovable-uploads/SUPORTINHO_MIN.png";
+  const expandedLogoSrc = "/lovable-uploads/SUPORTINHO.png";
+
+  React.useEffect(() => {
+    console.log("Caminho do logo minimizado:", minimizedLogoSrc);
+    console.log("Caminho do logo expandido:", expandedLogoSrc);
+  }, []);
+
   return (
     <div className="flex flex-col h-screen w-20 group border-r bg-card/60 backdrop-blur-sm p-4 shadow-md transition-all duration-300 ease-in-out hover:w-64">
       <div className="flex items-center justify-center group-hover:justify-start h-20 mb-6 px-2 relative">
-        {/* Logo para barra lateral minimizada */}
+        {/* Logo para barra lateral minimizada (sem classes de opacidade/hover para depuração) */}
         <img 
-          src="/lovable-uploads/SUPORTINHO_MIN.png" 
+          src={minimizedLogoSrc} 
           alt="Yooga Suporte Logo Minimizado" 
-          className="h-12 w-auto absolute opacity-100 group-hover:opacity-0 transition-all duration-300 ease-in-out" 
+          className="h-12 w-auto absolute transition-all duration-300 ease-in-out group-hover:hidden" 
         />
-        {/* Logo para barra lateral expandida */}
+        {/* Logo para barra lateral expandida (sem classes de opacidade/hover para depuração) */}
         <img 
-          src="/lovable-uploads/SUPORTINHO.png" 
+          src={expandedLogoSrc} 
           alt="Yooga Suporte Logo Completo" 
-          className="h-12 w-auto opacity-0 group-hover:opacity-100 group-hover:h-16 transition-all duration-300 ease-in-out" 
+          className="h-12 w-auto transition-all duration-300 ease-in-out group-hover:h-16 group-hover:block hidden" 
         />
       </div>
       <nav className="flex-1 grid items-start gap-1">
