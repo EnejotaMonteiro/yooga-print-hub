@@ -17,8 +17,8 @@ interface PrinterCardProps {
 
   innerRef?: (element: HTMLElement | null) => void;
   draggableProps?: any;
-  dragHandleProps?: any; // Esta prop será aplicada ao handle
-  isDragModeActive: boolean; // Adicionado para controlar a ativação do dragHandleProps
+  dragHandleProps?: any; // Esta prop será aplicada ao Card
+  isDragModeActive: boolean;
   isDragging?: boolean; // Adicionado para estilo visual durante o arrasto
 }
 
@@ -34,7 +34,7 @@ export const PrinterCard = ({
   imageUrl,
   innerRef,
   draggableProps,
-  dragHandleProps,
+  dragHandleProps, // Esta prop é agora para o Card
   isDragModeActive,
   isDragging,
 }: PrinterCardProps) => {
@@ -44,24 +44,26 @@ export const PrinterCard = ({
 
   return (
     <Card 
-      className={`group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant relative transition-smooth
-        ${isDragging ? "border-primary shadow-glow" : "hover:scale-105"}
-      `}
+      className={cn(
+        `group overflow-hidden bg-card/80 backdrop-blur-sm border-border/20 shadow-elegant relative transition-smooth`,
+        isDragging ? "border-primary shadow-glow z-50 rotate-2" : "hover:scale-105", // Adicionado z-50 e rotate-2 para feedback visual
+        isDragModeActive && "cursor-grab" // Indica que o cartão é arrastável
+      )}
       ref={innerRef}
-      {...draggableProps} // draggableProps ainda se aplicam ao cartão inteiro para posicionamento
+      {...draggableProps}
+      {...(isDragModeActive ? dragHandleProps : {})} // Aplica dragHandleProps ao Card inteiro condicionalmente
     >
       {isAdmin && (
         <div className="absolute top-2 right-2 flex gap-1 z-10">
           {isDragModeActive && (
+            // O GripVertical agora é apenas um indicador visual, não o handle exclusivo de arrasto
             <div
               className={cn(
                 "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium",
-                "ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                "disabled:pointer-events-none disabled:opacity-50",
-                "h-8 w-8 bg-background/80 hover:bg-background cursor-grab", // Estilos do botão ghost/icon
+                "h-8 w-8 bg-background/80 hover:bg-background cursor-grab",
               )}
               title="Arrastar para reordenar"
-              {...dragHandleProps} // Aplicado aqui ao div
+              // dragHandleProps removido daqui, pois agora está no Card
             >
               <GripVertical className="w-4 h-4" />
             </div>
