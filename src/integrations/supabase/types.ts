@@ -18,17 +18,23 @@ export type Database = {
         Row: {
           id: string
           updated_at: string | null
-          video_guia_universal_url: string
+          logo_min_url: string | null
+          logo_full_url: string | null
+          logo_login_url: string | null
         }
         Insert: {
           id?: string
           updated_at?: string | null
-          video_guia_universal_url: string
+          logo_min_url?: string | null
+          logo_full_url?: string | null
+          logo_login_url?: string | null
         }
         Update: {
           id?: string
           updated_at?: string | null
-          video_guia_universal_url?: string
+          logo_min_url?: string | null
+          logo_full_url?: string | null
+          logo_login_url?: string | null
         }
         Relationships: []
       }
@@ -146,6 +152,60 @@ export type Database = {
         }
         Relationships: []
       }
+      sugestoes: {
+        Row: {
+          id: string;
+          nome_remetente: string | null;
+          conteudo_sugestao: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          nome_remetente?: string | null;
+          conteudo_sugestao: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          nome_remetente?: string | null;
+          conteudo_sugestao?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      tutoriais: {
+        Row: {
+          id: string;
+          titulo: string;
+          descricao: string;
+          video_url: string;
+          ordem: number | null;
+          ativo: boolean | null;
+          created_at: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          titulo: string;
+          descricao: string;
+          video_url: string;
+          ordem?: number | null;
+          ativo?: boolean | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          titulo?: string;
+          descricao?: string;
+          video_url?: string;
+          ordem?: number | null;
+          ativo?: boolean | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [];
+      };
     }
     Views: {
       [_ in never]: never
@@ -160,7 +220,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "super_admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -236,7 +296,7 @@ export type TablesUpdate<
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternado
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
@@ -288,7 +348,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "super_admin"],
     },
   },
 } as const

@@ -3,55 +3,44 @@ import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery } from "@tanstack/react-query";
-import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog";
+// Removido: import { UniversalVideoFormDialog } from "@/components/admin/UniversalVideoFormDialog";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client"; // Importar supabase
 import { toast } from "sonner"; // Importar toast do sonner
 
 const HomePage = () => {
-  const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false);
+  // Removido: const [isUniversalVideoDialogOpen, setIsUniversalVideoDialogOpen] = useState(false);
+  // Removido: const { isAdmin } = useAdmin();
+  // Removido: const { data: siteConfig, isLoading: loadingSiteConfig } = useQuery({
+  // Removido:   queryKey: ["site-config"],
+  // Removido:   queryFn: async () => {
+  // Removido:     const { data, error } = await supabase
+  // Removido:       .from('configuracao_site')
+  // Removido:       .select('video_guia_universal_url, titulo_guia_universal, descricao_guia_universal, logo_full_url')
+  // Removido:       .single();
+  // Removido:     if (error && error.code === 'PGRST116') {
+  // Removido:       const defaultLogoUrl = '/lovable-uploads/default-full-logo.png';
+  // Removido:       const { data: newConfig, error: insertError } = await supabase
+  // Removido:         .from('configuracao_site')
+  // Removido:         .insert({
+  // Removido:           logo_min_url: defaultLogoUrl,
+  // Removido:           logo_full_url: defaultLogoUrl,
+  // Removido:           logo_login_url: defaultLogoUrl,
+  // Removido:         })
+  // Removido:         .select('video_guia_universal_url, titulo_guia_universal, descricao_guia_universal, logo_full_url')
+  // Removido:         .single();
+  // Removido:       if (insertError) throw insertError;
+  // Removido:       return newConfig;
+  // Removido:     } else if (error) {
+  // Removido:       throw error;
+  // Removido:     }
+  // Removido:     return data;
+  // Removido:   },
+  // Removido: });
 
-  const { isAdmin } = useAdmin();
-
-  const { data: siteConfig, isLoading: loadingSiteConfig } = useQuery({
-    queryKey: ["site-config"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('configuracao_site')
-        .select('video_guia_universal_url, titulo_guia_universal, descricao_guia_universal, logo_full_url') // Incluindo logo_full_url para consistência
-        .single();
-
-      if (error && error.code === 'PGRST116') {
-        const defaultVideoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
-        const defaultTitle = 'Guia Universal de Configuração';
-        const defaultDescription = 'Assista ao vídeo para um guia completo de configuração de impressoras.';
-        const defaultLogoUrl = '/lovable-uploads/default-full-logo.png';
-
-        const { data: newConfig, error: insertError } = await supabase
-          .from('configuracao_site')
-          .insert({
-            video_guia_universal_url: defaultVideoUrl,
-            titulo_guia_universal: defaultTitle,
-            descricao_guia_universal: defaultDescription,
-            logo_min_url: defaultLogoUrl, // Definindo todos os logos para o mesmo default
-            logo_full_url: defaultLogoUrl,
-            logo_login_url: defaultLogoUrl,
-          })
-          .select('video_guia_universal_url, titulo_guia_universal, descricao_guia_universal, logo_full_url')
-          .single();
-        if (insertError) throw insertError;
-        return newConfig;
-      } else if (error) {
-        throw error;
-      }
-      return data;
-    },
-  });
-
-  const defaultFallbackVideoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ'; // URL de fallback
-  const videoGuiaUrl = siteConfig?.video_guia_universal_url || defaultFallbackVideoUrl;
-  const guiaTitle = siteConfig?.titulo_guia_universal || 'Guia Universal de Configuração';
-  const guiaDescription = siteConfig?.descricao_guia_universal || 'Assista ao vídeo para um guia completo de configuração de impressoras.';
+  const videoGuiaUrl = 'https://www.youtube.com/embed/TLKh-evOW5k';
+  const guiaTitle = 'Guia Universal de Configuração';
+  const guiaDescription = 'Assista ao vídeo para um guia completo de configuração de impressoras.';
 
   return (
     <div className="container mx-auto px-4 py-8 md:pl-8">
@@ -63,7 +52,7 @@ const HomePage = () => {
             "bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden relative transition-all duration-300 ease-in-out",
             "w-full" // Ocupa a largura total agora
         )}>
-          {isAdmin && (
+          {/* Removido: isAdmin && (
             <Button
               variant="ghost"
               size="icon"
@@ -73,12 +62,12 @@ const HomePage = () => {
             >
               <Settings className="w-4 h-4" />
             </Button>
-          )}
-          {loadingSiteConfig ? (
+          ) */}
+          {/* Removido: loadingSiteConfig ? (
             <div className="aspect-video flex items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
-          ) : (
+          ) : ( */}
             <div className="aspect-video">
               <iframe
                 src={videoGuiaUrl}
@@ -89,7 +78,7 @@ const HomePage = () => {
                 allowFullScreen
               />
             </div>
-          )}
+          {/* ) */}
           <div className="p-6 text-center">
             <h2 className="text-xl font-semibold mb-4 text-foreground">
               {guiaTitle}
@@ -101,15 +90,14 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Universal Video Edit Dialog */}
-      <UniversalVideoFormDialog
+      {/* Removido: Universal Video Edit Dialog */}
+      {/* Removido: <UniversalVideoFormDialog
         open={isUniversalVideoDialogOpen}
         onOpenChange={setIsUniversalVideoDialogOpen}
         onSuccess={() => {
-          // Invalidar site-config query to refetch updated data
           queryClient.invalidateQueries({ queryKey: ["site-config"] });
         }}
-      />
+      /> */}
     </div>
   );
 };
