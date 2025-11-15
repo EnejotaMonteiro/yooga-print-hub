@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus, Home, Image } from "lucide-react";
+import { LogOut, Plus, Home, Image, Wrench } from "lucide-react"; // Adicionado Wrench
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner"; // Usar toast do sonner
+import { toast } from "sonner";
 import { PrintersList } from "@/components/admin/PrintersList";
 import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
 import { UserRolesList } from "@/components/admin/UserRolesList";
@@ -11,6 +11,8 @@ import { TutorialsList } from "@/components/admin/TutorialsList";
 import { TutorialFormDialog } from "@/components/admin/TutorialFormDialog";
 import { SuggestionsList } from "@/components/admin/SuggestionsList";
 import { LogoSettingsDialog } from "@/components/admin/LogoSettingsDialog";
+import { UtilitiesList } from "@/components/admin/UtilitiesList"; // Importar UtilitiesList
+import { UtilityFormDialog } from "@/components/admin/UtilityFormDialog"; // Importar UtilityFormDialog
 import { useQueryClient } from "@tanstack/react-query";
 
 const Admin = () => {
@@ -18,8 +20,9 @@ const Admin = () => {
   const queryClient = useQueryClient();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [addPrinterDialogOpen, setAddPrinterDialogOpen] = useState(false); // Renomeado para clareza
   const [addTutorialDialogOpen, setAddTutorialDialogOpen] = useState(false);
+  const [addUtilityDialogOpen, setAddUtilityDialogOpen] = useState(false); // Novo estado para dialog de utilitários
   const [logoSettingsDialogOpen, setLogoSettingsDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -55,15 +58,22 @@ const Admin = () => {
     }
   };
 
-  const handleAddSuccess = () => {
+  const handlePrinterSuccess = () => { // Renomeado para clareza
     queryClient.invalidateQueries({ queryKey: ["printers"] });
     queryClient.invalidateQueries({ queryKey: ["admin-printers"] });
+    setAddPrinterDialogOpen(false); // Fechar dialog após sucesso
   };
 
   const handleTutorialSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ["tutorials"] });
     queryClient.invalidateQueries({ queryKey: ["admin-tutorials"] });
     setAddTutorialDialogOpen(false);
+  };
+
+  const handleUtilitySuccess = () => { // Novo handler para utilitários
+    queryClient.invalidateQueries({ queryKey: ["utilities"] });
+    queryClient.invalidateQueries({ queryKey: ["admin-utilities"] });
+    setAddUtilityDialogOpen(false);
   };
 
   const handleLogoSettingsSuccess = () => {
@@ -98,7 +108,7 @@ const Admin = () => {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold text-foreground">Painel Administrativo</h1>
-              <p className="text-sm text-muted-foreground">Gerencie impressoras e configurações</p>
+              <p className="text-sm text-muted-foreground mt-1">Gerencie impressoras e configurações</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
@@ -151,7 +161,7 @@ const Admin = () => {
               </div>
               <Button 
                 className="flex items-center gap-2"
-                onClick={() => setAddDialogOpen(true)}
+                onClick={() => setAddPrinterDialogOpen(true)}
               >
                 <Plus className="w-4 h-4" />
                 Adicionar Impressora
@@ -185,6 +195,26 @@ const Admin = () => {
             <TutorialsList />
           </div>
 
+          {/* Gerenciar Utilitários */}
+          <div className="bg-card rounded-lg p-6 shadow-elegant">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-xl font-semibold text-foreground">Gerenciar Utilitários</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Adicione, edite ou remova utilitários para download
+                </p>
+              </div>
+              <Button 
+                className="flex items-center gap-2"
+                onClick={() => setAddUtilityDialogOpen(true)}
+              >
+                <Plus className="w-4 h-4" />
+                Adicionar Utilitário
+              </Button>
+            </div>
+            <UtilitiesList />
+          </div>
+
           {/* Gerenciar Sugestões */}
           <div className="bg-card rounded-lg p-6 shadow-elegant">
             <SuggestionsList />
@@ -193,15 +223,21 @@ const Admin = () => {
       </div>
 
       <PrinterFormDialog
-        open={addDialogOpen}
-        onOpenChange={setAddDialogOpen}
-        onSuccess={handleAddSuccess}
+        open={addPrinterDialogOpen}
+        onOpenChange={setAddPrinterDialogOpen}
+        onSuccess={handlePrinterSuccess}
       />
 
       <TutorialFormDialog
         open={addTutorialDialogOpen}
         onOpenChange={setAddTutorialDialogOpen}
         onSuccess={handleTutorialSuccess}
+      />
+
+      <UtilityFormDialog
+        open={addUtilityDialogOpen}
+        onOpenChange={setAddUtilityDialogOpen}
+        onSuccess={handleUtilitySuccess}
       />
 
       <LogoSettingsDialog
