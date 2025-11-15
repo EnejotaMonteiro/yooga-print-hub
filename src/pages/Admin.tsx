@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus, Home, Image, Wrench } from "lucide-react"; // Adicionado Wrench
+import { LogOut, Plus, Home, Image, Wrench } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { PrintersList } from "@/components/admin/PrintersList";
@@ -11,8 +11,8 @@ import { TutorialsList } from "@/components/admin/TutorialsList";
 import { TutorialFormDialog } from "@/components/admin/TutorialFormDialog";
 import { SuggestionsList } from "@/components/admin/SuggestionsList";
 import { LogoSettingsDialog } from "@/components/admin/LogoSettingsDialog";
-import { UtilitiesList } from "@/components/admin/UtilitiesList"; // Importar UtilitiesList
-import { UtilityFormDialog } from "@/components/admin/UtilityFormDialog"; // Importar UtilityFormDialog
+import { UtilitiesList } from "@/components/admin/UtilitiesList";
+import { UtilityFormDialog } from "@/components/admin/UtilityFormDialog";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Admin = () => {
@@ -20,9 +20,9 @@ const Admin = () => {
   const queryClient = useQueryClient();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [addPrinterDialogOpen, setAddPrinterDialogOpen] = useState(false); // Renomeado para clareza
+  const [addPrinterDialogOpen, setAddPrinterDialogOpen] = useState(false);
   const [addTutorialDialogOpen, setAddTutorialDialogOpen] = useState(false);
-  const [addUtilityDialogOpen, setAddUtilityDialogOpen] = useState(false); // Novo estado para dialog de utilitários
+  // Removido: const [addUtilityDialogOpen, setAddUtilityDialogOpen] = useState(false);
   const [logoSettingsDialogOpen, setLogoSettingsDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -58,10 +58,10 @@ const Admin = () => {
     }
   };
 
-  const handlePrinterSuccess = () => { // Renomeado para clareza
+  const handlePrinterSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ["printers"] });
     queryClient.invalidateQueries({ queryKey: ["admin-printers"] });
-    setAddPrinterDialogOpen(false); // Fechar dialog após sucesso
+    setAddPrinterDialogOpen(false);
   };
 
   const handleTutorialSuccess = () => {
@@ -70,11 +70,11 @@ const Admin = () => {
     setAddTutorialDialogOpen(false);
   };
 
-  const handleUtilitySuccess = () => { // Novo handler para utilitários
-    queryClient.invalidateQueries({ queryKey: ["utilities"] });
-    queryClient.invalidateQueries({ queryKey: ["admin-utilities"] });
-    setAddUtilityDialogOpen(false);
-  };
+  // Removido: const handleUtilitySuccess = () => {
+  // Removido:   queryClient.invalidateQueries({ queryKey: ["utilities"] });
+  // Removido:   queryClient.invalidateQueries({ queryKey: ["admin-utilities"] });
+  // Removido:   setAddUtilityDialogOpen(false);
+  // Removido: };
 
   const handleLogoSettingsSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ["site-config"] });
@@ -201,16 +201,10 @@ const Admin = () => {
               <div>
                 <h2 className="text-xl font-semibold text-foreground">Gerenciar Utilitários</h2>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Adicione, edite ou remova utilitários para download
+                  Edite ou remova utilitários para download
                 </p>
               </div>
-              <Button 
-                className="flex items-center gap-2"
-                onClick={() => setAddUtilityDialogOpen(true)}
-              >
-                <Plus className="w-4 h-4" />
-                Adicionar Utilitário
-              </Button>
+              {/* Removido o botão "Adicionar Utilitário" daqui */}
             </div>
             <UtilitiesList />
           </div>
@@ -234,11 +228,12 @@ const Admin = () => {
         onSuccess={handleTutorialSuccess}
       />
 
-      <UtilityFormDialog
+      {/* Removido: UtilityFormDialog para adicionar utilitários */}
+      {/* Removido: <UtilityFormDialog
         open={addUtilityDialogOpen}
         onOpenChange={setAddUtilityDialogOpen}
         onSuccess={handleUtilitySuccess}
-      />
+      /> */}
 
       <LogoSettingsDialog
         open={logoSettingsDialogOpen}

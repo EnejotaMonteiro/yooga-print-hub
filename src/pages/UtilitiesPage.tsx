@@ -1,17 +1,18 @@
-import { Download, Wrench, Pencil, Loader2 } from "lucide-react";
+import { Download, Wrench, Pencil, Loader2, Plus } from "lucide-react"; // Adicionado Plus
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
-import { UtilityFormDialog } from "@/components/admin/UtilityFormDialog"; // Importar o dialog de formulário
+import { UtilityFormDialog } from "@/components/admin/UtilityFormDialog";
 import { useState } from "react";
-import { Utility } from "@/data/utilities"; // Importar a interface Utility
+import { Utility } from "@/data/utilities";
 
 const UtilitiesPage = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
   const queryClient = useQueryClient();
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [addDialogOpen, setAddDialogOpen] = useState(false); // Novo estado para o dialog de adicionar
   const [selectedUtility, setSelectedUtility] = useState<Utility | null>(null);
 
   const { data: utilities, isLoading } = useQuery<Utility[]>({
@@ -32,7 +33,12 @@ const UtilitiesPage = () => {
     setEditDialogOpen(true);
   };
 
-  const handleFormSuccess = () => {
+  const handleAddSuccess = () => { // Handler para sucesso ao adicionar
+    queryClient.invalidateQueries({ queryKey: ["utilities"] });
+    setAddDialogOpen(false);
+  };
+
+  const handleEditSuccess = () => { // Handler para sucesso ao editar
     queryClient.invalidateQueries({ queryKey: ["utilities"] });
     setEditDialogOpen(false);
     setSelectedUtility(null);
@@ -40,10 +46,24 @@ const UtilitiesPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 md:pl-8">
-      <h1 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
-        <Wrench className="h-7 w-7 text-primary" />
-        Utilitários
-      </h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
+          <Wrench className="h-7 w-7 text-primary" />
+          Utilitários
+        </h1>
+        {isAdmin && (
+          <Button 
+            className="flex items-center gap-2"
+            onClick={() => {
+              setSelectedUtility(null); // Garante que o formulário esteja vazio para adicionar
+              setAddDialogOpen(true);
+            }}
+          >
+            <Plus className="w-4 h-4" />
+            Adicionar Utilitário
+          </Button>
+        )}
+      </div>
 
       {(isLoading || adminLoading) ? (
         <div className="text-center py-8">
@@ -91,11 +111,20 @@ const UtilitiesPage = () => {
         </div>
       )}
 
+      {/* Dialog para adicionar novo utilitário */}
+      <UtilityFormDialog
+        open={addDialogOpen}
+        onOpenChange={setAddDialogOpen}
+        onSuccess={handleAddSuccess}
+        utility={null} // Garante que o formulário esteja vazio para adicionar
+      />
+
+      {/* Dialog para editar utilitário existente */}
       <UtilityFormDialog
         open={editDialogOpen}
         onOpenChange={setEditDialogOpen}
         utility={selectedUtility}
-        onSuccess={handleFormSuccess}
+        onSuccess={handleEditSuccess}
       />
     </div>
   );
