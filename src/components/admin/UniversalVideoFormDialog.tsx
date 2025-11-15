@@ -10,12 +10,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea"; // Importar Textarea
+import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { convertToEmbedUrl } from "@/lib/utils";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query"; // Importar useQueryClient
 
 interface UniversalVideoFormDialogProps {
   open: boolean;
@@ -29,13 +29,13 @@ export const UniversalVideoFormDialog = ({
   onSuccess,
 }: UniversalVideoFormDialogProps) => {
   const [videoUrl, setVideoUrl] = useState("");
-  const [title, setTitle] = useState(""); // Novo estado para o título
-  const [description, setDescription] = useState(""); // Novo estado para a descrição
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [configId, setConfigId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient(); // Inicializar useQueryClient
 
   useEffect(() => {
     if (open) {
