@@ -142,7 +142,7 @@ export const Sidebar = () => {
         </a>
       </nav>
       <div className="mt-auto pt-4 border-t border-border flex flex-col gap-2">
-        <div className="flex items-center justify-center group-hover:justify-start group-hover:gap-2">
+        <div className="flex items-center justify-center group-hover:justify-end group-hover:gap-2"> {/* Alterado para group-hover:justify-end */}
           <ThemeToggle />
           {user ? (
             <>
