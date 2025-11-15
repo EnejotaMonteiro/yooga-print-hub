@@ -109,7 +109,7 @@ export const UtilitiesList = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[80px]">Ordem</TableHead>
+              {/* Removido: <TableHead className="w-[80px]">Ordem</TableHead> */}
               <TableHead>Nome</TableHead>
               <TableHead>Descrição</TableHead>
               <TableHead className="text-right w-[120px]">Ações</TableHead>
@@ -118,7 +118,7 @@ export const UtilitiesList = () => {
           <TableBody>
             {utilities.map((utility) => (
               <TableRow key={utility.id}>
-                <TableCell className="font-medium">{utility.ordem}</TableCell>
+                {/* Removido: <TableCell className="font-medium">{utility.ordem}</TableCell> */}
                 <TableCell>
                   <div className="flex items-center gap-2">
                     {utility.name}

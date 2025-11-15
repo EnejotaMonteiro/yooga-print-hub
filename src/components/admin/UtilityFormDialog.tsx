@@ -26,14 +26,14 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, UploadCloud, XCircle } from "lucide-react";
 import { Utility } from "@/data/utilities"; // Importar a interface Utility
-import { Label } from "@/components/ui/label"; // Adicionando a importação do Label
+import { Label } from "@/components/ui/label";
 
 const utilityFormSchema = z.object({
   name: z.string().min(1, "O nome do utilitário é obrigatório."),
   description: z.string().min(1, "A descrição é obrigatória."),
   download_url: z.string().url("A URL de download deve ser válida.").min(1, "A URL de download é obrigatória."),
   image_url: z.string().url("A URL da imagem deve ser válida.").optional().or(z.literal("")),
-  ordem: z.coerce.number().int().min(0).optional().default(0),
+  // Removido: ordem: z.coerce.number().int().min(0).optional().default(0),
 });
 
 type UtilityFormValues = z.infer<typeof utilityFormSchema>;
@@ -63,7 +63,7 @@ export const UtilityFormDialog = ({
       description: utility?.description || "",
       download_url: utility?.download_url || "",
       image_url: utility?.image_url || "",
-      ordem: utility?.ordem || 0,
+      // Removido: ordem: utility?.ordem || 0,
     },
   });
 
@@ -74,7 +74,7 @@ export const UtilityFormDialog = ({
         description: utility.description || "",
         download_url: utility.download_url || "",
         image_url: utility.image_url || "",
-        ordem: utility.ordem || 0,
+        // Removido: ordem: utility.ordem || 0,
       });
       setCurrentImageUrl(utility.image_url);
     } else {
@@ -83,7 +83,7 @@ export const UtilityFormDialog = ({
         description: "",
         download_url: "",
         image_url: "",
-        ordem: 0,
+        // Removido: ordem: 0,
       });
       setCurrentImageUrl(null);
     }
@@ -124,7 +124,7 @@ export const UtilityFormDialog = ({
         description: values.description,
         download_url: values.download_url,
         image_url: imageUrlToSave,
-        ordem: values.ordem,
+        // Removido: ordem: values.ordem,
       };
 
       if (isEditing) {
@@ -139,6 +139,7 @@ export const UtilityFormDialog = ({
           description: "As informações do utilitário foram atualizadas com sucesso",
         });
       } else {
+        // Ao criar um novo utilitário, a ordem será definida automaticamente no onDragEnd
         const { error } = await supabase
           .from("utilitarios")
           .insert([utilityData]);
@@ -252,7 +253,8 @@ export const UtilityFormDialog = ({
               )}
             </div>
 
-            <FormField
+            {/* Removido: Ordem de Exibição */}
+            {/* <FormField
               control={form.control}
               name="ordem"
               render={({ field }) => (
@@ -267,7 +269,7 @@ export const UtilityFormDialog = ({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             <DialogFooter>
               <Button
