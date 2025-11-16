@@ -404,7 +404,7 @@ const ScalesPage = () => {
       <Card className="mt-8 bg-card/80 backdrop-blur-sm border-border shadow-elegant">
         <CardContent
           className={cn(
-            "p-6 prose prose-sm dark:prose-invert max-w-none text-center", // Adicionado text-center aqui
+            "p-6 prose prose-sm dark:prose-invert max-w-none text-center",
             isEditingPageContent && isDraggingOver && "border-2 border-dashed border-primary-foreground bg-primary/5" // Estilo para drag-over
           )}
           onDragOver={handleDragOver}
@@ -424,6 +424,9 @@ const ScalesPage = () => {
                 placeholder="Escreva o conteúdo da página de Balanças aqui usando Markdown..."
                 className="min-h-[300px] font-mono text-sm"
               />
+              <p className="text-xs text-muted-foreground">
+                Use **negrito**, *itálico*, `# títulos`, `- listas` e até mesmo HTML para formatar o texto.
+              </p>
               <div className="space-y-2">
                 <Label htmlFor="imageUpload">Upload de Imagem</Label>
                 <div className="flex items-center gap-2">
