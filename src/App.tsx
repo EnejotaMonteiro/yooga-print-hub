@@ -16,6 +16,7 @@ import UtilitiesPage from "./pages/UtilitiesPage";
 import ScalesPage from "./pages/ScalesPage"; // Importar a nova página de Balanças
 import ResetPassword from "./pages/ResetPassword";
 import { Sidebar } from "./components/Sidebar";
+import { HiddenInfoProvider } from "./contexts/HiddenInfoContext"; // Importar o provedor de contexto
 
 const queryClient = new QueryClient();
 
@@ -35,25 +36,27 @@ const App = () => (
       <TooltipProvider>
         <Sonner /> {/* Usando apenas o Toaster do Sonner */}
         <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/admin" element={<Admin />} /> {/* Admin page without sidebar */}
-            <Route path="/reset-password" element={<ResetPassword />} />
-            
-            <Route element={<LayoutWithSidebar />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/printers" element={<PrintersPage />} />
-              <Route path="/faq" element={<FAQPage />} />
-              <Route path="/suggestions" element={<SuggestionsPage />} />
-              <Route path="/wiki" element={<WikiPage />} />
-              <Route path="/ai-chat" element={<AIChatPage />} />
-              <Route path="/utilities" element={<UtilitiesPage />} />
-              <Route path="/scales" element={<ScalesPage />} /> {/* Nova rota para Balanças */}
-            </Route>
+          <HiddenInfoProvider> {/* Envolvendo a aplicação com o provedor */}
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/admin" element={<Admin />} /> {/* Admin page without sidebar */}
+              <Route path="/reset-password" element={<ResetPassword />} />
+              
+              <Route element={<LayoutWithSidebar />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/printers" element={<PrintersPage />} />
+                <Route path="/faq" element={<FAQPage />} />
+                <Route path="/suggestions" element={<SuggestionsPage />} />
+                <Route path="/wiki" element={<WikiPage />} />
+                <Route path="/ai-chat" element={<AIChatPage />} />
+                <Route path="/utilities" element={<UtilitiesPage />} />
+                <Route path="/scales" element={<ScalesPage />} /> {/* Nova rota para Balanças */}
+              </Route>
 
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </HiddenInfoProvider>
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>

@@ -20,6 +20,7 @@ interface UtilityCardProps {
   draggableProps?: any;
   dragHandleProps?: any;
   isDragging?: boolean;
+  showHiddenInfo: boolean; // Nova prop para controlar a visibilidade global
 }
 
 export const UtilityCard = ({
@@ -32,62 +33,13 @@ export const UtilityCard = ({
   draggableProps,
   dragHandleProps,
   isDragging,
+  showHiddenInfo, // Recebe o estado global
 }: UtilityCardProps) => {
-  const [clickCount, setClickCount] = useState(0);
-  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
-  const [enteredPassword, setEnteredPassword] = useState("");
-  const [showHiddenInfo, setShowHiddenInfo] = useState(false);
-
-  const CORRECT_PASSWORD = "tcmcbxkbrdsc";
+  // Removido: clickCount, clickTimeoutRef, isPasswordDialogOpen, enteredPassword, setShowHiddenInfo
+  // A lógica de senha e visibilidade agora é gerenciada globalmente pelo contexto.
 
   const handleDownload = () => {
     window.open(utility.download_url, '_blank');
-  };
-
-  const handleCardClick = () => {
-    if (utility.hidden_info) {
-      setClickCount(prev => prev + 1);
-
-      if (clickTimeoutRef.current) {
-        clearTimeout(clickTimeoutRef.current);
-      }
-
-      clickTimeoutRef.current = setTimeout(() => {
-        setClickCount(0);
-      }, 300); // Reset count if no triple click within 300ms
-    }
-  };
-
-  // Open dialog when triple-clicked
-  if (clickCount === 3 && !isPasswordDialogOpen && utility.hidden_info) {
-    setClickCount(0); // Reset count immediately
-    setIsPasswordDialogOpen(true);
-  }
-
-  const handlePasswordSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (enteredPassword === CORRECT_PASSWORD) {
-      setShowHiddenInfo(true);
-      setIsPasswordDialogOpen(false);
-      setEnteredPassword("");
-      toast.success("Acesso concedido!", {
-        description: "A informação oculta foi revelada.",
-      });
-    } else {
-      toast.error("Senha incorreta", {
-        description: "Por favor, tente novamente.",
-      });
-      setEnteredPassword("");
-    }
-  };
-
-  const handleDialogClose = (open: boolean) => {
-    setIsPasswordDialogOpen(open);
-    if (!open) {
-      setEnteredPassword("");
-      setShowHiddenInfo(false); // Reset hidden info visibility when dialog closes
-    }
   };
 
   return (
@@ -99,7 +51,7 @@ export const UtilityCard = ({
         ref={innerRef}
         {...draggableProps}
         {...(isDragModeActive ? dragHandleProps : {})}
-        onClick={handleCardClick} // Adiciona o handler de clique ao Card
+        // Removido: onClick={handleCardClick}
       >
         {isAdmin && (
           <div className="absolute top-2 right-2 flex gap-1 z-10">
@@ -149,63 +101,27 @@ export const UtilityCard = ({
               Download
             </Button>
           </a>
-          {utility.hidden_info && (
+          {utility.hidden_info && showHiddenInfo && ( // Exibir se houver info e o modo global estiver ativo
+            <div className="mt-4 pt-4 border-t border-border">
+              <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                <Unlock className="w-4 h-4 text-primary" />
+                Informação Oculta
+              </h4>
+              <div className="bg-muted p-3 rounded-md max-h-60 overflow-y-auto prose prose-sm dark:prose-invert">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {utility.hidden_info}
+                </ReactMarkdown>
+              </div>
+            </div>
+          )}
+          {utility.hidden_info && !showHiddenInfo && ( // Mostrar indicador de bloqueio se houver info e não estiver visível
             <div className="mt-4 text-center text-muted-foreground text-sm flex items-center justify-center gap-2">
               <Lock className="w-4 h-4" />
-              <span>Triplo clique para informação oculta</span>
+              <span>Informação oculta (clique no título da página para revelar)</span>
             </div>
           )}
         </CardContent>
       </Card>
-
-      {/* Dialog de Senha */}
-      <Dialog open={isPasswordDialogOpen} onOpenChange={handleDialogClose}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Acesso Restrito</DialogTitle>
-            <DialogDescription>
-              Esta informação é protegida por senha. Por favor, insira a senha para continuar.
-            </DialogDescription>
-          </DialogHeader>
-          {!showHiddenInfo ? (
-            <form onSubmit={handlePasswordSubmit} className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="password">Senha</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={enteredPassword}
-                  onChange={(e) => setEnteredPassword(e.target.value)}
-                  required
-                />
-              </div>
-              <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => handleDialogClose(false)}>
-                  Cancelar
-                </Button>
-                <Button type="submit">
-                  <Unlock className="w-4 h-4 mr-2" />
-                  Acessar
-                </Button>
-              </DialogFooter>
-            </form>
-          ) : (
-            <div className="space-y-4 py-4">
-              <h4 className="font-semibold text-lg">Informação Oculta:</h4>
-              <div className="bg-muted p-4 rounded-md max-h-60 overflow-y-auto prose prose-sm dark:prose-invert">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {utility.hidden_info || "Nenhuma informação oculta disponível."}
-                </ReactMarkdown>
-              </div>
-              <DialogFooter>
-                <Button type="button" onClick={() => handleDialogClose(false)}>
-                  Fechar
-                </Button>
-              </DialogFooter>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </>
   );
 };

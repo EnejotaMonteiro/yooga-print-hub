@@ -1,11 +1,11 @@
-import { Download, Wrench, Pencil, Loader2, Plus, GripVertical, Trash2 } from "lucide-react"; // Adicionado Trash2
+import { Download, Wrench, Pencil, Loader2, Plus, GripVertical, Trash2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query"; // Importar useMutation
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { UtilityFormDialog } from "@/components/admin/UtilityFormDialog";
-import { useState } from "react";
+import { useState, useRef } from "react"; // Importar useRef
 import { Utility } from "@/data/utilities";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { UtilityCard } from "@/components/UtilityCard";
@@ -19,7 +19,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"; // Importar AlertDialog
+} from "@/components/ui/alert-dialog";
+import { useHiddenInfo } from "@/contexts/HiddenInfoContext"; // Importar o hook do contexto
 
 const UtilitiesPage = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -28,8 +29,12 @@ const UtilitiesPage = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [selectedUtility, setSelectedUtility] = useState<Utility | null>(null);
   const [isDragModeActive, setIsDragModeActive] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false); // Estado para o diálogo de exclusão
-  const [utilityToDelete, setUtilityToDelete] = useState<Utility | null>(null); // Utilitário a ser excluído
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [utilityToDelete, setUtilityToDelete] = useState<Utility | null>(null);
+
+  const { openPasswordDialog, showHiddenInfoGlobally } = useHiddenInfo(); // Usar o contexto
+  const clickCountRef = useRef(0); // Ref para contar cliques no título
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref para o timeout do clique
 
   const { data: utilities, isLoading } = useQuery<Utility[]>({
     queryKey: ["utilities"],
@@ -132,10 +137,28 @@ const UtilitiesPage = () => {
     }
   };
 
+  const handleTitleClick = () => {
+    clickCountRef.current += 1;
+
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current);
+    }
+
+    clickTimeoutRef.current = setTimeout(() => {
+      if (clickCountRef.current === 3) {
+        openPasswordDialog(); // Abre o diálogo de senha do contexto
+      }
+      clickCountRef.current = 0; // Resetar a contagem após o timeout
+    }, 300); // 300ms para detectar o triplo clique
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 md:pl-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
+        <h1 
+          className="text-3xl font-bold text-foreground flex items-center gap-3 cursor-pointer select-none" // Adicionado cursor-pointer e select-none
+          onClick={handleTitleClick} // Adicionado o handler de clique
+        >
           <Wrench className="h-7 w-7 text-primary" />
           Utilitários
         </h1>
@@ -191,12 +214,13 @@ const UtilitiesPage = () => {
                         utility={utility}
                         isAdmin={isAdmin}
                         onEdit={handleEdit}
-                        onDelete={handleDelete} // Passar a função de exclusão
+                        onDelete={handleDelete}
                         isDragModeActive={isDragModeActive}
                         innerRef={provided.innerRef}
                         draggableProps={provided.draggableProps}
                         dragHandleProps={isDragModeActive ? provided.dragHandleProps : null}
                         isDragging={snapshot.isDragging}
+                        showHiddenInfo={showHiddenInfoGlobally} // Passar o estado global
                       />
                     )}
                   </Draggable>
@@ -226,7 +250,6 @@ const UtilitiesPage = () => {
         onSuccess={handleEditSuccess}
       />
 
-      {/* AlertDialog para confirmação de exclusão */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
