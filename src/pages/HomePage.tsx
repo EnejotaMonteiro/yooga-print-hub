@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
+import { Settings, Youtube, Instagram } from "lucide-react"; // Importar ícones do YouTube e Instagram
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
@@ -39,6 +39,30 @@ const HomePage = () => {
             <p className="text-muted-foreground mb-4">
               {guiaDescription}
             </p>
+
+            {/* Botões de Redes Sociais */}
+            <div className="flex justify-center gap-4 mt-6">
+              <a 
+                href="https://www.youtube.com/@YoogaGestãoSuave" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Button className="bg-red-600 hover:bg-red-700 text-white shadow-elegant transition-smooth">
+                  <Youtube className="w-4 h-4 mr-2" />
+                  Nosso Canal
+                </Button>
+              </a>
+              <a 
+                href="https://www.instagram.com/yoogatecnologia" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Button className="bg-pink-600 hover:bg-pink-700 text-white shadow-elegant transition-smooth">
+                  <Instagram className="w-4 h-4 mr-2" />
+                  Nosso Instagram
+                </Button>
+              </a>
+            </div>
           </div>
         </div>
       </div>
