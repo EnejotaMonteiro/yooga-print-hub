@@ -456,7 +456,7 @@ const ScalesPage = () => {
                 <Copy className="w-4 h-4" />
               </Button>
             </CardHeader>
-            <CardContent className="prose dark:prose-invert">
+            <CardContent className="prose prose-sm dark:prose-invert"> {/* Alterado para prose-sm */}
               <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
                 {activeProcess.content}
               </ReactMarkdown>
@@ -517,7 +517,7 @@ const ScalesPage = () => {
       <Card className="mt-8 bg-card/80 backdrop-blur-sm border-border shadow-elegant">
         <CardContent
           className={cn(
-            "p-6 prose dark:prose-invert max-w-none text-center",
+            "p-6 prose prose-sm dark:prose-invert max-w-none text-center", // Alterado para prose-sm
             isEditingPageContent && isDraggingOver && "border-2 border-dashed border-primary-foreground bg-primary/5"
           )}
           onDragOver={handleDragOver}
