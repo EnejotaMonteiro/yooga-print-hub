@@ -51,6 +51,9 @@ const ScalesPage = () => {
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
   const [maximizedImageSrc, setMaximizedImageSrc] = useState<string | null>(null);
 
+  // Novo estado para controlar o processo ativo
+  const [activeProcess, setActiveProcess] = useState<string | null>(null);
+
   const { openPasswordDialog, showHiddenInfoGlobally } = useHiddenInfo();
   const clickCountRef = useRef(0);
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -352,6 +355,84 @@ const ScalesPage = () => {
         </div>
       </div>
 
+      {/* Nova seção para botões de processo e conteúdo */}
+      <div className="mb-8 flex flex-col items-center">
+        <div className="flex flex-wrap justify-center gap-4 mb-6">
+          <Button 
+            onClick={() => setActiveProcess('prix3fit')} 
+            variant={activeProcess === 'prix3fit' ? 'default' : 'outline'}
+            className={activeProcess === 'prix3fit' ? 'bg-gradient-primary text-white' : ''}
+          >
+            PRIX 3 FIT
+          </Button>
+          <Button 
+            onClick={() => setActiveProcess('prix8217')} 
+            variant={activeProcess === 'prix8217' ? 'default' : 'outline'}
+            className={activeProcess === 'prix8217' ? 'bg-gradient-primary text-white' : ''}
+          >
+            PRIX 8217
+          </Button>
+          <Button 
+            onClick={() => setActiveProcess('prix3plus')} 
+            variant={activeProcess === 'prix3plus' ? 'default' : 'outline'}
+            className={activeProcess === 'prix3plus' ? 'bg-gradient-primary text-white' : ''}
+          >
+            PRIX 3 PLUS
+          </Button>
+        </div>
+
+        {activeProcess && (
+          <Card className="w-full max-w-3xl mx-auto bg-card/80 backdrop-blur-sm border-border shadow-elegant text-left">
+            <CardHeader>
+              <CardTitle>
+                {activeProcess === 'prix3fit' && 'Processo para PRIX 3 FIT'}
+                {activeProcess === 'prix8217' && 'Processo para PRIX 8217'}
+                {activeProcess === 'prix3plus' && 'Processo para PRIX 3 PLUS'}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="prose dark:prose-invert">
+              {activeProcess === 'prix3fit' && (
+                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                  {`### Configuração PRIX 3 FIT
+1.  **Passo 1:** Verifique a conexão USB da balança.
+2.  **Passo 2:** Instale o driver específico da PRIX 3 FIT. Você pode encontrá-lo na seção de utilitários acima.
+3.  **Passo 3:** Abra o software de configuração da balança e selecione a porta COM correta.
+4.  **Passo 4:** Realize um teste de comunicação para garantir que a balança está respondendo.
+
+Para mais detalhes, consulte o manual do usuário da PRIX 3 FIT.`}
+                </ReactMarkdown>
+              )}
+              {activeProcess === 'prix8217' && (
+                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                  {`### Configuração PRIX 8217
+A balança PRIX 8217 geralmente utiliza conexão serial (RS-232).
+
+1.  **Passo 1:** Conecte a balança à porta serial do computador. Se não houver porta serial, use um adaptador USB para Serial.
+2.  **Passo 2:** Instale os drivers do adaptador (se aplicável) e o driver da balança.
+3.  **Passo 3:** No software de gestão, configure a porta COM e os parâmetros de comunicação (baud rate, paridade, etc.) conforme o manual da PRIX 8217.
+4.  **Passo 4:** Teste a comunicação para verificar o funcionamento.
+
+É crucial que os parâmetros de comunicação estejam corretos para evitar falhas.`}
+                </ReactMarkdown>
+              )}
+              {activeProcess === 'prix3plus' && (
+                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                  {`### Configuração PRIX 3 PLUS
+A PRIX 3 PLUS é uma balança versátil, podendo usar USB ou Ethernet.
+
+1.  **Passo 1 (USB):** Conecte via USB e instale o driver. Siga os passos da PRIX 3 FIT.
+2.  **Passo 2 (Ethernet):** Conecte a balança à rede. Configure o IP da balança para estar na mesma faixa da sua rede.
+3.  **Passo 3 (Software):** No software de gestão, selecione a opção de comunicação por rede e insira o IP da balança.
+4.  **Passo 4:** Realize um teste de comunicação.
+
+Em caso de problemas de rede, verifique as configurações de firewall e a conectividade.`}
+                </ReactMarkdown>
+              )}
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
       {(isLoading || adminLoading) ? (
         <div className="text-center py-8">
           <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
@@ -404,7 +485,7 @@ const ScalesPage = () => {
       <Card className="mt-8 bg-card/80 backdrop-blur-sm border-border shadow-elegant">
         <CardContent
           className={cn(
-            "p-6 prose dark:prose-invert max-w-none text-center", // Removido prose-sm
+            "p-6 prose dark:prose-invert max-w-none text-center",
             isEditingPageContent && isDraggingOver && "border-2 border-dashed border-primary-foreground bg-primary/5" // Estilo para drag-over
           )}
           onDragOver={handleDragOver}
