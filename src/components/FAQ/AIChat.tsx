@@ -132,7 +132,7 @@ export const AIChat = () => {
   };
 
   return (
-    <Card className="flex flex-col flex-1 bg-card/80 backdrop-blur-sm border-border shadow-elegant">
+    <Card className="flex flex-col flex-1 bg-card/80 backdrop-blur-sm border-border shadow-elegant h-full"> {/* Adicionado h-full aqui */}
       <CardHeader className="pb-4">
         <CardTitle className="text-2xl font-bold text-foreground flex items-center gap-3">
           <Bot className="h-6 w-6 text-primary" />
@@ -140,7 +140,7 @@ export const AIChat = () => {
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="flex flex-col flex-1 p-0 min-h-0"> {/* Adicionado min-h-0 aqui */}
+      <CardContent className="flex flex-col flex-1 p-0 min-h-0">
         <div className="flex-1 overflow-y-auto px-6 py-4 min-h-0" ref={messagesContainerRef}>
           <div className="space-y-4">
             {messages.map((message, index) => (
