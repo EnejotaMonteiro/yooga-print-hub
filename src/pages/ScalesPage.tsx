@@ -495,7 +495,7 @@ const ScalesPage = () => {
           ) : pageConfig?.scales_page_content ? (
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw]} {/* Adicionado rehypeRaw aqui */}
+              rehypePlugins={[rehypeRaw]} // Adicionado rehypeRaw aqui
               components={{
                 img: ({ node, ...props }) => (
                   <img
