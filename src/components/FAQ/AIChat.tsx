@@ -49,12 +49,13 @@ export const AIChat = () => {
   const uploadImageToSupabase = async (file: File) => {
     setUploadingImage(true);
     try {
-      const user = (await supabase.auth.getSession()).data.session?.user;
-      if (!user) {
-        throw new Error("Usuário não autenticado.");
-      }
+      const { data: { session } } = await supabase.auth.getSession();
+      const userId = session?.user?.id;
 
-      const filePath = `${user.id}/${Date.now()}-${file.name}`;
+      // Se o usuário estiver autenticado, usa o ID do usuário. Caso contrário, usa uma pasta genérica.
+      const folderPath = userId ? `${userId}` : 'public_uploads';
+      const filePath = `${folderPath}/${Date.now()}-${file.name}`;
+
       const { data, error } = await supabase.storage
         .from('ai-chat-images')
         .upload(filePath, file, {
