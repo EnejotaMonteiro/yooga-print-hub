@@ -21,6 +21,7 @@ export type Database = {
           logo_min_url: string | null
           logo_full_url: string | null
           logo_login_url: string | null
+          scales_page_content: string | null
         }
         Insert: {
           id?: string
@@ -28,6 +29,7 @@ export type Database = {
           logo_min_url?: string | null
           logo_full_url?: string | null
           logo_login_url?: string | null
+          scales_page_content?: string | null
         }
         Update: {
           id?: string
@@ -35,6 +37,7 @@ export type Database = {
           logo_min_url?: string | null
           logo_full_url?: string | null
           logo_login_url?: string | null
+          scales_page_content?: string | null
         }
         Relationships: []
       }
@@ -278,6 +281,36 @@ export type Database = {
         };
         Relationships: [];
       };
+      scale_processes: {
+        Row: {
+          id: string;
+          title: string;
+          button_text: string;
+          content: string;
+          ordem: number | null;
+          created_at: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          button_text: string;
+          content: string;
+          ordem?: number | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          button_text?: string;
+          content?: string;
+          ordem?: number | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [];
+      };
     }
     Views: {
       [_ in never]: never
@@ -318,7 +351,7 @@ export type Tables<
   schema: keyof DatabaseWithoutInternals
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      DatabaseWithoutInternals[DefaultTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R

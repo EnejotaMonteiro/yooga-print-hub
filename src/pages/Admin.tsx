@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus, Home, Image, Wrench } from "lucide-react";
+import { LogOut, Plus, Home, Image, Wrench, Scale } from "lucide-react"; // Adicionado Scale
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { PrintersList } from "@/components/admin/PrintersList";
@@ -13,6 +13,8 @@ import { SuggestionsList } from "@/components/admin/SuggestionsList";
 import { LogoSettingsDialog } from "@/components/admin/LogoSettingsDialog";
 import { UtilitiesList } from "@/components/admin/UtilitiesList";
 import { UtilityFormDialog } from "@/components/admin/UtilityFormDialog";
+import { ScaleProcessList } from "@/components/admin/ScaleProcessList"; // Importar ScaleProcessList
+import { ScaleProcessFormDialog } from "@/components/admin/ScaleProcessFormDialog"; // Importar ScaleProcessFormDialog
 import { useQueryClient } from "@tanstack/react-query";
 
 const Admin = () => {
@@ -22,7 +24,7 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [addPrinterDialogOpen, setAddPrinterDialogOpen] = useState(false);
   const [addTutorialDialogOpen, setAddTutorialDialogOpen] = useState(false);
-  // Removido: const [addUtilityDialogOpen, setAddUtilityDialogOpen] = useState(false);
+  const [addScaleProcessDialogOpen, setAddScaleProcessDialogOpen] = useState(false); // Novo estado
   const [logoSettingsDialogOpen, setLogoSettingsDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -70,11 +72,10 @@ const Admin = () => {
     setAddTutorialDialogOpen(false);
   };
 
-  // Removido: const handleUtilitySuccess = () => {
-  // Removido:   queryClient.invalidateQueries({ queryKey: ["utilities"] });
-  // Removido:   queryClient.invalidateQueries({ queryKey: ["admin-utilities"] });
-  // Removido:   setAddUtilityDialogOpen(false);
-  // Removido: };
+  const handleScaleProcessSuccess = () => { // Novo handler de sucesso
+    queryClient.invalidateQueries({ queryKey: ["scale-processes"] });
+    setAddScaleProcessDialogOpen(false);
+  };
 
   const handleLogoSettingsSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ["site-config"] });
@@ -209,6 +210,26 @@ const Admin = () => {
             <UtilitiesList />
           </div>
 
+          {/* Gerenciar Processos de Balanças */}
+          <div className="bg-card rounded-lg p-6 shadow-elegant">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-xl font-semibold text-foreground">Gerenciar Processos de Balanças</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Adicione, edite ou remova processos de configuração de balanças
+                </p>
+              </div>
+              <Button 
+                className="flex items-center gap-2"
+                onClick={() => setAddScaleProcessDialogOpen(true)}
+              >
+                <Plus className="w-4 h-4" />
+                Adicionar Processo
+              </Button>
+            </div>
+            <ScaleProcessList />
+          </div>
+
           {/* Gerenciar Sugestões */}
           <div className="bg-card rounded-lg p-6 shadow-elegant">
             <SuggestionsList />
@@ -228,12 +249,11 @@ const Admin = () => {
         onSuccess={handleTutorialSuccess}
       />
 
-      {/* Removido: UtilityFormDialog para adicionar utilitários */}
-      {/* Removido: <UtilityFormDialog
-        open={addUtilityDialogOpen}
-        onOpenChange={setAddUtilityDialogOpen}
-        onSuccess={handleUtilitySuccess}
-      /> */}
+      <ScaleProcessFormDialog // Novo dialog para processos de balança
+        open={addScaleProcessDialogOpen}
+        onOpenChange={setAddScaleProcessDialogOpen}
+        onSuccess={handleScaleProcessSuccess}
+      />
 
       <LogoSettingsDialog
         open={logoSettingsDialogOpen}

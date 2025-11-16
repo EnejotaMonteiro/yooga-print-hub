@@ -20,14 +20,15 @@ import {
 import { useHiddenInfo } from "@/contexts/HiddenInfoContext";
 import { ScaleUtilityCard, ScaleUtility } from "@/components/ScaleUtilityCard";
 import { ScaleUtilityFormDialog } from "@/components/admin/ScaleUtilityFormDialog";
+import { ScaleProcessFormDialog, ScaleProcess } from "@/components/admin/ScaleProcessFormDialog"; // Importar ScaleProcess
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw"; // Importar rehypeRaw
+import rehypeRaw from "rehype-raw";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils"; // Importar cn para classes condicionais
-import { Dialog, DialogContent } from "@/components/ui/dialog"; // Importar Dialog e DialogContent
+import { cn } from "@/lib/utils";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const ScalesPage = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -45,14 +46,14 @@ const ScalesPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
-  const [isDraggingOver, setIsDraggingOver] = useState(false); // Novo estado para drag-and-drop
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
 
   // Estados para imagem maximizada
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
   const [maximizedImageSrc, setMaximizedImageSrc] = useState<string | null>(null);
 
-  // Novo estado para controlar o processo ativo
-  const [activeProcess, setActiveProcess] = useState<string | null>(null);
+  // Estado para controlar o processo ativo
+  const [activeProcess, setActiveProcess] = useState<ScaleProcess | null>(null);
 
   const { openPasswordDialog, showHiddenInfoGlobally } = useHiddenInfo();
   const clickCountRef = useRef(0);
@@ -67,7 +68,6 @@ const ScalesPage = () => {
         .single();
 
       if (error && error.code === 'PGRST116') {
-        // Se não houver configuração, cria uma entrada padrão
         const { data: newConfig, error: insertError } = await supabase
           .from('configuracao_site')
           .insert({})
@@ -83,11 +83,25 @@ const ScalesPage = () => {
     staleTime: 1000 * 60 * 5,
   });
 
+  const { data: scaleProcesses, isLoading: isLoadingScaleProcesses } = useQuery<ScaleProcess[]>({
+    queryKey: ["scale-processes"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("scale_processes")
+        .select("*")
+        .order("ordem", { ascending: true });
+
+      if (error) throw error;
+      return data;
+    },
+    staleTime: 1000 * 60 * 5,
+  });
+
   useEffect(() => {
     if (isEditingPageContent && pageConfig) {
       setEditablePageContent(pageConfig.scales_page_content || "");
-      setUploadedImageUrl(null); // Limpa a URL da imagem ao entrar no modo de edição
-      setImageFile(null); // Limpa o arquivo selecionado
+      setUploadedImageUrl(null);
+      setImageFile(null);
     }
   }, [isEditingPageContent, pageConfig]);
 
@@ -212,7 +226,7 @@ const ScalesPage = () => {
       toast.error("Erro", { description: "ID de configuração não encontrado." });
       return;
     }
-    setUploadingImage(true); // Reutilizando o estado de loading para salvar o conteúdo
+    setUploadingImage(true);
     try {
       const { error } = await supabase
         .from('configuracao_site')
@@ -269,7 +283,7 @@ const ScalesPage = () => {
       toast.error("Erro no upload", { description: error.message || "Não foi possível enviar a imagem." });
     } finally {
       setUploadingImage(false);
-      setImageFile(null); // Limpa o arquivo selecionado após o upload
+      setImageFile(null);
     }
   };
 
@@ -355,79 +369,41 @@ const ScalesPage = () => {
         </div>
       </div>
 
-      {/* Nova seção para botões de processo e conteúdo */}
+      {/* Seção de botões de processo dinâmicos */}
       <div className="mb-8 flex flex-col items-center">
-        <div className="flex flex-wrap justify-center gap-4 mb-6">
-          <Button 
-            onClick={() => setActiveProcess('prix3fit')} 
-            variant={activeProcess === 'prix3fit' ? 'default' : 'outline'}
-            className={activeProcess === 'prix3fit' ? 'bg-gradient-primary text-white' : ''}
-          >
-            PRIX 3 FIT
-          </Button>
-          <Button 
-            onClick={() => setActiveProcess('prix8217')} 
-            variant={activeProcess === 'prix8217' ? 'default' : 'outline'}
-            className={activeProcess === 'prix8217' ? 'bg-gradient-primary text-white' : ''}
-          >
-            PRIX 8217
-          </Button>
-          <Button 
-            onClick={() => setActiveProcess('prix3plus')} 
-            variant={activeProcess === 'prix3plus' ? 'default' : 'outline'}
-            className={activeProcess === 'prix3plus' ? 'bg-gradient-primary text-white' : ''}
-          >
-            PRIX 3 PLUS
-          </Button>
-        </div>
+        {isLoadingScaleProcesses ? (
+          <div className="flex items-center justify-center py-4">
+            <Loader2 className="h-6 w-6 animate-spin text-primary mx-auto" />
+            <p className="text-muted-foreground text-sm mt-2">Carregando processos...</p>
+          </div>
+        ) : scaleProcesses && scaleProcesses.length > 0 ? (
+          <div className="flex flex-wrap justify-center gap-4 mb-6">
+            {scaleProcesses.map((process) => (
+              <Button
+                key={process.id}
+                onClick={() => setActiveProcess(process)}
+                variant={activeProcess?.id === process.id ? 'default' : 'outline'}
+                className={activeProcess?.id === process.id ? 'bg-gradient-primary text-white' : ''}
+              >
+                {process.button_text}
+              </Button>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-4 text-muted-foreground">
+            Nenhum processo de balança configurado.
+          </div>
+        )}
 
         {activeProcess && (
           <Card className="w-full max-w-3xl mx-auto bg-card/80 backdrop-blur-sm border-border shadow-elegant text-left">
             <CardHeader>
-              <CardTitle>
-                {activeProcess === 'prix3fit' && 'Processo para PRIX 3 FIT'}
-                {activeProcess === 'prix8217' && 'Processo para PRIX 8217'}
-                {activeProcess === 'prix3plus' && 'Processo para PRIX 3 PLUS'}
-              </CardTitle>
+              <CardTitle>{activeProcess.title}</CardTitle>
             </CardHeader>
             <CardContent className="prose dark:prose-invert">
-              {activeProcess === 'prix3fit' && (
-                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                  {`### Configuração PRIX 3 FIT
-1.  **Passo 1:** Verifique a conexão USB da balança.
-2.  **Passo 2:** Instale o driver específico da PRIX 3 FIT. Você pode encontrá-lo na seção de utilitários acima.
-3.  **Passo 3:** Abra o software de configuração da balança e selecione a porta COM correta.
-4.  **Passo 4:** Realize um teste de comunicação para garantir que a balança está respondendo.
-
-Para mais detalhes, consulte o manual do usuário da PRIX 3 FIT.`}
-                </ReactMarkdown>
-              )}
-              {activeProcess === 'prix8217' && (
-                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                  {`### Configuração PRIX 8217
-A balança PRIX 8217 geralmente utiliza conexão serial (RS-232).
-
-1.  **Passo 1:** Conecte a balança à porta serial do computador. Se não houver porta serial, use um adaptador USB para Serial.
-2.  **Passo 2:** Instale os drivers do adaptador (se aplicável) e o driver da balança.
-3.  **Passo 3:** No software de gestão, configure a porta COM e os parâmetros de comunicação (baud rate, paridade, etc.) conforme o manual da PRIX 8217.
-4.  **Passo 4:** Teste a comunicação para verificar o funcionamento.
-
-É crucial que os parâmetros de comunicação estejam corretos para evitar falhas.`}
-                </ReactMarkdown>
-              )}
-              {activeProcess === 'prix3plus' && (
-                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                  {`### Configuração PRIX 3 PLUS
-A PRIX 3 PLUS é uma balança versátil, podendo usar USB ou Ethernet.
-
-1.  **Passo 1 (USB):** Conecte via USB e instale o driver. Siga os passos da PRIX 3 FIT.
-2.  **Passo 2 (Ethernet):** Conecte a balança à rede. Configure o IP da balança para estar na mesma faixa da sua rede.
-3.  **Passo 3 (Software):** No software de gestão, selecione a opção de comunicação por rede e insira o IP da balança.
-4.  **Passo 4:** Realize um teste de comunicação.
-
-Em caso de problemas de rede, verifique as configurações de firewall e a conectividade.`}
-                </ReactMarkdown>
-              )}
+              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                {activeProcess.content}
+              </ReactMarkdown>
             </CardContent>
           </Card>
         )}
@@ -486,7 +462,7 @@ Em caso de problemas de rede, verifique as configurações de firewall e a conec
         <CardContent
           className={cn(
             "p-6 prose dark:prose-invert max-w-none text-center",
-            isEditingPageContent && isDraggingOver && "border-2 border-dashed border-primary-foreground bg-primary/5" // Estilo para drag-over
+            isEditingPageContent && isDraggingOver && "border-2 border-dashed border-primary-foreground bg-primary/5"
           )}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -542,7 +518,7 @@ Em caso de problemas de rede, verifique as configurações de firewall e a conec
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={handleCopyMarkdownUrl} // Novo botão para copiar Markdown
+                      onClick={handleCopyMarkdownUrl}
                       title="Copiar URL em formato Markdown"
                     >
                       <Copy className="w-4 h-4" />
