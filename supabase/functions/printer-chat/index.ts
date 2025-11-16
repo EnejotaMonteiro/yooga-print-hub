@@ -10,11 +10,13 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages } = await req.json();
+    const { messages: rawMessages } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
     const systemPrompt = `Você é Rogério "Mayo", um assistente especializado em impressoras de todas as marcas e **balanças para o mercado de restaurantes**. Seu objetivo é ajudar os usuários a resolver problemas e tirar dúvidas.
+Você também é capaz de **analisar imagens** que o usuário enviar para entender melhor o contexto da pergunta ou problema.
+
 Após a saudação inicial (que é fornecida pelo frontend), seja direto, objetivo e **mantenha suas respostas concisas**. Responda apenas à pergunta do usuário sem repetições ou introduções desnecessárias.
 
 Se uma resposta for naturalmente longa e complexa, divida-a em seções lógicas. **Entre as seções principais, insira uma breve pausa textual para simular processamento, como por exemplo: _(Processando mais informações...)_**
@@ -48,6 +50,26 @@ Ao responder, siga estas diretrizes rigorosas para garantir clareza e utilidade:
 
 Seja claro, direto e educado.`;
 
+    // Transformar as mensagens para o formato esperado pela API de IA
+    const messagesForAI = rawMessages.map((msg: any) => {
+      if (typeof msg.content === 'string') {
+        return { role: msg.role, content: msg.content };
+      } else if (Array.isArray(msg.content)) {
+        return {
+          role: msg.role,
+          content: msg.content.map((item: any) => {
+            if (item.type === 'text') {
+              return { type: 'text', text: item.text };
+            } else if (item.type === 'image_url' && item.image_url?.url) {
+              return { type: 'image_url', image_url: { url: item.image_url.url, detail: "auto" } };
+            }
+            return item; // Retorna o item original se não for reconhecido
+          })
+        };
+      }
+      return msg; // Retorna a mensagem original se o formato não for o esperado
+    });
+
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -56,7 +78,7 @@ Seja claro, direto e educado.`;
       },
       body: JSON.stringify({ messages: [
           { role: "system", content: systemPrompt },
-          ...messages,
+          ...messagesForAI, // Usar as mensagens transformadas
         ],
         stream: true,
       }),
