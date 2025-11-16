@@ -141,7 +141,7 @@ export const AIChat = () => {
       </CardHeader>
 
       <CardContent className="flex flex-col flex-1 p-0">
-        <div className="flex-1 overflow-y-auto px-6 py-4" ref={messagesContainerRef}>
+        <div className="flex-1 overflow-y-auto px-6 py-4 min-h-0" ref={messagesContainerRef}>
           <div className="space-y-4">
             {messages.map((message, index) => (
               <div
@@ -186,7 +186,7 @@ export const AIChat = () => {
           </div>
         </div>
 
-        <form onSubmit={sendMessage} className="flex gap-2 pt-4 mt-auto px-6 pb-6 border-t border-border">
+        <form onSubmit={sendMessage} className="flex gap-2 pt-4 mt-auto px-6 pb-6 border-t border-border shrink-0">
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
