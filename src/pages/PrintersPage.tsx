@@ -5,7 +5,7 @@ import { SocketStatus } from "@/components/SocketStatus";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Download, GripVertical, ListOrdered } from "lucide-react"; // Adicionado ListOrdered
+import { Download, GripVertical, ListOrdered, Printer as PrinterIcon } from "lucide-react"; // Adicionado ListOrdered e renomeado Printer para PrinterIcon
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
@@ -118,7 +118,10 @@ const PrintersPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 md:pl-8">
-      <h1 className="text-3xl font-bold text-foreground mb-8">Impressoras</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
+        <PrinterIcon className="h-7 w-7 text-primary" /> {/* Ícone da impressora adicionado aqui */}
+        Impressoras
+      </h1>
 
       <div className="flex items-center justify-between mb-8">
         <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
