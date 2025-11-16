@@ -468,8 +468,11 @@ const ScalesPage = () => {
                   </div>
                 )}
                 <p className="text-xs text-muted-foreground">
-                  Use Markdown para formatação. Para imagens, clique em "Copiar URL Markdown" e cole no editor.
-                  Para redimensionar ou posicionar, use HTML: `&lt;img src="URL_DA_IMAGEM" width="50%" style="float: right;" /&gt;`
+                  Para exibir a imagem, clique em "Copiar URL Markdown" e cole no editor.
+                  <br />
+                  Para **redimensionar**, use HTML: `&lt;img src="URL_DA_IMAGEM" width="50%" /&gt;`
+                  <br />
+                  Para **posicionar**, use HTML: `&lt;img src="URL_DA_IMAGEM" style="float: right; margin-left: 15px;" /&gt;`
                 </p>
               </div>
               <div className="flex justify-end gap-2">
