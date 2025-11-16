@@ -143,7 +143,7 @@ export const Sidebar = () => {
                  transition-[max-width,margin-left] duration-500 ease-in-out delay-75
                  group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2
                  group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out group-hover:delay-0">
-            Assistente Rogério "Mayo"
+            Assistente Rogério
           </span>
         </NavLink>
 
