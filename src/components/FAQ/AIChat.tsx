@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// Removido: import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Bot, User } from "lucide-react";
 import { toast } from "sonner"; // Usar toast do sonner
 import ReactMarkdown from "react-markdown";
@@ -133,12 +132,12 @@ export const AIChat = () => {
 
   return (
     <div className="flex flex-col flex-1"> {/* Removido p-6 do contêiner principal */}
-      <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2 px-4 pt-6"> {/* Adicionado px-4 pt-6 */}
+      <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2 px-6 pt-6"> {/* Ajustado para px-6 pt-6 */}
         <Bot className="h-5 w-5 text-primary" />
         Assistente Virtual
       </h3>
       
-      <div className="flex-1 overflow-y-auto px-4" ref={messagesContainerRef}> {/* Adicionado px-4 */}
+      <div className="flex-1 overflow-y-auto px-6 py-4" ref={messagesContainerRef}> {/* Ajustado para px-6 py-4 */}
         <div className="space-y-4">
           {messages.map((message, index) => (
             <div
@@ -183,7 +182,7 @@ export const AIChat = () => {
         </div>
       </div>
 
-      <form onSubmit={sendMessage} className="flex gap-2 pt-4 mt-auto px-4 pb-4"> {/* Adicionado px-4 pb-4 */}
+      <form onSubmit={sendMessage} className="flex gap-2 pt-4 mt-auto px-6 pb-6"> {/* Ajustado para px-6 pb-6 */}
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
