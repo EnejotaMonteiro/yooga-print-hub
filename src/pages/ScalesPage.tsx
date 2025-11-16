@@ -1,10 +1,10 @@
-import { Scale, Plus, GripVertical, Loader2, Trash2, Pencil } from "lucide-react";
+import { Scale, Plus, GripVertical, Loader2, Trash2, Pencil, UploadCloud, XCircle, Save, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { toast } from "sonner";
 import {
@@ -20,9 +20,11 @@ import {
 import { useHiddenInfo } from "@/contexts/HiddenInfoContext";
 import { ScaleUtilityCard, ScaleUtility } from "@/components/ScaleUtilityCard";
 import { ScaleUtilityFormDialog } from "@/components/admin/ScaleUtilityFormDialog";
-import { ScalePageContentEditorDialog } from "@/components/admin/ScalePageContentEditorDialog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const ScalesPage = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -33,7 +35,14 @@ const ScalesPage = () => {
   const [isDragModeActive, setIsDragModeActive] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [utilityToDelete, setUtilityToDelete] = useState<ScaleUtility | null>(null);
-  const [pageContentEditorOpen, setPageContentEditorOpen] = useState(false);
+
+  // Estados para edição inline do conteúdo da página
+  const [isEditingPageContent, setIsEditingPageContent] = useState(false);
+  const [editablePageContent, setEditablePageContent] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+
 
   const { openPasswordDialog, showHiddenInfoGlobally } = useHiddenInfo();
   const clickCountRef = useRef(0);
@@ -44,11 +53,18 @@ const ScalesPage = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('configuracao_site')
-        .select('scales_page_content')
+        .select('id, scales_page_content')
         .single();
 
       if (error && error.code === 'PGRST116') {
-        return { scales_page_content: null };
+        // Se não houver configuração, cria uma entrada padrão
+        const { data: newConfig, error: insertError } = await supabase
+          .from('configuracao_site')
+          .insert({})
+          .select('id, scales_page_content')
+          .single();
+        if (insertError) throw insertError;
+        return newConfig;
       } else if (error) {
         throw error;
       }
@@ -56,6 +72,14 @@ const ScalesPage = () => {
     },
     staleTime: 1000 * 60 * 5,
   });
+
+  useEffect(() => {
+    if (isEditingPageContent && pageConfig) {
+      setEditablePageContent(pageConfig.scales_page_content || "");
+      setUploadedImageUrl(null); // Limpa a URL da imagem ao entrar no modo de edição
+      setImageFile(null); // Limpa o arquivo selecionado
+    }
+  }, [isEditingPageContent, pageConfig]);
 
   const { data: utilities, isLoading } = useQuery<ScaleUtility[]>({
     queryKey: ["scale-utilities"],
@@ -173,6 +197,71 @@ const ScalesPage = () => {
     }, 300);
   };
 
+  const handleSavePageContent = async () => {
+    if (!pageConfig?.id) {
+      toast.error("Erro", { description: "ID de configuração não encontrado." });
+      return;
+    }
+    setUploadingImage(true); // Reutilizando o estado de loading para salvar o conteúdo
+    try {
+      const { error } = await supabase
+        .from('configuracao_site')
+        .update({ scales_page_content: editablePageContent })
+        .eq('id', pageConfig.id);
+
+      if (error) throw error;
+
+      toast.success("Conteúdo salvo!", { description: "O conteúdo da página foi atualizado." });
+      queryClient.invalidateQueries({ queryKey: ["site-config-scales-content"] });
+      setIsEditingPageContent(false);
+    } catch (error: any) {
+      console.error("Erro ao salvar conteúdo da página:", error);
+      toast.error("Erro ao salvar", { description: error.message || "Não foi possível salvar o conteúdo." });
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleCancelEditPageContent = () => {
+    setIsEditingPageContent(false);
+    setEditablePageContent(pageConfig?.scales_page_content || "");
+    setUploadedImageUrl(null);
+    setImageFile(null);
+  };
+
+  const handleImageUpload = async () => {
+    if (!imageFile) {
+      toast.error("Nenhuma imagem selecionada", { description: "Por favor, selecione um arquivo para upload." });
+      return;
+    }
+
+    setUploadingImage(true);
+    try {
+      const filePath = `images/${Date.now()}-${imageFile.name}`;
+      const { data, error } = await supabase.storage
+        .from('balancas_page_images')
+        .upload(filePath, imageFile, {
+          cacheControl: '3600',
+          upsert: true,
+        });
+
+      if (error) throw error;
+
+      const { data: publicUrlData } = supabase.storage
+        .from('balancas_page_images')
+        .getPublicUrl(filePath);
+
+      setUploadedImageUrl(publicUrlData.publicUrl);
+      toast.success("Imagem enviada!", { description: "A URL da imagem foi gerada. Copie e cole no editor." });
+    } catch (error: any) {
+      console.error("Erro ao fazer upload da imagem:", error);
+      toast.error("Erro no upload", { description: error.message || "Não foi possível enviar a imagem." });
+    } finally {
+      setUploadingImage(false);
+      setImageFile(null); // Limpa o arquivo selecionado após o upload
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 md:pl-8">
       <div className="flex justify-between items-center mb-8">
@@ -186,12 +275,12 @@ const ScalesPage = () => {
         <div className="flex items-center gap-2">
           {isAdmin && (
             <Button
-              variant="outline"
+              variant={isEditingPageContent ? "default" : "outline"}
               size="icon"
-              onClick={() => setPageContentEditorOpen(true)}
-              title="Editar conteúdo da página"
+              onClick={() => setIsEditingPageContent(prev => !prev)}
+              title={isEditingPageContent ? "Sair do modo de edição" : "Editar conteúdo da página"}
             >
-              <Pencil className="w-4 h-4" />
+              {isEditingPageContent ? <X className="w-4 h-4" /> : <Pencil className="w-4 h-4" />}
             </Button>
           )}
           {isAdmin && (
@@ -267,13 +356,78 @@ const ScalesPage = () => {
         </div>
       )}
 
-      {/* Área de Conteúdo Principal da Página de Balanças - MOVIDA PARA BAIXO */}
+      {/* Área de Conteúdo Principal da Página de Balanças */}
       <Card className="mt-8 bg-card/80 backdrop-blur-sm border-border shadow-elegant">
         <CardContent className="p-6 prose prose-sm dark:prose-invert max-w-none">
           {isLoadingPageContent ? (
             <div className="text-center py-4">
               <Loader2 className="h-6 w-6 animate-spin text-primary mx-auto" />
               <p className="text-muted-foreground text-sm mt-2">Carregando conteúdo...</p>
+            </div>
+          ) : isEditingPageContent && isAdmin ? (
+            <div className="flex flex-col space-y-4">
+              <Textarea
+                value={editablePageContent}
+                onChange={(e) => setEditablePageContent(e.target.value)}
+                placeholder="Escreva o conteúdo da página de Balanças aqui usando Markdown..."
+                className="min-h-[300px] font-mono text-sm"
+              />
+              <div className="space-y-2">
+                <Label htmlFor="imageUpload">Upload de Imagem</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="imageUpload"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
+                    className="flex-1"
+                    disabled={uploadingImage}
+                  />
+                  <Button onClick={handleImageUpload} disabled={!imageFile || uploadingImage}>
+                    {uploadingImage ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <UploadCloud className="w-4 h-4 mr-2" />
+                    )}
+                    Upload
+                  </Button>
+                </div>
+                {uploadedImageUrl && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span>URL da imagem:</span>
+                    <Input
+                      type="text"
+                      value={uploadedImageUrl}
+                      readOnly
+                      className="flex-1"
+                      onClick={(e) => (e.target as HTMLInputElement).select()}
+                      title="Clique para copiar"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setUploadedImageUrl(null)}
+                      title="Remover URL"
+                    >
+                      <XCircle className="w-4 h-4 text-destructive" />
+                    </Button>
+                  </div>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  Use Markdown para formatação. Para imagens, cole a URL diretamente: `![Alt Text]({uploadedImageUrl})`.
+                  Para redimensionar ou posicionar, use HTML: `&lt;img src="{uploadedImageUrl}" width="50%" style="float: right;" /&gt;`
+                </p>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={handleCancelEditPageContent} disabled={uploadingImage}>
+                  <X className="w-4 h-4 mr-2" />
+                  Cancelar
+                </Button>
+                <Button onClick={handleSavePageContent} disabled={uploadingImage}>
+                  <Save className="w-4 h-4 mr-2" />
+                  Salvar Conteúdo
+                </Button>
+              </div>
             </div>
           ) : pageConfig?.scales_page_content ? (
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -333,12 +487,6 @@ const ScalesPage = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      <ScalePageContentEditorDialog
-        open={pageContentEditorOpen}
-        onOpenChange={setPageContentEditorOpen}
-        onSuccess={() => queryClient.invalidateQueries({ queryKey: ["site-config-scales-content"] })}
-      />
     </div>
   );
 };
