@@ -404,7 +404,7 @@ const ScalesPage = () => {
       <Card className="mt-8 bg-card/80 backdrop-blur-sm border-border shadow-elegant">
         <CardContent
           className={cn(
-            "p-6 prose prose-sm dark:prose-invert max-w-none text-center",
+            "p-6 prose dark:prose-invert max-w-none text-center", // Removido prose-sm
             isEditingPageContent && isDraggingOver && "border-2 border-dashed border-primary-foreground bg-primary/5" // Estilo para drag-over
           )}
           onDragOver={handleDragOver}
@@ -502,7 +502,7 @@ const ScalesPage = () => {
               components={{
                 img: ({ node, ...props }) => (
                   <img
-                    style={{ maxWidth: '100%', height: 'auto', maxHeight: '300px', display: 'block', margin: '1.5rem auto', cursor: 'pointer' }} // Adicionado margin-top e margin-bottom
+                    style={{ maxWidth: '100%', height: 'auto', maxHeight: '300px', display: 'block', margin: '1.5rem auto', cursor: 'pointer' }}
                     {...props}
                     onClick={() => {
                       if (props.src) {
