@@ -43,7 +43,7 @@ const HomePage = () => {
   const guiaDescription = 'Assista ao vídeo para um guia completo de configuração de impressoras.';
 
   // Detalhes do Canal do YouTube
-  const youtubeChannelUrl = 'https://www.youtube.com/@YoogaSistemas'; // URL do canal Yooga Sistemas
+  const youtubeChannelUrl = 'https://www.youtube.com/@YoogaGestãoSuave'; // URL do canal Yooga Sistemas
   const youtubeChannelVideoUrl = 'https://www.youtube.com/embed/TLKh-evOW5k'; // Vídeo de exemplo do canal
   const youtubeChannelTitle = 'Nosso Canal no YouTube';
   const youtubeChannelDescription = 'Explore mais vídeos, tutoriais e dicas sobre nossos produtos e soluções para otimizar seu negócio.';
