@@ -132,7 +132,7 @@ export const AIChat = () => {
   };
 
   return (
-    <div className="bg-card/60 backdrop-blur-sm border border-border rounded-lg shadow-elegant p-6 h-[600px] flex flex-col">
+    <div className="bg-card/60 backdrop-blur-sm border border-border rounded-lg shadow-elegant p-6 flex flex-col flex-1"> {/* Removido h-[600px] e adicionado flex-1 */}
       <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
         <Bot className="h-5 w-5 text-primary" />
         Assistente Virtual
