@@ -149,10 +149,10 @@ export const Sidebar = () => {
 
         <SidebarLink to="/" icon={<Home className="h-4 w-4" />} label="Página Inicial" end />
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
-        <SidebarLink to="/scales" icon={<Scale className="h-4 w-4" />} label="Balanças" /> {/* Movido para cá */}
+        <SidebarLink to="/scales" icon={<Scale className="h-4 w-4" />} label="Balanças" />
+        <SidebarLink to="/utilities" icon={<Wrench className="h-4 w-4" />} label="Utilitários" /> {/* Movido para cá */}
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
         <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" />
-        <SidebarLink to="/utilities" icon={<Wrench className="h-4 w-4" />} label="Utilitários" />
         <a 
           href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
           target="_blank" 
