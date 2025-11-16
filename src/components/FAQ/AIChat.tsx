@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Send, Bot, User } from "lucide-react";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import remarkGfm from "remarkGfm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Importar componentes Card
 
 interface Message {
@@ -132,7 +132,7 @@ export const AIChat = () => {
   };
 
   return (
-    <Card className="flex flex-col flex-1 h-full bg-card/80 backdrop-blur-sm border-border shadow-elegant">
+    <Card className="flex flex-col flex-1 bg-card/80 backdrop-blur-sm border-border shadow-elegant"> {/* Removido h-full */}
       <CardHeader className="pb-4">
         <CardTitle className="text-2xl font-bold text-foreground flex items-center gap-3">
           <Bot className="h-6 w-6 text-primary" />
