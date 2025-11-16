@@ -20,9 +20,9 @@ import {
 import { useHiddenInfo } from "@/contexts/HiddenInfoContext";
 import { ScaleUtilityCard, ScaleUtility } from "@/components/ScaleUtilityCard";
 import { ScaleUtilityFormDialog } from "@/components/admin/ScaleUtilityFormDialog";
-import { ScalePageContentEditorDialog } from "@/components/admin/ScalePageContentEditorDialog"; // Importar o novo diálogo
-import ReactMarkdown from "react-markdown"; // Importar ReactMarkdown
-import remarkGfm from "remark-gfm"; // Importar remarkGfm
+import { ScalePageContentEditorDialog } from "@/components/admin/ScalePageContentEditorDialog";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const ScalesPage = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -33,13 +33,12 @@ const ScalesPage = () => {
   const [isDragModeActive, setIsDragModeActive] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [utilityToDelete, setUtilityToDelete] = useState<ScaleUtility | null>(null);
-  const [pageContentEditorOpen, setPageContentEditorOpen] = useState(false); // Estado para o editor de conteúdo da página
+  const [pageContentEditorOpen, setPageContentEditorOpen] = useState(false);
 
   const { openPasswordDialog, showHiddenInfoGlobally } = useHiddenInfo();
   const clickCountRef = useRef(0);
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Query para o conteúdo principal da página de Balanças
   const { data: pageConfig, isLoading: isLoadingPageContent } = useQuery({
     queryKey: ["site-config-scales-content"],
     queryFn: async () => {
@@ -49,7 +48,7 @@ const ScalesPage = () => {
         .single();
 
       if (error && error.code === 'PGRST116') {
-        return { scales_page_content: null }; // Retorna null se não houver configuração
+        return { scales_page_content: null };
       } else if (error) {
         throw error;
       }
@@ -189,7 +188,7 @@ const ScalesPage = () => {
             <Button
               variant="outline"
               size="icon"
-              onClick={() => setPageContentEditorOpen(true)} // Botão para editar o conteúdo da página
+              onClick={() => setPageContentEditorOpen(true)}
               title="Editar conteúdo da página"
             >
               <Pencil className="w-4 h-4" />
@@ -219,30 +218,6 @@ const ScalesPage = () => {
           )}
         </div>
       </div>
-
-      {/* Área de Conteúdo Principal da Página de Balanças */}
-      <Card className="mb-8 bg-card/80 backdrop-blur-sm border-border shadow-elegant">
-        <CardContent className="p-6 prose prose-sm dark:prose-invert max-w-none">
-          {isLoadingPageContent ? (
-            <div className="text-center py-4">
-              <Loader2 className="h-6 w-6 animate-spin text-primary mx-auto" />
-              <p className="text-muted-foreground text-sm mt-2">Carregando conteúdo...</p>
-            </div>
-          ) : pageConfig?.scales_page_content ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {pageConfig.scales_page_content}
-            </ReactMarkdown>
-          ) : (
-            <div className="text-center py-4 text-muted-foreground">
-              {isAdmin ? (
-                <p>Nenhum conteúdo para a página de Balanças. Clique no ícone de lápis para adicionar.</p>
-              ) : (
-                <p>Nenhum conteúdo disponível para esta página.</p>
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
 
       {(isLoading || adminLoading) ? (
         <div className="text-center py-8">
@@ -291,6 +266,30 @@ const ScalesPage = () => {
           Nenhuma balança cadastrada ainda.
         </div>
       )}
+
+      {/* Área de Conteúdo Principal da Página de Balanças - MOVIDA PARA BAIXO */}
+      <Card className="mt-8 bg-card/80 backdrop-blur-sm border-border shadow-elegant">
+        <CardContent className="p-6 prose prose-sm dark:prose-invert max-w-none">
+          {isLoadingPageContent ? (
+            <div className="text-center py-4">
+              <Loader2 className="h-6 w-6 animate-spin text-primary mx-auto" />
+              <p className="text-muted-foreground text-sm mt-2">Carregando conteúdo...</p>
+            </div>
+          ) : pageConfig?.scales_page_content ? (
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {pageConfig.scales_page_content}
+            </ReactMarkdown>
+          ) : (
+            <div className="text-center py-4 text-muted-foreground">
+              {isAdmin ? (
+                <p>Nenhum conteúdo para a página de Balanças. Clique no ícone de lápis para adicionar.</p>
+              ) : (
+                <p>Nenhum conteúdo disponível para esta página.</p>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <ScaleUtilityFormDialog
         open={addDialogOpen}
