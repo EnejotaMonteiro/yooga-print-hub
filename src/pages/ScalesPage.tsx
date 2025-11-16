@@ -22,6 +22,7 @@ import { ScaleUtilityCard, ScaleUtility } from "@/components/ScaleUtilityCard";
 import { ScaleUtilityFormDialog } from "@/components/admin/ScaleUtilityFormDialog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw"; // Importar rehypeRaw
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -494,6 +495,7 @@ const ScalesPage = () => {
           ) : pageConfig?.scales_page_content ? (
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]} {/* Adicionado rehypeRaw aqui */}
               components={{
                 img: ({ node, ...props }) => (
                   <img
