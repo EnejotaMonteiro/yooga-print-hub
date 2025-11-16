@@ -216,6 +216,7 @@ export type Database = {
           ordem: number | null;
           created_at: string | null;
           updated_at: string | null;
+          hidden_info: string | null; // Adicionado
         };
         Insert: {
           id?: string;
@@ -226,6 +227,7 @@ export type Database = {
           ordem?: number | null;
           created_at?: string | null;
           updated_at?: string | null;
+          hidden_info?: string | null; // Adicionado
         };
         Update: {
           id?: string;
@@ -236,6 +238,7 @@ export type Database = {
           ordem?: number | null;
           created_at?: string | null;
           updated_at?: string | null;
+          hidden_info?: string | null; // Adicionado
         };
         Relationships: [];
       };

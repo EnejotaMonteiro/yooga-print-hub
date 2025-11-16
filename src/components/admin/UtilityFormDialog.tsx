@@ -33,7 +33,7 @@ const utilityFormSchema = z.object({
   description: z.string().min(1, "A descrição é obrigatória."),
   download_url: z.string().url("A URL de download deve ser válida.").min(1, "A URL de download é obrigatória."),
   image_url: z.string().url("A URL da imagem deve ser válida.").optional().or(z.literal("")),
-  // Removido: ordem: z.coerce.number().int().min(0).optional().default(0),
+  hidden_info: z.string().optional().or(z.literal("")), // Adicionado
 });
 
 type UtilityFormValues = z.infer<typeof utilityFormSchema>;
@@ -63,7 +63,7 @@ export const UtilityFormDialog = ({
       description: utility?.description || "",
       download_url: utility?.download_url || "",
       image_url: utility?.image_url || "",
-      // Removido: ordem: utility?.ordem || 0,
+      hidden_info: utility?.hidden_info || "", // Adicionado
     },
   });
 
@@ -74,7 +74,7 @@ export const UtilityFormDialog = ({
         description: utility.description || "",
         download_url: utility.download_url || "",
         image_url: utility.image_url || "",
-        // Removido: ordem: utility.ordem || 0,
+        hidden_info: utility.hidden_info || "", // Adicionado
       });
       setCurrentImageUrl(utility.image_url);
     } else {
@@ -83,7 +83,7 @@ export const UtilityFormDialog = ({
         description: "",
         download_url: "",
         image_url: "",
-        // Removido: ordem: 0,
+        hidden_info: "", // Adicionado
       });
       setCurrentImageUrl(null);
     }
@@ -124,7 +124,7 @@ export const UtilityFormDialog = ({
         description: values.description,
         download_url: values.download_url,
         image_url: imageUrlToSave,
-        // Removido: ordem: values.ordem,
+        hidden_info: values.hidden_info, // Adicionado
       };
 
       if (isEditing) {
@@ -253,23 +253,22 @@ export const UtilityFormDialog = ({
               )}
             </div>
 
-            {/* Removido: Ordem de Exibição */}
-            {/* <FormField
+            <FormField
               control={form.control}
-              name="ordem"
+              name="hidden_info"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Ordem de Exibição</FormLabel>
+                  <FormLabel>Informação Oculta (Protegida por Senha)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="0" {...field} />
+                    <Textarea placeholder="Informação secreta ou código..." {...field} rows={5} />
                   </FormControl>
                   <FormDescription>
-                    Define a ordem em que o utilitário aparecerá na lista.
+                    Esta informação só será visível após um triplo clique no cartão e a inserção da senha correta.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
 
             <DialogFooter>
               <Button
