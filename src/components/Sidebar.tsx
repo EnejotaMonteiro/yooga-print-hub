@@ -150,9 +150,8 @@ export const Sidebar = () => {
         <SidebarLink to="/" icon={<Home className="h-4 w-4" />} label="Página Inicial" end />
         <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" />
         <SidebarLink to="/scales" icon={<Scale className="h-4 w-4" />} label="Balanças" />
-        <SidebarLink to="/utilities" icon={<Wrench className="h-4 w-4" />} label="Utilitários" /> {/* Movido para cá */}
+        <SidebarLink to="/utilities" icon={<Wrench className="h-4 w-4" />} label="Utilitários" />
         <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" />
-        <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" />
         <a 
           href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
           target="_blank" 
@@ -171,6 +170,7 @@ export const Sidebar = () => {
             Wiki de Suporte
           </span>
         </a>
+        <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" /> {/* Movido para cá */}
       </nav>
       <div className="mt-auto py-4 bg-gradient-primary text-white flex flex-col gap-2">
         <div className="flex items-center justify-center group-hover:justify-end group-hover:gap-2 px-4">
