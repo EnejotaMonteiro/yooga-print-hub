@@ -8,8 +8,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const HomePage = () => {
-  // Adicionados parâmetros para desativar controles, informações do vídeo e vídeos relacionados
-  const videoGuiaUrl = 'https://www.youtube.com/embed/TLKh-evOW5k?controls=0&showinfo=0&modestbranding=1&rel=0';
+  // Removido 'controls=0' para permitir que o usuário interaja com o momento do vídeo.
+  // Mantidos 'showinfo=0', 'modestbranding=1' e 'rel=0' para continuar ocultando informações e vídeos relacionados.
+  const videoGuiaUrl = 'https://www.youtube.com/embed/TLKh-evOW5k?showinfo=0&modestbranding=1&rel=0';
   const guiaTitle = 'Guia Universal de Configuração';
   const guiaDescription = 'Assista ao vídeo para um guia completo de configuração de impressoras.';
 
