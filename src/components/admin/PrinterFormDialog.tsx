@@ -98,10 +98,10 @@ export const PrinterFormDialog = ({
   const onSubmit = async (values: PrinterFormValues) => {
     setLoading(true);
     try {
-      const formValuesToSave: Partial<PrinterFormValues> = {
+      const formValuesToSave = {
         nome: values.nome,
         video_url: values.video_url || "",
-        download_url: values.download_url,
+        download_url: values.download_url || "",
         imagem_url: values.imagem_url || "",
         windows_recomendado: values.windows_recomendado,
         conexao_rede: values.conexao_rede,
