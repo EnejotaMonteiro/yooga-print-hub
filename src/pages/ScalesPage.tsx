@@ -404,7 +404,7 @@ const ScalesPage = () => {
       <Card className="mt-8 bg-card/80 backdrop-blur-sm border-border shadow-elegant">
         <CardContent
           className={cn(
-            "p-6 prose prose-sm dark:prose-invert max-w-none",
+            "p-6 prose prose-sm dark:prose-invert max-w-none text-center", // Adicionado text-center aqui
             isEditingPageContent && isDraggingOver && "border-2 border-dashed border-primary-foreground bg-primary/5" // Estilo para drag-over
           )}
           onDragOver={handleDragOver}
@@ -495,7 +495,7 @@ const ScalesPage = () => {
           ) : pageConfig?.scales_page_content ? (
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw]} // Adicionado rehypeRaw aqui
+              rehypePlugins={[rehypeRaw]}
               components={{
                 img: ({ node, ...props }) => (
                   <img
