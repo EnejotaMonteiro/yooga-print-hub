@@ -12,7 +12,8 @@ import FAQPage from "./pages/FAQPage";
 import SuggestionsPage from "./pages/SuggestionsPage";
 import WikiPage from "./pages/WikiPage";
 import AIChatPage from "./pages/AIChatPage";
-import UtilitiesPage from "./pages/UtilitiesPage"; // Importar a nova página
+import UtilitiesPage from "./pages/UtilitiesPage";
+import ScalesPage from "./pages/ScalesPage"; // Importar a nova página de Balanças
 import ResetPassword from "./pages/ResetPassword";
 import { Sidebar } from "./components/Sidebar";
 
@@ -46,7 +47,8 @@ const App = () => (
               <Route path="/suggestions" element={<SuggestionsPage />} />
               <Route path="/wiki" element={<WikiPage />} />
               <Route path="/ai-chat" element={<AIChatPage />} />
-              <Route path="/utilities" element={<UtilitiesPage />} /> {/* Nova rota para Utilitários */}
+              <Route path="/utilities" element={<UtilitiesPage />} />
+              <Route path="/scales" element={<ScalesPage />} /> {/* Nova rota para Balanças */}
             </Route>
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
