@@ -28,8 +28,8 @@ export const AIChat = () => {
     }
   }, [messages]);
 
-  const sendMessage = async (e: React.FormEvent) => { // Adicionado 'e: React.FormEvent'
-    e.preventDefault(); // Previne o comportamento padrão de recarregar a página
+  const sendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
     
     if (!input.trim() || isLoading) return;
 
@@ -38,7 +38,7 @@ export const AIChat = () => {
     setMessages(prev => [...prev, { role: "user", content: userMessage }]);
     setIsLoading(true);
 
-    let assistantContent = "Aiai cara, "; // Inicializa com o bordão
+    let assistantContent = ""; // Removido "Aiai cara, " daqui
 
     try {
       const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/printer-chat`;
@@ -77,7 +77,7 @@ export const AIChat = () => {
       let textBuffer = "";
       let streamDone = false;
 
-      // Adiciona o placeholder da mensagem do assistente com o bordão inicial
+      // Adiciona o placeholder da mensagem do assistente
       setMessages(prev => [...prev, { role: "assistant", content: assistantContent }]);
 
       while (!streamDone) {
@@ -166,7 +166,7 @@ export const AIChat = () => {
               )}
             </div>
           ))}
-          {isLoading && messages[messages.length - 1]?.content === "Aiai cara, " && (
+          {isLoading && (
             <div className="flex gap-3 justify-start">
               <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                 <Bot className="h-4 w-4 text-primary animate-pulse" />
@@ -183,7 +183,6 @@ export const AIChat = () => {
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          // Removido: onKeyPress={(e) => e.key === "Enter" && sendMessage()}
           placeholder="Digite sua dúvida sobre impressoras..."
           disabled={isLoading}
           className="flex-1"
