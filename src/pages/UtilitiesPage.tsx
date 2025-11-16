@@ -156,8 +156,9 @@ const UtilitiesPage = () => {
     <div className="container mx-auto px-4 py-8 md:pl-8">
       <div className="flex justify-between items-center mb-8">
         <h1 
-          className="text-3xl font-bold text-foreground flex items-center gap-3 select-none" // Removido 'cursor-pointer'
+          className="text-3xl font-bold text-foreground flex items-center gap-3 select-none"
           onClick={handleTitleClick} // Adicionado o handler de clique
+          tabIndex={-1} // Adicionado tabIndex para garantir que o clique seja registrado
         >
           <Wrench className="h-7 w-7 text-primary" />
           Utilitários
