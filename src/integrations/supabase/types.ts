@@ -216,7 +216,7 @@ export type Database = {
           ordem: number | null;
           created_at: string | null;
           updated_at: string | null;
-          hidden_info: string | null; // Adicionado
+          hidden_info: string | null;
         };
         Insert: {
           id?: string;
@@ -227,7 +227,7 @@ export type Database = {
           ordem?: number | null;
           created_at?: string | null;
           updated_at?: string | null;
-          hidden_info?: string | null; // Adicionado
+          hidden_info?: string | null;
         };
         Update: {
           id?: string;
@@ -238,7 +238,43 @@ export type Database = {
           ordem?: number | null;
           created_at?: string | null;
           updated_at?: string | null;
-          hidden_info?: string | null; // Adicionado
+          hidden_info?: string | null;
+        };
+        Relationships: [];
+      };
+      balancas_utilitarios: {
+        Row: {
+          id: string;
+          name: string;
+          description: string;
+          download_url: string;
+          image_url: string | null;
+          ordem: number | null;
+          created_at: string | null;
+          updated_at: string | null;
+          hidden_info: string | null;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          description: string;
+          download_url: string;
+          image_url?: string | null;
+          ordem?: number | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+          hidden_info?: string | null;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          description?: string;
+          download_url?: string;
+          image_url?: string | null;
+          ordem?: number | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+          hidden_info?: string | null;
         };
         Relationships: [];
       };
@@ -332,7 +368,7 @@ export type TablesUpdate<
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternado
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
