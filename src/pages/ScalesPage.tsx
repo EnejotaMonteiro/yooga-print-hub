@@ -20,7 +20,7 @@ import {
 import { useHiddenInfo } from "@/contexts/HiddenInfoContext";
 import { ScaleUtilityCard, ScaleUtility } from "@/components/ScaleUtilityCard";
 import { ScaleUtilityFormDialog } from "@/components/admin/ScaleUtilityFormDialog";
-import { ScaleProcessFormDialog, ScaleProcess } from "@/components/admin/ScaleProcessFormDialog"; // Importar ScaleProcess
+import { ScaleProcessFormDialog, ScaleProcess } from "@/components/admin/ScaleProcessFormDialog"; // Importar ScaleProcessFormDialog
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -54,6 +54,7 @@ const ScalesPage = () => {
 
   // Estado para controlar o processo ativo
   const [activeProcess, setActiveProcess] = useState<ScaleProcess | null>(null);
+  const [addScaleProcessDialogOpen, setAddScaleProcessDialogOpen] = useState(false); // Novo estado para o dialog de processo
 
   const { openPasswordDialog, showHiddenInfoGlobally } = useHiddenInfo();
   const clickCountRef = useRef(0);
@@ -169,6 +170,11 @@ const ScalesPage = () => {
     queryClient.invalidateQueries({ queryKey: ["scale-utilities"] });
     setEditDialogOpen(false);
     setSelectedUtility(null);
+  };
+
+  const handleScaleProcessSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["scale-processes"] });
+    setAddScaleProcessDialogOpen(false);
   };
 
   const onDragEnd = async (result: DropResult) => {
@@ -355,16 +361,25 @@ const ScalesPage = () => {
             </Button>
           )}
           {isAdmin && (
-            <Button
-              className="flex items-center gap-2"
-              onClick={() => {
-                setSelectedUtility(null);
-                setAddDialogOpen(true);
-              }}
-            >
-              <Plus className="w-4 h-4" />
-              Adicionar Balança
-            </Button>
+            <>
+              <Button
+                className="flex items-center gap-2"
+                onClick={() => {
+                  setSelectedUtility(null);
+                  setAddDialogOpen(true);
+                }}
+              >
+                <Plus className="w-4 h-4" />
+                Adicionar Balança
+              </Button>
+              <Button
+                className="flex items-center gap-2"
+                onClick={() => setAddScaleProcessDialogOpen(true)} // Botão para adicionar processo
+              >
+                <Plus className="w-4 h-4" />
+                Adicionar Processo
+              </Button>
+            </>
           )}
         </div>
       </div>
@@ -597,6 +612,13 @@ const ScalesPage = () => {
         onOpenChange={setEditDialogOpen}
         utility={selectedUtility}
         onSuccess={handleEditSuccess}
+      />
+
+      <ScaleProcessFormDialog // Novo dialog para adicionar/editar processos de balança
+        open={addScaleProcessDialogOpen}
+        onOpenChange={setAddScaleProcessDialogOpen}
+        onSuccess={handleScaleProcessSuccess}
+        process={null} // Sempre nulo para adicionar novo
       />
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
