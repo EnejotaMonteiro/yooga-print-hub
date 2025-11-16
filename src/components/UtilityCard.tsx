@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } => "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Download, Edit, GripVertical, Trash2, Lock, Unlock, XCircle } from "lucide-react"; // Adicionado XCircle
 import { Utility } from "@/data/utilities";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -124,7 +124,6 @@ export const UtilityCard = ({
               </div>
             </div>
           )}
-          {/* Removido: o bloco que mostrava o ícone de cadeado quando a informação estava oculta */}
         </CardContent>
       </Card>
     </>
