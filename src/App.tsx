@@ -13,12 +13,10 @@ import SuggestionsPage from "./pages/SuggestionsPage";
 import WikiPage from "./pages/WikiPage";
 import AIChatPage from "./pages/AIChatPage";
 import UtilitiesPage from "./pages/UtilitiesPage";
-import ScalesPage from "./pages/ScalesPage";
+import ScalesPage from "./pages/ScalesPage"; // Importar a nova página de Balanças
 import ResetPassword from "./pages/ResetPassword";
 import { Sidebar } from "./components/Sidebar";
-import { HiddenInfoProvider } from "./contexts/HiddenInfoContext";
-import { VideoPlayerProvider } from "./contexts/VideoPlayerContext"; // Importar o provedor de vídeo
-import { FloatingVideoPlayer } from "./components/FloatingVideoPlayer"; // Importar o mini-player flutuante
+import { HiddenInfoProvider } from "./contexts/HiddenInfoContext"; // Importar o provedor de contexto
 
 const queryClient = new QueryClient();
 
@@ -26,8 +24,8 @@ const queryClient = new QueryClient();
 const LayoutWithSidebar = () => (
   <div className="flex min-h-screen bg-background">
     <Sidebar />
-    <main className="flex-1 pl-20">
-      <Outlet />
+    <main className="flex-1 pl-20"> {/* Adicionado pl-20 para compensar a largura da sidebar */}
+      <Outlet /> {/* Renders the matched child route */}
     </main>
   </div>
 );
@@ -36,31 +34,28 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="system" attribute="class">
       <TooltipProvider>
-        <Sonner />
+        <Sonner /> {/* Usando apenas o Toaster do Sonner */}
         <BrowserRouter>
-          <HiddenInfoProvider>
-            <VideoPlayerProvider> {/* Envolvendo a aplicação com o provedor de vídeo */}
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
-                
-                <Route element={<LayoutWithSidebar />}>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/printers" element={<PrintersPage />} />
-                  <Route path="/faq" element={<FAQPage />} />
-                  <Route path="/suggestions" element={<SuggestionsPage />} />
-                  <Route path="/wiki" element={<WikiPage />} />
-                  <Route path="/ai-chat" element={<AIChatPage />} />
-                  <Route path="/utilities" element={<UtilitiesPage />} />
-                  <Route path="/scales" element={<ScalesPage />} />
-                </Route>
+          <HiddenInfoProvider> {/* Envolvendo a aplicação com o provedor */}
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/admin" element={<Admin />} /> {/* Admin page without sidebar */}
+              <Route path="/reset-password" element={<ResetPassword />} />
+              
+              <Route element={<LayoutWithSidebar />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/printers" element={<PrintersPage />} />
+                <Route path="/faq" element={<FAQPage />} />
+                <Route path="/suggestions" element={<SuggestionsPage />} />
+                <Route path="/wiki" element={<WikiPage />} />
+                <Route path="/ai-chat" element={<AIChatPage />} />
+                <Route path="/utilities" element={<UtilitiesPage />} />
+                <Route path="/scales" element={<ScalesPage />} /> {/* Nova rota para Balanças */}
+              </Route>
 
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-              <FloatingVideoPlayer /> {/* Renderizar o mini-player flutuante */}
-            </VideoPlayerProvider>
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </HiddenInfoProvider>
         </BrowserRouter>
       </TooltipProvider>

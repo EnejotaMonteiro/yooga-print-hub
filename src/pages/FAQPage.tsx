@@ -5,10 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { convertToEmbedUrl } from "@/lib/utils";
 import { Lightbulb, BookOpen, Pencil } from "lucide-react";
 import { ObservationsBlock } from "@/components/FAQ/ObservationsBlock";
-import { useAdmin } from "@/hooks/use-admin";
-import { Button } from "@/components/ui/button";
-import { TutorialFormDialog } from "@/components/admin/TutorialFormDialog";
-import { VideoTutorial } from "@/components/FAQ/VideoTutorial"; // Importar o VideoTutorial
+import { useAdmin } from "@/hooks/use-admin"; // Importar o hook useAdmin
+import { Button } from "@/components/ui/button"; // Importar Button
+import { TutorialFormDialog } from "@/components/admin/TutorialFormDialog"; // Importar o dialog de formulário
 
 interface Tutorial {
   id: string;
@@ -16,7 +15,7 @@ interface Tutorial {
   descricao: string;
   video_url: string;
   ordem: number;
-  ativo: boolean;
+  ativo: boolean; // Adicionar ativo para consistência com o banco
 }
 
 const FAQPage = () => {
@@ -81,7 +80,7 @@ const FAQPage = () => {
           ) : filteredTutorials.length > 0 ? (
             <div className="grid gap-6">
               {filteredTutorials.map((tutorial) => (
-                <div key={tutorial.id} className="relative">
+                <div key={tutorial.id} className="bg-card border rounded-lg overflow-hidden shadow-sm relative">
                   {isAdmin && (
                     <Button
                       variant="ghost"
@@ -93,12 +92,20 @@ const FAQPage = () => {
                       <Pencil className="w-4 h-4" />
                     </Button>
                   )}
-                  <VideoTutorial
-                    id={tutorial.id}
-                    title={tutorial.titulo}
-                    description={tutorial.descricao}
-                    videoUrl={tutorial.video_url}
-                  />
+                  <div className="aspect-video">
+                    <iframe
+                      src={convertToEmbedUrl(tutorial.video_url)}
+                      title={tutorial.titulo}
+                      className="w-full h-full"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-lg mb-2">{tutorial.titulo}</h3>
+                    <p className="text-sm text-muted-foreground">{tutorial.descricao}</p>
+                  </div>
                 </div>
               ))}
             </div>
