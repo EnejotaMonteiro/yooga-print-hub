@@ -105,11 +105,13 @@ export const ScalePageContentEditorDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[800px] max-h-[90vh] flex flex-col">
+      <DialogContent className="max-w-screen-xl h-[95vh] flex flex-col"> {/* Aumentado o tamanho do diálogo */}
         <DialogHeader>
           <DialogTitle>Editar Conteúdo da Página de Balanças</DialogTitle>
           <DialogDescription>
-            Edite o conteúdo principal da página de Balanças usando Markdown. Você pode incluir texto, listas, e imagens (colando URLs).
+            Edite o conteúdo principal da página de Balanças usando Markdown. Você pode incluir texto, listas, e imagens.
+            Para imagens, cole a URL diretamente no formato `![Alt Text](URL_DA_IMAGEM)`. Para redimensionar ou posicionar, use HTML:
+            `&lt;img src="URL_DA_IMAGEM" width="50%" style="float: right;" /&gt;`
           </DialogDescription>
         </DialogHeader>
         {loading || isLoadingConfig ? (
