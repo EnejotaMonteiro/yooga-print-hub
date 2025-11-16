@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } => "@/components/ui/button";
 import { Download, Edit, GripVertical, Trash2, Lock, Unlock, XCircle } from "lucide-react"; // Adicionado XCircle
 import { Utility } from "@/data/utilities";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -124,12 +124,7 @@ export const UtilityCard = ({
               </div>
             </div>
           )}
-          {utility.hidden_info && !showHiddenInfo && ( // Mostrar indicador de bloqueio se houver info e não estiver visível
-            <div className="mt-4 text-center text-muted-foreground text-sm flex items-center justify-center gap-2">
-              <Lock className="w-4 h-4" />
-              {/* Removido o texto "Informação oculta (clique no título da página para revelar)" */}
-            </div>
-          )}
+          {/* Removido: o bloco que mostrava o ícone de cadeado quando a informação estava oculta */}
         </CardContent>
       </Card>
     </>
