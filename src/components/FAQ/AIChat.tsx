@@ -28,7 +28,9 @@ export const AIChat = () => {
     }
   }, [messages]);
 
-  const sendMessage = async () => {
+  const sendMessage = async (e: React.FormEvent) => { // Adicionado 'e: React.FormEvent'
+    e.preventDefault(); // Previne o comportamento padrão de recarregar a página
+    
     if (!input.trim() || isLoading) return;
 
     const userMessage = input.trim();
@@ -132,8 +134,6 @@ export const AIChat = () => {
 
   return (
     <div className="flex flex-col flex-1">
-      {/* Removido o h3 duplicado */}
-      
       <div className="flex-1 overflow-y-auto px-6 py-4" ref={messagesContainerRef}>
         <div className="space-y-4">
           {messages.map((message, index) => (
@@ -183,7 +183,7 @@ export const AIChat = () => {
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+          // Removido: onKeyPress={(e) => e.key === "Enter" && sendMessage()}
           placeholder="Digite sua dúvida sobre impressoras..."
           disabled={isLoading}
           className="flex-1"
