@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
+// Removido: import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Bot, User } from "lucide-react";
 import { toast } from "sonner"; // Usar toast do sonner
 import ReactMarkdown from "react-markdown";
@@ -21,11 +21,11 @@ export const AIChat = () => {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null); // Renomeado para clareza
 
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -132,13 +132,14 @@ export const AIChat = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 p-6"> {/* Adicionado p-6 para padding geral */}
+    <div className="flex flex-col flex-1 p-6">
       <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
         <Bot className="h-5 w-5 text-primary" />
         Assistente Virtual
       </h3>
       
-      <ScrollArea className="flex-1 pr-4" ref={scrollAreaRef}>
+      {/* Substituído ScrollArea por uma div com overflow-y-auto */}
+      <div className="flex-1 overflow-y-auto pr-4" ref={messagesContainerRef}>
         <div className="space-y-4">
           {messages.map((message, index) => (
             <div
@@ -181,9 +182,9 @@ export const AIChat = () => {
             </div>
           )}
         </div>
-      </ScrollArea>
+      </div>
 
-      <form onSubmit={sendMessage} className="flex gap-2 pt-4 mt-auto"> {/* Adicionado pt-4 e mt-auto */}
+      <form onSubmit={sendMessage} className="flex gap-2 pt-4 mt-auto">
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
