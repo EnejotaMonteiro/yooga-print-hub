@@ -100,9 +100,9 @@ export const UtilityCard = ({
               Download
             </Button>
           </a>
-          {utility.hidden_info && showHiddenInfo && ( // Exibir se houver info e o modo global estiver ativo
+          {utility.hidden_info && utility.hidden_info.trim() !== '' && showHiddenInfo && ( // Exibir se houver info, não estiver vazia e o modo global estiver ativo
             <div className="mt-4 pt-4 border-t border-border">
-              <h4 className="font-semibold text-lg mb-2 flex items-center justify-between"> {/* Adicionado justify-between */}
+              <h4 className="font-semibold text-lg mb-2 flex items-center justify-between">
                 <span className="flex items-center gap-2">
                   <Unlock className="w-4 h-4 text-primary" />
                   Informação Oculta
@@ -110,7 +110,7 @@ export const UtilityCard = ({
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={hideHiddenInfo} // Botão para fechar
+                  onClick={hideHiddenInfo}
                   title="Ocultar informação"
                   className="text-muted-foreground hover:text-foreground"
                 >
