@@ -42,6 +42,12 @@ const HomePage = () => {
   const guiaTitle = 'Guia Universal de Configuração';
   const guiaDescription = 'Assista ao vídeo para um guia completo de configuração de impressoras.';
 
+  // Detalhes do Canal do YouTube
+  const youtubeChannelUrl = 'https://www.youtube.com/@YoogaSistemas'; // URL do canal Yooga Sistemas
+  const youtubeChannelVideoUrl = 'https://www.youtube.com/embed/TLKh-evOW5k'; // Vídeo de exemplo do canal
+  const youtubeChannelTitle = 'Nosso Canal no YouTube';
+  const youtubeChannelDescription = 'Explore mais vídeos, tutoriais e dicas sobre nossos produtos e soluções para otimizar seu negócio.';
+
   return (
     <div className="container mx-auto px-4 py-8 md:pl-8">
       <h1 className="text-3xl font-bold text-foreground mb-8">Página Inicial</h1>
@@ -86,6 +92,36 @@ const HomePage = () => {
             <p className="text-muted-foreground mb-4">
               {guiaDescription}
             </p>
+          </div>
+        </div>
+
+        {/* Novo campo: Nosso Canal no YouTube */}
+        <div className={cn(
+            "bg-card/80 backdrop-blur-sm border border-border/20 rounded-lg shadow-elegant overflow-hidden relative transition-all duration-300 ease-in-out",
+            "w-full"
+        )}>
+          <div className="aspect-video">
+            <iframe
+              src={youtubeChannelVideoUrl}
+              title={youtubeChannelTitle}
+              className="w-full h-full"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+          <div className="p-6 text-center">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">
+              {youtubeChannelTitle}
+            </h2>
+            <p className="text-muted-foreground mb-4">
+              {youtubeChannelDescription}
+            </p>
+            <a href={youtubeChannelUrl} target="_blank" rel="noopener noreferrer">
+              <Button className="bg-gradient-primary hover:opacity-90 transition-smooth">
+                Ver Canal no YouTube
+              </Button>
+            </a>
           </div>
         </div>
       </div>
