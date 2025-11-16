@@ -132,13 +132,13 @@ export const AIChat = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1"> {/* Removido p-6 e estilos de cartão */}
+    <div className="flex flex-col flex-1 p-6"> {/* Adicionado p-6 para padding geral */}
       <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
         <Bot className="h-5 w-5 text-primary" />
         Assistente Virtual
       </h3>
       
-      <ScrollArea className="flex-1 pr-4" ref={scrollAreaRef}> {/* Removido mb-4 */}
+      <ScrollArea className="flex-1 pr-4" ref={scrollAreaRef}>
         <div className="space-y-4">
           {messages.map((message, index) => (
             <div
@@ -183,7 +183,7 @@ export const AIChat = () => {
         </div>
       </ScrollArea>
 
-      <form onSubmit={sendMessage} className="flex gap-2 mt-4"> {/* Adicionado mt-4 para espaçamento */}
+      <form onSubmit={sendMessage} className="flex gap-2 pt-4 mt-auto"> {/* Adicionado pt-4 e mt-auto */}
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
