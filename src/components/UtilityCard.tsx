@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Edit, GripVertical, Trash2, Lock, Unlock } from "lucide-react";
+import { Download, Edit, GripVertical, Trash2, Lock, Unlock, XCircle } from "lucide-react"; // Adicionado XCircle
 import { Utility } from "@/data/utilities";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useHiddenInfo } from "@/contexts/HiddenInfoContext"; // Importar o hook do contexto
 
 interface UtilityCardProps {
   utility: Utility;
@@ -35,8 +36,7 @@ export const UtilityCard = ({
   isDragging,
   showHiddenInfo, // Recebe o estado global
 }: UtilityCardProps) => {
-  // Removido: clickCount, clickTimeoutRef, isPasswordDialogOpen, enteredPassword, setShowHiddenInfo
-  // A lógica de senha e visibilidade agora é gerenciada globalmente pelo contexto.
+  const { hideHiddenInfo } = useHiddenInfo(); // Usar a função do contexto
 
   const handleDownload = () => {
     window.open(utility.download_url, '_blank');
@@ -51,7 +51,6 @@ export const UtilityCard = ({
         ref={innerRef}
         {...draggableProps}
         {...(isDragModeActive ? dragHandleProps : {})}
-        // Removido: onClick={handleCardClick}
       >
         {isAdmin && (
           <div className="absolute top-2 right-2 flex gap-1 z-10">
@@ -103,9 +102,20 @@ export const UtilityCard = ({
           </a>
           {utility.hidden_info && showHiddenInfo && ( // Exibir se houver info e o modo global estiver ativo
             <div className="mt-4 pt-4 border-t border-border">
-              <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                <Unlock className="w-4 h-4 text-primary" />
-                Informação Oculta
+              <h4 className="font-semibold text-lg mb-2 flex items-center justify-between"> {/* Adicionado justify-between */}
+                <span className="flex items-center gap-2">
+                  <Unlock className="w-4 h-4 text-primary" />
+                  Informação Oculta
+                </span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={hideHiddenInfo} // Botão para fechar
+                  title="Ocultar informação"
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <XCircle className="w-4 h-4" />
+                </Button>
               </h4>
               <div className="bg-muted p-3 rounded-md max-h-60 overflow-y-auto prose prose-sm dark:prose-invert">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>

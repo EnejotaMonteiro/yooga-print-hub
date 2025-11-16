@@ -9,6 +9,7 @@ import { Unlock } from "lucide-react";
 interface HiddenInfoContextType {
   showHiddenInfoGlobally: boolean;
   openPasswordDialog: () => void;
+  hideHiddenInfo: () => void; // Adicionada nova função
 }
 
 const HiddenInfoContext = createContext<HiddenInfoContextType | undefined>(undefined);
@@ -22,6 +23,13 @@ export const HiddenInfoProvider = ({ children }: { children: ReactNode }) => {
 
   const openPasswordDialog = () => {
     setIsPasswordDialogOpen(true);
+  };
+
+  const hideHiddenInfo = () => { // Implementação da nova função
+    setShowHiddenInfoGlobally(false);
+    toast.info("Informação oculta novamente", {
+      description: "Será necessário inserir a senha para revelá-la.",
+    });
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
@@ -50,7 +58,7 @@ export const HiddenInfoProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <HiddenInfoContext.Provider value={{ showHiddenInfoGlobally, openPasswordDialog }}>
+    <HiddenInfoContext.Provider value={{ showHiddenInfoGlobally, openPasswordDialog, hideHiddenInfo }}>
       {children}
 
       <Dialog open={isPasswordDialogOpen} onOpenChange={handleDialogClose}>
