@@ -14,30 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      balancas_utilitarios: {
+        Row: {
+          created_at: string | null
+          description: string
+          download_url: string
+          hidden_info: string | null
+          id: string
+          image_url: string | null
+          name: string
+          ordem: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          download_url: string
+          hidden_info?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          ordem?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          download_url?: string
+          hidden_info?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          ordem?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       configuracao_site: {
         Row: {
           id: string
-          updated_at: string | null
-          logo_min_url: string | null
           logo_full_url: string | null
           logo_login_url: string | null
+          logo_min_url: string | null
           scales_page_content: string | null
+          updated_at: string | null
         }
         Insert: {
           id?: string
-          updated_at?: string | null
-          logo_min_url?: string | null
           logo_full_url?: string | null
           logo_login_url?: string | null
+          logo_min_url?: string | null
           scales_page_content?: string | null
+          updated_at?: string | null
         }
         Update: {
           id?: string
-          updated_at?: string | null
-          logo_min_url?: string | null
           logo_full_url?: string | null
           logo_login_url?: string | null
+          logo_min_url?: string | null
           scales_page_content?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -134,6 +170,90 @@ export type Database = {
         }
         Relationships: []
       }
+      scale_processes: {
+        Row: {
+          button_text: string
+          content: string
+          created_at: string | null
+          id: string
+          ordem: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          button_text: string
+          content: string
+          created_at?: string | null
+          id?: string
+          ordem?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          button_text?: string
+          content?: string
+          created_at?: string | null
+          id?: string
+          ordem?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      sugestoes: {
+        Row: {
+          conteudo_sugestao: string
+          created_at: string | null
+          id: string
+          nome_remetente: string | null
+        }
+        Insert: {
+          conteudo_sugestao: string
+          created_at?: string | null
+          id?: string
+          nome_remetente?: string | null
+        }
+        Update: {
+          conteudo_sugestao?: string
+          created_at?: string | null
+          id?: string
+          nome_remetente?: string | null
+        }
+        Relationships: []
+      }
+      tutoriais: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          descricao: string
+          id: string
+          ordem: number | null
+          titulo: string
+          updated_at: string | null
+          video_url: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          descricao: string
+          id?: string
+          ordem?: number | null
+          titulo: string
+          updated_at?: string | null
+          video_url: string
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          descricao?: string
+          id?: string
+          ordem?: number | null
+          titulo?: string
+          updated_at?: string | null
+          video_url?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -155,162 +275,42 @@ export type Database = {
         }
         Relationships: []
       }
-      sugestoes: {
-        Row: {
-          id: string;
-          nome_remetente: string | null;
-          conteudo_sugestao: string;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          nome_remetente?: string | null;
-          conteudo_sugestao: string;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          nome_remetente?: string | null;
-          conteudo_sugestao?: string;
-          created_at?: string;
-        };
-        Relationships: [];
-      };
-      tutoriais: {
-        Row: {
-          id: string;
-          titulo: string;
-          descricao: string;
-          video_url: string;
-          ordem: number | null;
-          ativo: boolean | null;
-          created_at: string | null;
-          updated_at: string | null;
-        };
-        Insert: {
-          id?: string;
-          titulo: string;
-          descricao: string;
-          video_url: string;
-          ordem?: number | null;
-          ativo?: boolean | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-        };
-        Update: {
-          id?: string;
-          titulo?: string;
-          descricao?: string;
-          video_url?: string;
-          ordem?: number | null;
-          ativo?: boolean | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-        };
-        Relationships: [];
-      };
       utilitarios: {
         Row: {
-          id: string;
-          name: string;
-          description: string;
-          download_url: string;
-          image_url: string | null;
-          ordem: number | null;
-          created_at: string | null;
-          updated_at: string | null;
-          hidden_info: string | null;
-        };
+          created_at: string | null
+          description: string
+          download_url: string
+          hidden_info: string | null
+          id: string
+          image_url: string | null
+          name: string
+          ordem: number | null
+          updated_at: string | null
+        }
         Insert: {
-          id?: string;
-          name: string;
-          description: string;
-          download_url: string;
-          image_url?: string | null;
-          ordem?: number | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-          hidden_info?: string | null;
-        };
+          created_at?: string | null
+          description: string
+          download_url: string
+          hidden_info?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          ordem?: number | null
+          updated_at?: string | null
+        }
         Update: {
-          id?: string;
-          name?: string;
-          description?: string;
-          download_url?: string;
-          image_url?: string | null;
-          ordem?: number | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-          hidden_info?: string | null;
-        };
-        Relationships: [];
-      };
-      balancas_utilitarios: {
-        Row: {
-          id: string;
-          name: string;
-          description: string;
-          download_url: string;
-          image_url: string | null;
-          ordem: number | null;
-          created_at: string | null;
-          updated_at: string | null;
-          hidden_info: string | null;
-        };
-        Insert: {
-          id?: string;
-          name: string;
-          description: string;
-          download_url: string;
-          image_url?: string | null;
-          ordem?: number | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-          hidden_info?: string | null;
-        };
-        Update: {
-          id?: string;
-          name?: string;
-          description?: string;
-          download_url?: string;
-          image_url?: string | null;
-          ordem?: number | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-          hidden_info?: string | null;
-        };
-        Relationships: [];
-      };
-      scale_processes: {
-        Row: {
-          id: string;
-          title: string;
-          button_text: string;
-          content: string;
-          ordem: number | null;
-          created_at: string | null;
-          updated_at: string | null;
-        };
-        Insert: {
-          id?: string;
-          title: string;
-          button_text: string;
-          content: string;
-          ordem?: number | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-        };
-        Update: {
-          id?: string;
-          title?: string;
-          button_text?: string;
-          content?: string;
-          ordem?: number | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-        };
-        Relationships: [];
-      };
+          created_at?: string | null
+          description?: string
+          download_url?: string
+          hidden_info?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          ordem?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -351,7 +351,7 @@ export type Tables<
   schema: keyof DatabaseWithoutInternals
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      DatabaseWithoutInternals[DefaultTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
