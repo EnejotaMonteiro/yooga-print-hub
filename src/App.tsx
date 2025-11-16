@@ -24,7 +24,7 @@ const queryClient = new QueryClient();
 const LayoutWithSidebar = () => (
   <div className="flex min-h-screen bg-background">
     <Sidebar />
-    <main className="flex-1 pl-20"> {/* Adicionado pl-20 para compensar a largura da sidebar */}
+    <main className="flex-1 pl-20 py-8 h-screen"> {/* Adicionado py-8 e h-screen */}
       <Outlet /> {/* Renders the matched child route */}
     </main>
   </div>
