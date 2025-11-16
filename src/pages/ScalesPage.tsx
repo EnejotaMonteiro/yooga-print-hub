@@ -25,6 +25,7 @@ import remarkGfm from "remark-gfm";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils"; // Importar cn para classes condicionais
 
 const ScalesPage = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -42,7 +43,7 @@ const ScalesPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
-
+  const [isDraggingOver, setIsDraggingOver] = useState(false); // Novo estado para drag-and-drop
 
   const { openPasswordDialog, showHiddenInfoGlobally } = useHiddenInfo();
   const clickCountRef = useRef(0);
@@ -229,18 +230,19 @@ const ScalesPage = () => {
     setImageFile(null);
   };
 
-  const handleImageUpload = async () => {
-    if (!imageFile) {
+  const handleImageUpload = async (fileToUpload: File | null) => {
+    const file = fileToUpload || imageFile;
+    if (!file) {
       toast.error("Nenhuma imagem selecionada", { description: "Por favor, selecione um arquivo para upload." });
       return;
     }
 
     setUploadingImage(true);
     try {
-      const filePath = `images/${Date.now()}-${imageFile.name}`;
+      const filePath = `images/${Date.now()}-${file.name}`;
       const { data, error } = await supabase.storage
         .from('balancas_page_images')
-        .upload(filePath, imageFile, {
+        .upload(filePath, file, {
           cacheControl: '3600',
           upsert: true,
         });
@@ -259,6 +261,32 @@ const ScalesPage = () => {
     } finally {
       setUploadingImage(false);
       setImageFile(null); // Limpa o arquivo selecionado após o upload
+    }
+  };
+
+  // Handlers para Drag and Drop
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (isEditingPageContent) {
+      setIsDraggingOver(true);
+    }
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDraggingOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDraggingOver(false);
+    if (isEditingPageContent && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      if (file.type.startsWith('image/')) {
+        handleImageUpload(file);
+      } else {
+        toast.error("Formato inválido", { description: "Por favor, solte apenas arquivos de imagem." });
+      }
     }
   };
 
@@ -358,7 +386,15 @@ const ScalesPage = () => {
 
       {/* Área de Conteúdo Principal da Página de Balanças */}
       <Card className="mt-8 bg-card/80 backdrop-blur-sm border-border shadow-elegant">
-        <CardContent className="p-6 prose prose-sm dark:prose-invert max-w-none">
+        <CardContent
+          className={cn(
+            "p-6 prose prose-sm dark:prose-invert max-w-none",
+            isEditingPageContent && isDraggingOver && "border-2 border-dashed border-primary-foreground bg-primary/5" // Estilo para drag-over
+          )}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
           {isLoadingPageContent ? (
             <div className="text-center py-4">
               <Loader2 className="h-6 w-6 animate-spin text-primary mx-auto" />
@@ -383,7 +419,7 @@ const ScalesPage = () => {
                     className="flex-1"
                     disabled={uploadingImage}
                   />
-                  <Button onClick={handleImageUpload} disabled={!imageFile || uploadingImage}>
+                  <Button onClick={() => handleImageUpload(null)} disabled={!imageFile || uploadingImage}>
                     {uploadingImage ? (
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                     ) : (
