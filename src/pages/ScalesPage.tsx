@@ -1,4 +1,4 @@
-import { Scale, Plus, GripVertical, Loader2, Trash2, Pencil, UploadCloud, XCircle, Save, X } from "lucide-react";
+import { Scale, Plus, GripVertical, Loader2, Trash2, Pencil, UploadCloud, XCircle, Save, X, Copy } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
@@ -264,6 +264,16 @@ const ScalesPage = () => {
     }
   };
 
+  const handleCopyMarkdownUrl = () => {
+    if (uploadedImageUrl) {
+      const markdownUrl = `![Imagem da Balança](${uploadedImageUrl})`;
+      navigator.clipboard.writeText(markdownUrl);
+      toast.success("URL Markdown copiada!", {
+        description: "Cole no editor para exibir a imagem.",
+      });
+    }
+  };
+
   // Handlers para Drag and Drop
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -442,6 +452,14 @@ const ScalesPage = () => {
                     <Button
                       variant="ghost"
                       size="icon"
+                      onClick={handleCopyMarkdownUrl} // Novo botão para copiar Markdown
+                      title="Copiar URL em formato Markdown"
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => setUploadedImageUrl(null)}
                       title="Remover URL"
                     >
@@ -450,8 +468,8 @@ const ScalesPage = () => {
                   </div>
                 )}
                 <p className="text-xs text-muted-foreground">
-                  Use Markdown para formatação. Para imagens, cole a URL diretamente: `![Alt Text]({uploadedImageUrl})`.
-                  Para redimensionar ou posicionar, use HTML: `&lt;img src="{uploadedImageUrl}" width="50%" style="float: right;" /&gt;`
+                  Use Markdown para formatação. Para imagens, clique em "Copiar URL Markdown" e cole no editor.
+                  Para redimensionar ou posicionar, use HTML: `&lt;img src="URL_DA_IMAGEM" width="50%" style="float: right;" /&gt;`
                 </p>
               </div>
               <div className="flex justify-end gap-2">
