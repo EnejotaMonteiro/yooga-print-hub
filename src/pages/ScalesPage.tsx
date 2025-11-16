@@ -497,7 +497,7 @@ const ScalesPage = () => {
               components={{
                 img: ({ node, ...props }) => (
                   <img
-                    style={{ maxWidth: '100%', height: 'auto', maxHeight: '300px', cursor: 'pointer' }}
+                    style={{ maxWidth: '100%', height: 'auto', maxHeight: '300px', display: 'block', margin: '0 auto', cursor: 'pointer' }}
                     {...props}
                     onClick={() => {
                       if (props.src) {
