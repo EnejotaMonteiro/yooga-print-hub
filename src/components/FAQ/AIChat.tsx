@@ -183,7 +183,7 @@ export const AIChat = () => {
         </div>
       </ScrollArea>
 
-      <div className="flex gap-2">
+      <form onSubmit={sendMessage} className="flex gap-2">
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -193,7 +193,7 @@ export const AIChat = () => {
           className="flex-1"
         />
         <Button
-          onClick={sendMessage}
+          type="submit"
           disabled={isLoading || !input.trim()}
           size="icon"
         >
