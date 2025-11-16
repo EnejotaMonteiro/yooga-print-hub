@@ -9,7 +9,7 @@ const AIChatPage = () => {
         Assistente Virtual
       </h1>
 
-      <div className="flex-1"> {/* Removido pb-8 */}
+      <div className="flex-1"> {/* Removido pb-8 para que o chat ocupe todo o espaço */}
         <AIChat />
       </div>
     </div>

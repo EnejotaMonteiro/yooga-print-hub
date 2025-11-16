@@ -21,7 +21,7 @@ export const AIChat = () => {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const messagesContainerRef = useRef<HTMLDivElement>(null); // Renomeado para clareza
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -132,14 +132,13 @@ export const AIChat = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 p-6">
-      <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
+    <div className="flex flex-col flex-1"> {/* Removido p-6 do contêiner principal */}
+      <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2 px-4 pt-6"> {/* Adicionado px-4 pt-6 */}
         <Bot className="h-5 w-5 text-primary" />
         Assistente Virtual
       </h3>
       
-      {/* Substituído ScrollArea por uma div com overflow-y-auto */}
-      <div className="flex-1 overflow-y-auto pr-4" ref={messagesContainerRef}>
+      <div className="flex-1 overflow-y-auto px-4" ref={messagesContainerRef}> {/* Adicionado px-4 */}
         <div className="space-y-4">
           {messages.map((message, index) => (
             <div
@@ -184,7 +183,7 @@ export const AIChat = () => {
         </div>
       </div>
 
-      <form onSubmit={sendMessage} className="flex gap-2 pt-4 mt-auto">
+      <form onSubmit={sendMessage} className="flex gap-2 pt-4 mt-auto px-4 pb-4"> {/* Adicionado px-4 pb-4 */}
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
