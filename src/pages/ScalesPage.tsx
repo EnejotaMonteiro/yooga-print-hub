@@ -487,7 +487,14 @@ const ScalesPage = () => {
               </div>
             </div>
           ) : pageConfig?.scales_page_content ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                img: ({ node, ...props }) => (
+                  <img style={{ maxWidth: '100%', height: 'auto', maxHeight: '300px' }} {...props} />
+                ),
+              }}
+            >
               {pageConfig.scales_page_content}
             </ReactMarkdown>
           ) : (
