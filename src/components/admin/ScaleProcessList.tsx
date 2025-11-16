@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Edit, Trash2, Loader2, GripVertical } from "lucide-react";
+import { Edit, Trash2, Loader2, GripVertical, Save } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,

@@ -7,6 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const suggestionSchema = z.object({
+  nome_remetente: z.string().trim().max(100, "Nome deve ter no máximo 100 caracteres"),
+  conteudo_sugestao: z.string().trim().min(1, "A sugestão não pode estar vazia").max(2000, "Sugestão deve ter no máximo 2000 caracteres"),
+});
 
 const SuggestionsPage = () => {
   const [nomeRemetente, setNomeRemetente] = useState("");
@@ -15,18 +21,20 @@ const SuggestionsPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!conteudoSugestao.trim()) {
-      toast.error("A sugestão não pode estar vazia.");
-      return;
-    }
-
+    
     setLoading(true);
     try {
+      // Validate input using zod schema
+      const validatedData = suggestionSchema.parse({
+        nome_remetente: nomeRemetente.trim() || "Anônimo",
+        conteudo_sugestao: conteudoSugestao.trim(),
+      });
+
       const { error } = await supabase
         .from("sugestoes")
         .insert({
-          nome_remetente: nomeRemetente.trim() || "Anônimo",
-          conteudo_sugestao: conteudoSugestao.trim(),
+          nome_remetente: validatedData.nome_remetente,
+          conteudo_sugestao: validatedData.conteudo_sugestao,
         });
 
       if (error) throw error;
@@ -36,7 +44,11 @@ const SuggestionsPage = () => {
       setConteudoSugestao("");
     } catch (error) {
       console.error("Erro ao enviar sugestão:", error);
-      toast.error(error instanceof Error ? error.message : "Erro ao enviar sugestão.");
+      if (error instanceof z.ZodError) {
+        toast.error(error.errors[0].message);
+      } else {
+        toast.error(error instanceof Error ? error.message : "Erro ao enviar sugestão.");
+      }
     } finally {
       setLoading(false);
     }

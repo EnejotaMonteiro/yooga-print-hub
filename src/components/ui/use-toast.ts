@@ -1,3 +1,2 @@
-import { useToast, toast } from "@/hooks/use-toast";
-
-export { useToast, toast };
+// This file is deprecated - use sonner for toasts
+// import { toast } from "sonner";
