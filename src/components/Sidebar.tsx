@@ -143,7 +143,7 @@ export const Sidebar = () => {
                  transition-[max-width,margin-left] duration-500 ease-in-out delay-75
                  group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2
                  group-hover:transition-all group-hover:duration-500 group-hover:ease-in-out group-hover:delay-0">
-            Assistente Rogério
+            Assistente Rogério "Mayo"
           </span>
         </NavLink>
 
@@ -170,7 +170,7 @@ export const Sidebar = () => {
             Wiki de Suporte
           </span>
         </a>
-        <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" /> {/* Movido para cá */}
+        <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" />
       </nav>
       <div className="mt-auto py-4 bg-gradient-primary text-white flex flex-col gap-2">
         <div className="flex items-center justify-center group-hover:justify-end group-hover:gap-2 px-4">

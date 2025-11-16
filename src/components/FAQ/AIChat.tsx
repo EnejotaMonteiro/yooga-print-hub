@@ -16,7 +16,7 @@ export const AIChat = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Aiai cara, Olá! Sou Rogério, seu assistente especializado em impressoras de todas as marcas. Como posso ajudá-lo hoje?"
+      content: "Aiai cara, Olá! Sou Rogério \"Mayo\", seu assistente especializado em impressoras de todas as marcas. Como posso ajudá-lo hoje?"
     }
   ]);
   const [input, setInput] = useState("");
@@ -135,7 +135,7 @@ export const AIChat = () => {
     <div className="bg-card/60 backdrop-blur-sm border border-border rounded-lg shadow-elegant p-6 h-[600px] flex flex-col">
       <h3 className="text-xl font-semibold mb-4 text-foreground flex items-center gap-2">
         <Bot className="h-5 w-5 text-primary" />
-        Assistente Rogério
+        Assistente Rogério "Mayo"
       </h3>
       
       <ScrollArea className="flex-1 pr-4 mb-4" ref={scrollAreaRef}>
