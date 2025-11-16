@@ -127,7 +127,7 @@ export const UtilityCard = ({
           {utility.hidden_info && !showHiddenInfo && ( // Mostrar indicador de bloqueio se houver info e não estiver visível
             <div className="mt-4 text-center text-muted-foreground text-sm flex items-center justify-center gap-2">
               <Lock className="w-4 h-4" />
-              <span>Informação oculta (clique no título da página para revelar)</span>
+              {/* Removido o texto "Informação oculta (clique no título da página para revelar)" */}
             </div>
           )}
         </CardContent>
