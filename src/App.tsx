@@ -1,7 +1,7 @@
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
@@ -17,18 +17,30 @@ import ScalesPage from "./pages/ScalesPage"; // Importar a nova página de Balan
 import ResetPassword from "./pages/ResetPassword";
 import { Sidebar } from "./components/Sidebar";
 import { HiddenInfoProvider } from "./contexts/HiddenInfoContext"; // Importar o provedor de contexto
+import { ScrollArea } from "./components/ui/scroll-area";
 
 const queryClient = new QueryClient();
 
 // Layout component for pages with sidebar
-const LayoutWithSidebar = () => (
-  <div className="flex min-h-screen bg-background">
-    <Sidebar />
-    <main className="flex-1 pl-20 h-screen overflow-hidden"> {/* Adicionado overflow-hidden aqui */}
-      <Outlet /> {/* Renders the matched child route */}
-    </main>
-  </div>
-);
+const LayoutWithSidebar = () => {
+  const location = useLocation();
+  const isAIChatPage = location.pathname === "/ai-chat";
+
+  return (
+    <div className="flex min-h-screen bg-background">
+      <Sidebar />
+      <main className="flex-1 pl-20 h-screen overflow-hidden">
+        {isAIChatPage ? (
+          <Outlet />
+        ) : (
+          <ScrollArea className="h-full">
+            <Outlet />
+          </ScrollArea>
+        )}
+      </main>
+    </div>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
