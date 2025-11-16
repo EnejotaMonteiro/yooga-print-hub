@@ -1,4 +1,4 @@
-import { Scale, Plus, GripVertical, Loader2, Trash2 } from "lucide-react";
+import { Scale, Plus, GripVertical, Loader2, Trash2, Pencil } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
@@ -18,8 +18,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useHiddenInfo } from "@/contexts/HiddenInfoContext";
-import { ScaleUtilityCard, ScaleUtility } from "@/components/ScaleUtilityCard"; // Importar o novo componente e tipo
-import { ScaleUtilityFormDialog } from "@/components/admin/ScaleUtilityFormDialog"; // Importar o novo formulário
+import { ScaleUtilityCard, ScaleUtility } from "@/components/ScaleUtilityCard";
+import { ScaleUtilityFormDialog } from "@/components/admin/ScaleUtilityFormDialog";
+import { ScalePageContentEditorDialog } from "@/components/admin/ScalePageContentEditorDialog"; // Importar o novo diálogo
+import ReactMarkdown from "react-markdown"; // Importar ReactMarkdown
+import remarkGfm from "remark-gfm"; // Importar remarkGfm
 
 const ScalesPage = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -30,16 +33,36 @@ const ScalesPage = () => {
   const [isDragModeActive, setIsDragModeActive] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [utilityToDelete, setUtilityToDelete] = useState<ScaleUtility | null>(null);
+  const [pageContentEditorOpen, setPageContentEditorOpen] = useState(false); // Estado para o editor de conteúdo da página
 
   const { openPasswordDialog, showHiddenInfoGlobally } = useHiddenInfo();
   const clickCountRef = useRef(0);
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Query para o conteúdo principal da página de Balanças
+  const { data: pageConfig, isLoading: isLoadingPageContent } = useQuery({
+    queryKey: ["site-config-scales-content"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('configuracao_site')
+        .select('scales_page_content')
+        .single();
+
+      if (error && error.code === 'PGRST116') {
+        return { scales_page_content: null }; // Retorna null se não houver configuração
+      } else if (error) {
+        throw error;
+      }
+      return data;
+    },
+    staleTime: 1000 * 60 * 5,
+  });
+
   const { data: utilities, isLoading } = useQuery<ScaleUtility[]>({
     queryKey: ["scale-utilities"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("balancas_utilitarios") // Nova tabela
+        .from("balancas_utilitarios")
         .select("*")
         .order("ordem", { ascending: true });
 
@@ -52,7 +75,7 @@ const ScalesPage = () => {
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase
-        .from("balancas_utilitarios") // Nova tabela
+        .from("balancas_utilitarios")
         .delete()
         .eq("id", id);
 
@@ -116,7 +139,7 @@ const ScalesPage = () => {
       for (let i = 0; i < reorderedUtilities.length; i++) {
         const utility = reorderedUtilities[i];
         const { error } = await supabase
-          .from('balancas_utilitarios') // Nova tabela
+          .from('balancas_utilitarios')
           .update({ ordem: i })
           .eq('id', utility.id);
 
@@ -164,6 +187,16 @@ const ScalesPage = () => {
         <div className="flex items-center gap-2">
           {isAdmin && (
             <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setPageContentEditorOpen(true)} // Botão para editar o conteúdo da página
+              title="Editar conteúdo da página"
+            >
+              <Pencil className="w-4 h-4" />
+            </Button>
+          )}
+          {isAdmin && (
+            <Button
               variant={isDragModeActive ? "default" : "outline"}
               size="icon"
               onClick={() => setIsDragModeActive(prev => !prev)}
@@ -186,6 +219,30 @@ const ScalesPage = () => {
           )}
         </div>
       </div>
+
+      {/* Área de Conteúdo Principal da Página de Balanças */}
+      <Card className="mb-8 bg-card/80 backdrop-blur-sm border-border shadow-elegant">
+        <CardContent className="p-6 prose prose-sm dark:prose-invert max-w-none">
+          {isLoadingPageContent ? (
+            <div className="text-center py-4">
+              <Loader2 className="h-6 w-6 animate-spin text-primary mx-auto" />
+              <p className="text-muted-foreground text-sm mt-2">Carregando conteúdo...</p>
+            </div>
+          ) : pageConfig?.scales_page_content ? (
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {pageConfig.scales_page_content}
+            </ReactMarkdown>
+          ) : (
+            <div className="text-center py-4 text-muted-foreground">
+              {isAdmin ? (
+                <p>Nenhum conteúdo para a página de Balanças. Clique no ícone de lápis para adicionar.</p>
+              ) : (
+                <p>Nenhum conteúdo disponível para esta página.</p>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {(isLoading || adminLoading) ? (
         <div className="text-center py-8">
@@ -277,6 +334,12 @@ const ScalesPage = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <ScalePageContentEditorDialog
+        open={pageContentEditorOpen}
+        onOpenChange={setPageContentEditorOpen}
+        onSuccess={() => queryClient.invalidateQueries({ queryKey: ["site-config-scales-content"] })}
+      />
     </div>
   );
 };
