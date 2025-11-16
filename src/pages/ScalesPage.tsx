@@ -60,16 +60,16 @@ const ScalesPage = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["scale-utilities"] });
-      toast.success("Utilitário de balança excluído", {
-        description: "O utilitário foi removido com sucesso",
+      toast.success("Balança excluída", {
+        description: "A balança foi removida com sucesso",
       });
       setDeleteDialogOpen(false);
       setUtilityToDelete(null);
     },
     onError: (error: any) => {
-      console.error("Erro ao excluir utilitário de balança:", error);
+      console.error("Erro ao excluir balança:", error);
       toast.error("Erro ao excluir", {
-        description: error.message || "Ocorreu um erro ao excluir o utilitário de balança",
+        description: error.message || "Ocorreu um erro ao excluir a balança",
       });
     },
   });
@@ -124,13 +124,13 @@ const ScalesPage = () => {
       }
 
       toast.success("Ordem atualizada", {
-        description: "A ordem dos utilitários de balança foi salva com sucesso",
+        description: "A ordem das balanças foi salva com sucesso",
       });
       queryClient.invalidateQueries({ queryKey: ["scale-utilities"] });
     } catch (error: any) {
-      console.error('Erro ao reordenar utilitários de balança:', error);
+      console.error('Erro ao reordenar balanças:', error);
       toast.error("Erro ao reordenar", {
-        description: error.message || "Ocorreu um erro ao reordenar os utilitários de balança",
+        description: error.message || "Ocorreu um erro ao reordenar as balanças",
       });
       queryClient.invalidateQueries({ queryKey: ["scale-utilities"] });
     }
@@ -181,7 +181,7 @@ const ScalesPage = () => {
               }}
             >
               <Plus className="w-4 h-4" />
-              Adicionar Utilitário
+              Adicionar Balança
             </Button>
           )}
         </div>
@@ -190,7 +190,7 @@ const ScalesPage = () => {
       {(isLoading || adminLoading) ? (
         <div className="text-center py-8">
           <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
-          <p className="text-muted-foreground">Carregando utilitários de balanças...</p>
+          <p className="text-muted-foreground">Carregando balanças...</p>
         </div>
       ) : utilities && utilities.length > 0 ? (
         <DragDropContext onDragEnd={onDragEnd}>
@@ -231,7 +231,7 @@ const ScalesPage = () => {
         </DragDropContext>
       ) : (
         <div className="text-center py-8 text-muted-foreground">
-          Nenhum utilitário de balança cadastrado ainda.
+          Nenhuma balança cadastrada ainda.
         </div>
       )}
 
@@ -254,7 +254,7 @@ const ScalesPage = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir o utilitário "
+              Tem certeza que deseja excluir a balança "
               <strong>{utilityToDelete?.name}</strong>"? Esta ação não pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>

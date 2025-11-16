@@ -29,7 +29,7 @@ import { Label } from "@/components/ui/label";
 import { ScaleUtility } from "@/components/ScaleUtilityCard"; // Importar a interface ScaleUtility
 
 const scaleUtilityFormSchema = z.object({
-  name: z.string().min(1, "O nome do utilitário é obrigatório."),
+  name: z.string().min(1, "O nome da balança é obrigatório."),
   description: z.string().min(1, "A descrição é obrigatória."),
   download_url: z.string().url("A URL de download deve ser válida.").min(1, "A URL de download é obrigatória."),
   image_url: z.string().url("A URL da imagem deve ser válida.").optional().or(z.literal("")),
@@ -135,8 +135,8 @@ export const ScaleUtilityFormDialog = ({
 
         if (error) throw error;
 
-        toast.success("Utilitário de balança atualizado", {
-          description: "As informações do utilitário foram atualizadas com sucesso",
+        toast.success("Balança atualizada", {
+          description: "As informações da balança foram atualizadas com sucesso",
         });
       } else {
         const { error } = await supabase
@@ -145,8 +145,8 @@ export const ScaleUtilityFormDialog = ({
 
         if (error) throw error;
 
-        toast.success("Utilitário de balança adicionado", {
-          description: "O novo utilitário foi cadastrado com sucesso",
+        toast.success("Balança adicionada", {
+          description: "A nova balança foi cadastrada com sucesso",
         });
       }
 
@@ -154,9 +154,9 @@ export const ScaleUtilityFormDialog = ({
       onOpenChange(false);
       onSuccess();
     } catch (error: any) {
-      console.error("Erro ao salvar utilitário de balança:", error);
+      console.error("Erro ao salvar balança:", error);
       toast.error("Erro", {
-        description: error.message || "Ocorreu um erro ao salvar o utilitário de balança",
+        description: error.message || "Ocorreu um erro ao salvar a balança",
       });
     } finally {
       setLoading(false);
@@ -169,12 +169,12 @@ export const ScaleUtilityFormDialog = ({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {isEditing ? "Editar Utilitário de Balança" : "Adicionar Novo Utilitário de Balança"}
+            {isEditing ? "Editar Balança" : "Adicionar Nova Balança"}
           </DialogTitle>
           <DialogDescription>
             {isEditing
-              ? "Atualize as informações do utilitário de balança"
-              : "Preencha os dados para cadastrar um novo utilitário de balança"}
+              ? "Atualize as informações da balança"
+              : "Preencha os dados para cadastrar uma nova balança"}
           </DialogDescription>
         </DialogHeader>
 
@@ -185,9 +185,9 @@ export const ScaleUtilityFormDialog = ({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome do Utilitário</FormLabel>
+                  <FormLabel>Nome da Balança</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex: Driver Balança Toledo" {...field} />
+                    <Input placeholder="Ex: Balança Toledo Prix 4" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -223,7 +223,7 @@ export const ScaleUtilityFormDialog = ({
             />
 
             <div className="space-y-2">
-              <Label htmlFor="imageFile">Imagem do Utilitário (Opcional)</Label>
+              <Label htmlFor="imageFile">Imagem da Balança (Opcional)</Label>
               <Input
                 id="imageFile"
                 type="file"
@@ -233,7 +233,7 @@ export const ScaleUtilityFormDialog = ({
               {currentImageUrl && (
                 <div className="mt-2 flex items-center gap-2">
                   <p className="text-sm text-muted-foreground">Imagem atual:</p>
-                  <img src={currentImageUrl} alt="Utilitário de Balança" className="h-10 w-auto object-contain" />
+                  <img src={currentImageUrl} alt="Imagem da Balança" className="h-10 w-auto object-contain" />
                   <Button
                     type="button"
                     variant="ghost"

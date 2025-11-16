@@ -71,7 +71,7 @@ export const ScaleUtilityCard = ({
               size="icon"
               onClick={() => onEdit(utility)}
               className="bg-background/80 hover:bg-background"
-              title="Editar utilitário"
+              title="Editar balança"
             >
               <Edit className="w-4 h-4" />
             </Button>
@@ -80,7 +80,7 @@ export const ScaleUtilityCard = ({
               size="icon"
               onClick={() => onDelete(utility)}
               className="bg-background/80 hover:bg-background text-destructive"
-              title="Excluir utilitário"
+              title="Excluir balança"
             >
               <Trash2 className="w-4 h-4" />
             </Button>
