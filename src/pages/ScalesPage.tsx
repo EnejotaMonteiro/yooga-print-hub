@@ -20,7 +20,7 @@ import {
 import { useHiddenInfo } from "@/contexts/HiddenInfoContext";
 import { ScaleUtilityCard, ScaleUtility } from "@/components/ScaleUtilityCard";
 import { ScaleUtilityFormDialog } from "@/components/admin/ScaleUtilityFormDialog";
-import { ScaleProcessFormDialog, ScaleProcess } from "@/components/admin/ScaleProcessFormDialog"; // Importar ScaleProcessFormDialog
+import { ScaleProcessFormDialog, ScaleProcess } from "@/components/admin/ScaleProcessFormDialog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -54,7 +54,9 @@ const ScalesPage = () => {
 
   // Estado para controlar o processo ativo
   const [activeProcess, setActiveProcess] = useState<ScaleProcess | null>(null);
-  const [addScaleProcessDialogOpen, setAddScaleProcessDialogOpen] = useState(false); // Novo estado para o dialog de processo
+  const [addScaleProcessDialogOpen, setAddScaleProcessDialogOpen] = useState(false); // Estado para o dialog de adicionar processo
+  const [selectedProcessForEdit, setSelectedProcessForEdit] = useState<ScaleProcess | null>(null); // Novo estado para processo a ser editado
+  const [editProcessDialogOpen, setEditProcessDialogOpen] = useState(false); // Novo estado para o dialog de edição de processo
 
   const { openPasswordDialog, showHiddenInfoGlobally } = useHiddenInfo();
   const clickCountRef = useRef(0);
@@ -175,6 +177,22 @@ const ScalesPage = () => {
   const handleScaleProcessSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ["scale-processes"] });
     setAddScaleProcessDialogOpen(false);
+    setEditProcessDialogOpen(false); // Fechar o dialog de edição também
+    setSelectedProcessForEdit(null); // Limpar o processo selecionado
+  };
+
+  const handleEditProcess = (process: ScaleProcess) => {
+    setSelectedProcessForEdit(process);
+    setEditProcessDialogOpen(true);
+  };
+
+  const handleCopyContent = () => {
+    if (activeProcess?.content) {
+      navigator.clipboard.writeText(activeProcess.content);
+      toast.success("Conteúdo copiado!", {
+        description: "O texto do processo foi copiado para a área de transferência.",
+      });
+    }
   };
 
   const onDragEnd = async (result: DropResult) => {
@@ -374,7 +392,7 @@ const ScalesPage = () => {
               </Button>
               <Button
                 className="flex items-center gap-2"
-                onClick={() => setAddScaleProcessDialogOpen(true)} // Botão para adicionar processo
+                onClick={() => setAddScaleProcessDialogOpen(true)}
               >
                 <Plus className="w-4 h-4" />
                 Adicionar Processo
@@ -394,14 +412,29 @@ const ScalesPage = () => {
         ) : scaleProcesses && scaleProcesses.length > 0 ? (
           <div className="flex flex-wrap justify-center gap-4 mb-6">
             {scaleProcesses.map((process) => (
-              <Button
-                key={process.id}
-                onClick={() => setActiveProcess(process)}
-                variant={activeProcess?.id === process.id ? 'default' : 'outline'}
-                className={activeProcess?.id === process.id ? 'bg-gradient-primary text-white' : ''}
-              >
-                {process.button_text}
-              </Button>
+              <div key={process.id} className="relative group">
+                <Button
+                  onClick={() => setActiveProcess(process)}
+                  variant={activeProcess?.id === process.id ? 'default' : 'outline'}
+                  className={activeProcess?.id === process.id ? 'bg-gradient-primary text-white' : ''}
+                >
+                  {process.button_text}
+                </Button>
+                {isAdmin && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEditProcess(process);
+                    }}
+                    className="absolute -top-2 -right-2 h-6 w-6 p-1 rounded-full bg-background/80 hover:bg-background opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Editar processo"
+                  >
+                    <Pencil className="w-3 h-3" />
+                  </Button>
+                )}
+              </div>
             ))}
           </div>
         ) : (
@@ -412,8 +445,16 @@ const ScalesPage = () => {
 
         {activeProcess && (
           <Card className="w-full max-w-3xl mx-auto bg-card/80 backdrop-blur-sm border-border shadow-elegant text-left">
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>{activeProcess.title}</CardTitle>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleCopyContent}
+                title="Copiar conteúdo"
+              >
+                <Copy className="w-4 h-4" />
+              </Button>
             </CardHeader>
             <CardContent className="prose dark:prose-invert">
               <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
@@ -614,11 +655,18 @@ const ScalesPage = () => {
         onSuccess={handleEditSuccess}
       />
 
-      <ScaleProcessFormDialog // Novo dialog para adicionar/editar processos de balança
+      <ScaleProcessFormDialog
         open={addScaleProcessDialogOpen}
         onOpenChange={setAddScaleProcessDialogOpen}
         onSuccess={handleScaleProcessSuccess}
-        process={null} // Sempre nulo para adicionar novo
+        process={null} // Para adicionar um novo processo
+      />
+
+      <ScaleProcessFormDialog
+        open={editProcessDialogOpen} // Novo dialog para edição de processo
+        onOpenChange={setEditProcessDialogOpen}
+        onSuccess={handleScaleProcessSuccess}
+        process={selectedProcessForEdit} // Passa o processo selecionado para edição
       />
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
