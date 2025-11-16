@@ -26,6 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils"; // Importar cn para classes condicionais
+import { Dialog, DialogContent } from "@/components/ui/dialog"; // Importar Dialog e DialogContent
 
 const ScalesPage = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -44,6 +45,10 @@ const ScalesPage = () => {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
   const [isDraggingOver, setIsDraggingOver] = useState(false); // Novo estado para drag-and-drop
+
+  // Estados para imagem maximizada
+  const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
+  const [maximizedImageSrc, setMaximizedImageSrc] = useState<string | null>(null);
 
   const { openPasswordDialog, showHiddenInfoGlobally } = useHiddenInfo();
   const clickCountRef = useRef(0);
@@ -491,7 +496,16 @@ const ScalesPage = () => {
               remarkPlugins={[remarkGfm]}
               components={{
                 img: ({ node, ...props }) => (
-                  <img style={{ maxWidth: '100%', height: 'auto', maxHeight: '300px' }} {...props} />
+                  <img
+                    style={{ maxWidth: '100%', height: 'auto', maxHeight: '300px', cursor: 'pointer' }}
+                    {...props}
+                    onClick={() => {
+                      if (props.src) {
+                        setMaximizedImageSrc(props.src);
+                        setIsImageDialogOpen(true);
+                      }
+                    }}
+                  />
                 ),
               }}
             >
@@ -551,6 +565,19 @@ const ScalesPage = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Dialog para exibir imagem maximizada */}
+      <Dialog open={isImageDialogOpen} onOpenChange={setIsImageDialogOpen}>
+        <DialogContent className="max-w-4xl p-0 border-none bg-transparent shadow-none">
+          {maximizedImageSrc && (
+            <img
+              src={maximizedImageSrc}
+              alt="Imagem maximizada"
+              className="max-w-full max-h-[90vh] object-contain mx-auto"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
