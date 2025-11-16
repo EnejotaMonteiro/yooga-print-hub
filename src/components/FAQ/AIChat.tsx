@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Send, Bot, User } from "lucide-react";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remarkGfm";
+import remarkGfm from "remark-gfm"; // Corrigido o caminho de importação
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Importar componentes Card
 
 interface Message {
