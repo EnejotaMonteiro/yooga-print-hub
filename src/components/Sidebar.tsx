@@ -137,7 +137,7 @@ export const Sidebar = () => {
         isSidebarExpanded ? "w-64" : "w-20 group hover:w-64"
       )}
     >
-      <div className="flex items-center justify-center group-hover:justify-start h-20 mb-6 py-4 px-4 relative">
+      <div className="flex items-center justify-center h-20 mb-6 py-4 px-4 relative">
         {/* Ícone para barra lateral minimizada */}
         <Printer
           className={cn(
@@ -151,7 +151,7 @@ export const Sidebar = () => {
           alt="Yooga Suporte Logo Completo"
           className={cn(
             "h-12 w-auto transition-all duration-500 ease-in-out",
-            isSidebarExpanded ? "opacity-100 h-16" : "opacity-0 group-hover:opacity-100 group-hover:h-16"
+            isSidebarExpanded ? "opacity-100" : "opacity-0 group-hover:opacity-100"
           )}
         />
       </div>
