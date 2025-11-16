@@ -2,9 +2,10 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, Bot, User } from "lucide-react";
-import { toast } from "sonner"; // Usar toast do sonner
+import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Importar componentes Card
 
 interface Message {
   role: "user" | "assistant";
@@ -38,7 +39,7 @@ export const AIChat = () => {
     setMessages(prev => [...prev, { role: "user", content: userMessage }]);
     setIsLoading(true);
 
-    let assistantContent = ""; // Removido "Aiai cara, " daqui
+    let assistantContent = "";
 
     try {
       const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/printer-chat`;
@@ -77,7 +78,6 @@ export const AIChat = () => {
       let textBuffer = "";
       let streamDone = false;
 
-      // Adiciona o placeholder da mensagem do assistente
       setMessages(prev => [...prev, { role: "assistant", content: assistantContent }]);
 
       while (!streamDone) {
@@ -125,7 +125,6 @@ export const AIChat = () => {
       toast.error("Erro", {
         description: "Não foi possível enviar a mensagem. Tente novamente.",
       });
-      // Remove o placeholder do assistente se houver erro
       setMessages(prev => prev.filter((_, i) => i !== prev.length - 1));
     } finally {
       setIsLoading(false);
@@ -133,68 +132,77 @@ export const AIChat = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1">
-      <div className="flex-1 overflow-y-auto px-6 py-4" ref={messagesContainerRef}>
-        <div className="space-y-4">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`flex gap-3 ${
-                message.role === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              {message.role === "assistant" && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Bot className="h-4 w-4 text-primary" />
-                </div>
-              )}
-              <div
-                className={`max-w-[80%] rounded-lg p-3 ${
-                  message.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-foreground"
-                } prose prose-sm dark:prose-invert`}
-              >
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {message.content}
-                </ReactMarkdown>
-              </div>
-              {message.role === "user" && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
-                  <User className="h-4 w-4 text-secondary-foreground" />
-                </div>
-              )}
-            </div>
-          ))}
-          {isLoading && (
-            <div className="flex gap-3 justify-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <Bot className="h-4 w-4 text-primary animate-pulse" />
-              </div>
-              <div className="bg-muted rounded-lg p-3">
-                <p className="text-sm text-muted-foreground">Digitando...</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+    <Card className="flex flex-col flex-1 h-full bg-card/80 backdrop-blur-sm border-border shadow-elegant">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-2xl font-bold text-foreground flex items-center gap-3">
+          <Bot className="h-6 w-6 text-primary" />
+          Assistente Virtual
+        </CardTitle>
+      </CardHeader>
 
-      <form onSubmit={sendMessage} className="flex gap-2 pt-4 mt-auto px-6 pb-6">
-        <Input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Digite sua dúvida sobre impressoras..."
-          disabled={isLoading}
-          className="flex-1"
-        />
-        <Button
-          type="submit"
-          disabled={isLoading || !input.trim()}
-          size="icon"
-        >
-          <Send className="h-4 w-4" />
-        </Button>
-      </form>
-    </div>
+      <CardContent className="flex flex-col flex-1 p-0">
+        <div className="flex-1 overflow-y-auto px-6 py-4" ref={messagesContainerRef}>
+          <div className="space-y-4">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`flex gap-3 ${
+                  message.role === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                {message.role === "assistant" && (
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Bot className="h-4 w-4 text-primary" />
+                  </div>
+                )}
+                <div
+                  className={`max-w-[80%] rounded-lg p-3 ${
+                    message.role === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-foreground"
+                  } prose prose-sm dark:prose-invert`}
+                >
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {message.content}
+                  </ReactMarkdown>
+                </div>
+                {message.role === "user" && (
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+                    <User className="h-4 w-4 text-secondary-foreground" />
+                  </div>
+                )}
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex gap-3 justify-start">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Bot className="h-4 w-4 text-primary animate-pulse" />
+                </div>
+                <div className="bg-muted rounded-lg p-3">
+                  <p className="text-sm text-muted-foreground">Digitando...</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <form onSubmit={sendMessage} className="flex gap-2 pt-4 mt-auto px-6 pb-6 border-t border-border">
+          <Input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Digite sua dúvida sobre impressoras..."
+            disabled={isLoading}
+            className="flex-1"
+          />
+          <Button
+            type="submit"
+            disabled={isLoading || !input.trim()}
+            size="icon"
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
