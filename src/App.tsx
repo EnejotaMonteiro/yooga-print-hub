@@ -44,7 +44,7 @@ const LayoutWithSidebar = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="light" forcedTheme="light" attribute="class">
+    <ThemeProvider defaultTheme="light" attribute="class">
       <TooltipProvider>
         <Sonner /> {/* Usando apenas o Toaster do Sonner */}
         <BrowserRouter>
