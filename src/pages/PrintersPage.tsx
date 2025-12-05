@@ -123,22 +123,22 @@ const PrintersPage = () => {
         Impressoras
       </h1>
 
-      <div className="flex items-center justify-between mb-8">
-        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col items-center gap-4 mb-8">
+        <div className="w-full max-w-md">
+          <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+        </div>
+        <div className="flex items-center justify-center gap-4">
           {showDownloadAllButton && (
-            <> {/* Fragmento React adicionado aqui */}
-              <a 
-                href="https://drive.google.com/drive/folders/1-pro0D_-06g22xL_1o2N5UAMCGiRAEol?usp=drive_link" 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <Button variant="outline" size="sm" className="flex items-center gap-2">
-                  <Download className="w-4 h-4" />
-                  <span className="hidden sm:inline">Download Todos</span>
-                </Button>
-              </a>
-            </>
+            <a 
+              href="https://drive.google.com/drive/folders/1-pro0D_-06g22xL_1o2N5UAMCGiRAEol?usp=drive_link" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                <span className="hidden sm:inline">Download Todos</span>
+              </Button>
+            </a>
           )}
           <SocketStatus />
           {isAdmin && (
@@ -146,7 +146,7 @@ const PrintersPage = () => {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => setOrderSheetOpen(true)} // Abre o painel de ordem
+                onClick={() => setOrderSheetOpen(true)}
                 title="Reordenar impressoras (lista)"
               >
                 <ListOrdered className="w-4 h-4" />
