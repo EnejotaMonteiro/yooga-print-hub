@@ -12,14 +12,18 @@ import {
   Bot,
   Wrench,
   Scale,
+  FileText,
+  GraduationCap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { AppModeToggle } from "@/components/AppModeToggle";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { cn } from "@/lib/utils"; // Importar cn para classes condicionais
+import { cn } from "@/lib/utils";
+import { useAppMode } from "@/contexts/AppModeContext";
 
 interface SidebarLinkProps {
   to: string;
@@ -64,8 +68,9 @@ export const Sidebar = () => {
   const { isAdmin } = useAdmin();
   const queryClient = useQueryClient();
   const [user, setUser] = useState<any>(null);
-  const location = useLocation(); // Inicializar useLocation
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false); // Novo estado
+  const location = useLocation();
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const { isFiscalMode } = useAppMode();
 
   useEffect(() => {
     const getUser = async () => {
@@ -184,37 +189,74 @@ export const Sidebar = () => {
         </NavLink>
 
         <SidebarLink to="/" icon={<Home className="h-4 w-4" />} label="Página Inicial" end isSidebarExpanded={isSidebarExpanded} />
-        <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" isSidebarExpanded={isSidebarExpanded} />
-        <SidebarLink to="/scales" icon={<Scale className="h-4 w-4" />} label="Balanças" isSidebarExpanded={isSidebarExpanded} />
-        <SidebarLink to="/utilities" icon={<Wrench className="h-4 w-4" />} label="Utilitários" isSidebarExpanded={isSidebarExpanded} />
-        <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" isSidebarExpanded={isSidebarExpanded} />
-        <a 
-          href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className={cn(
-            "flex items-center rounded-lg text-muted-foreground transition-all hover:text-foreground",
-            isSidebarExpanded ? "w-full" : "w-10 group-hover:w-full"
-          )}
-        >
-          <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
-            <Book className="h-4 w-4" />
-          </div>
-          <span
-            className={cn(
-              "overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-out",
-              isSidebarExpanded
-                ? "opacity-100 max-w-full ml-2"
-                : "opacity-0 max-w-0 group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2"
-            )}
-          >
-            Wiki de Suporte
-          </span>
-        </a>
-        <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" isSidebarExpanded={isSidebarExpanded} />
+        
+        {isFiscalMode ? (
+          <>
+            {/* Modo Fiscal */}
+            <SidebarLink to="/utilities" icon={<FileText className="h-4 w-4" />} label="Utilitários Fiscais" isSidebarExpanded={isSidebarExpanded} />
+            <SidebarLink to="/faq" icon={<GraduationCap className="h-4 w-4" />} label="Tutoriais Fiscais" isSidebarExpanded={isSidebarExpanded} />
+            <a 
+              href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={cn(
+                "flex items-center rounded-lg text-muted-foreground transition-all hover:text-foreground",
+                isSidebarExpanded ? "w-full" : "w-10 group-hover:w-full"
+              )}
+            >
+              <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
+                <Book className="h-4 w-4" />
+              </div>
+              <span
+                className={cn(
+                  "overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-out",
+                  isSidebarExpanded
+                    ? "opacity-100 max-w-full ml-2"
+                    : "opacity-0 max-w-0 group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2"
+                )}
+              >
+                Wiki Fiscal
+              </span>
+            </a>
+            <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" isSidebarExpanded={isSidebarExpanded} />
+          </>
+        ) : (
+          <>
+            {/* Modo Normal (Impressoras) */}
+            <SidebarLink to="/printers" icon={<Printer className="h-4 w-4" />} label="Impressoras" isSidebarExpanded={isSidebarExpanded} />
+            <SidebarLink to="/scales" icon={<Scale className="h-4 w-4" />} label="Balanças" isSidebarExpanded={isSidebarExpanded} />
+            <SidebarLink to="/utilities" icon={<Wrench className="h-4 w-4" />} label="Utilitários" isSidebarExpanded={isSidebarExpanded} />
+            <SidebarLink to="/faq" icon={<BookOpen className="h-4 w-4" />} label="Dúvidas Recorrentes" isSidebarExpanded={isSidebarExpanded} />
+            <a 
+              href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={cn(
+                "flex items-center rounded-lg text-muted-foreground transition-all hover:text-foreground",
+                isSidebarExpanded ? "w-full" : "w-10 group-hover:w-full"
+              )}
+            >
+              <div className="flex items-center justify-center h-10 w-10 flex-shrink-0">
+                <Book className="h-4 w-4" />
+              </div>
+              <span
+                className={cn(
+                  "overflow-hidden whitespace-nowrap transition-all duration-500 ease-in-out",
+                  isSidebarExpanded
+                    ? "opacity-100 max-w-full ml-2"
+                    : "opacity-0 max-w-0 group-hover:opacity-100 group-hover:max-w-full group-hover:ml-2"
+                )}
+              >
+                Wiki de Suporte
+              </span>
+            </a>
+            <SidebarLink to="/suggestions" icon={<Lightbulb className="h-4 w-4" />} label="Sugestões" isSidebarExpanded={isSidebarExpanded} />
+          </>
+        )}
       </nav>
       <div className="mt-auto py-4 bg-gradient-primary text-white flex flex-col gap-2">
         <div className="flex items-center justify-center group-hover:justify-end group-hover:gap-2 px-4">
+          <AppModeToggle />
           <ThemeToggle />
           {user ? (
             <>
