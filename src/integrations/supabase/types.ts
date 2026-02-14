@@ -254,6 +254,39 @@ export type Database = {
         }
         Relationships: []
       }
+      tutoriais_fiscais: {
+        Row: {
+          ativo: boolean | null
+          created_at: string | null
+          descricao: string
+          id: string
+          ordem: number | null
+          titulo: string
+          updated_at: string | null
+          video_url: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          created_at?: string | null
+          descricao: string
+          id?: string
+          ordem?: number | null
+          titulo: string
+          updated_at?: string | null
+          video_url: string
+        }
+        Update: {
+          ativo?: boolean | null
+          created_at?: string | null
+          descricao?: string
+          id?: string
+          ordem?: number | null
+          titulo?: string
+          updated_at?: string | null
+          video_url?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -276,6 +309,42 @@ export type Database = {
         Relationships: []
       }
       utilitarios: {
+        Row: {
+          created_at: string | null
+          description: string
+          download_url: string
+          hidden_info: string | null
+          id: string
+          image_url: string | null
+          name: string
+          ordem: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          download_url: string
+          hidden_info?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          ordem?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          download_url?: string
+          hidden_info?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          ordem?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      utilitarios_fiscais: {
         Row: {
           created_at: string | null
           description: string

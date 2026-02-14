@@ -193,8 +193,8 @@ export const Sidebar = () => {
         {isFiscalMode ? (
           <>
             {/* Modo Fiscal */}
-            <SidebarLink to="/utilities" icon={<FileText className="h-4 w-4" />} label="Utilitários Fiscais" isSidebarExpanded={isSidebarExpanded} />
-            <SidebarLink to="/faq" icon={<GraduationCap className="h-4 w-4" />} label="Tutoriais Fiscais" isSidebarExpanded={isSidebarExpanded} />
+            <SidebarLink to="/fiscal-utilities" icon={<FileText className="h-4 w-4" />} label="Utilitários Fiscais" isSidebarExpanded={isSidebarExpanded} />
+            <SidebarLink to="/fiscal-tutorials" icon={<GraduationCap className="h-4 w-4" />} label="Tutoriais Fiscais" isSidebarExpanded={isSidebarExpanded} />
             <a 
               href="https://wiki-suporte-yooga.notion.site/Impressoras-Configura-es-e-poss-veis-erros-1d6468d042e84ca88165b482df10b1da#1d6468d042e84ca88165b482df10b1da" 
               target="_blank" 
