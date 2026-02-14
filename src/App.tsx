@@ -14,6 +14,8 @@ import WikiPage from "./pages/WikiPage";
 import AIChatPage from "./pages/AIChatPage";
 import UtilitiesPage from "./pages/UtilitiesPage";
 import ScalesPage from "./pages/ScalesPage";
+import FiscalUtilitiesPage from "./pages/FiscalUtilitiesPage";
+import FiscalTutorialsPage from "./pages/FiscalTutorialsPage";
 import ResetPassword from "./pages/ResetPassword";
 import { Sidebar } from "./components/Sidebar";
 import { HiddenInfoProvider } from "./contexts/HiddenInfoContext";
@@ -65,6 +67,8 @@ const App = () => (
                   <Route path="/ai-chat" element={<AIChatPage />} />
                   <Route path="/utilities" element={<UtilitiesPage />} />
                   <Route path="/scales" element={<ScalesPage />} />
+                  <Route path="/fiscal-utilities" element={<FiscalUtilitiesPage />} />
+                  <Route path="/fiscal-tutorials" element={<FiscalTutorialsPage />} />
                 </Route>
 
                 <Route path="*" element={<NotFound />} />

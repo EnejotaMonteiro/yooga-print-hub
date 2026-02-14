@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus, Home, Image, Wrench, Scale } from "lucide-react";
+import { LogOut, Plus, Home, Image, Wrench, Scale, FileText, GraduationCap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { PrintersList } from "@/components/admin/PrintersList";
@@ -15,6 +15,8 @@ import { UtilitiesList } from "@/components/admin/UtilitiesList";
 import { UtilityFormDialog } from "@/components/admin/UtilityFormDialog";
 import { ScaleProcessList } from "@/components/admin/ScaleProcessList";
 import { ScaleProcessFormDialog } from "@/components/admin/ScaleProcessFormDialog";
+import { FiscalUtilityFormDialog } from "@/components/admin/FiscalUtilityFormDialog";
+import { FiscalTutorialFormDialog } from "@/components/admin/FiscalTutorialFormDialog";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Admin = () => {
@@ -224,6 +226,36 @@ const Admin = () => {
           {/* Gerenciar Sugestões */}
           <div className="bg-card rounded-lg p-6 shadow-elegant">
             <SuggestionsList />
+          </div>
+
+          {/* === SEÇÃO FISCAL === */}
+          <div className="border-t-4 border-primary pt-6 mt-6">
+            <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
+              <FileText className="h-6 w-6 text-primary" />
+              Ambiente Fiscal
+            </h2>
+
+            {/* Gerenciar Utilitários Fiscais */}
+            <div className="bg-card rounded-lg p-6 shadow-elegant mb-6">
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h2 className="text-xl font-semibold text-foreground">Gerenciar Utilitários Fiscais</h2>
+                  <p className="text-sm text-muted-foreground mt-1">Adicione, edite ou remova utilitários fiscais</p>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground">Gerencie os utilitários fiscais diretamente na página de <a href="/fiscal-utilities" className="text-primary underline">Utilitários Fiscais</a>.</p>
+            </div>
+
+            {/* Gerenciar Tutoriais Fiscais */}
+            <div className="bg-card rounded-lg p-6 shadow-elegant">
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h2 className="text-xl font-semibold text-foreground">Gerenciar Tutoriais Fiscais</h2>
+                  <p className="text-sm text-muted-foreground mt-1">Adicione, edite ou remova tutoriais fiscais</p>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground">Gerencie os tutoriais fiscais diretamente na página de <a href="/fiscal-tutorials" className="text-primary underline">Tutoriais Fiscais</a>.</p>
+            </div>
           </div>
         </div>
       </div>
