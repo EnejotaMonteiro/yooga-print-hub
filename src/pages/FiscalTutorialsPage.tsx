@@ -1,18 +1,27 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { convertToEmbedUrl } from "@/lib/utils";
-import { GraduationCap, Pencil, Plus } from "lucide-react";
+import { GraduationCap, Pencil, Plus, Trash2, Loader2, GripVertical } from "lucide-react";
 import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { FiscalTutorialFormDialog, FiscalTutorial } from "@/components/admin/FiscalTutorialFormDialog";
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 const FiscalTutorialsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingTutorial, setEditingTutorial] = useState<FiscalTutorial | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [isDragModeActive, setIsDragModeActive] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [tutorialToDelete, setTutorialToDelete] = useState<FiscalTutorial | null>(null);
   const { isAdmin, loading: adminLoading } = useAdmin();
   const queryClient = useQueryClient();
 
@@ -29,17 +38,55 @@ const FiscalTutorialsPage = () => {
     },
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("tutoriais_fiscais").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fiscal-tutorials"] });
+      toast.success("Tutorial fiscal excluído");
+      setDeleteDialogOpen(false);
+      setTutorialToDelete(null);
+    },
+    onError: (error: any) => {
+      toast.error("Erro ao excluir", { description: error.message });
+    },
+  });
+
   const filteredTutorials = tutorials?.filter(t =>
     t.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
     t.descricao.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
 
   const handleEdit = (tutorial: FiscalTutorial) => { setEditingTutorial(tutorial); setDialogOpen(true); };
+  const handleDelete = (tutorial: FiscalTutorial) => { setTutorialToDelete(tutorial); setDeleteDialogOpen(true); };
+  const confirmDelete = () => { if (tutorialToDelete) deleteMutation.mutate(tutorialToDelete.id); };
+
   const handleSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ["fiscal-tutorials"] });
     setEditingTutorial(null);
     setDialogOpen(false);
     setAddDialogOpen(false);
+  };
+
+  const onDragEnd = async (result: DropResult) => {
+    if (!result.destination || !tutorials) return;
+    const reordered = Array.from(tutorials);
+    const [removed] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, removed);
+    queryClient.setQueryData(["fiscal-tutorials"], reordered);
+    try {
+      for (let i = 0; i < reordered.length; i++) {
+        const { error } = await supabase.from('tutoriais_fiscais').update({ ordem: i }).eq('id', reordered[i].id);
+        if (error) throw error;
+      }
+      toast.success("Ordem atualizada");
+      queryClient.invalidateQueries({ queryKey: ["fiscal-tutorials"] });
+    } catch (error: any) {
+      toast.error("Erro ao reordenar", { description: error.message });
+      queryClient.invalidateQueries({ queryKey: ["fiscal-tutorials"] });
+    }
   };
 
   return (
@@ -49,11 +96,18 @@ const FiscalTutorialsPage = () => {
           <GraduationCap className="h-7 w-7 text-primary" />
           Tutoriais Fiscais
         </h1>
-        {isAdmin && (
-          <Button className="flex items-center gap-2" onClick={() => { setEditingTutorial(null); setAddDialogOpen(true); }}>
-            <Plus className="w-4 h-4" /> Adicionar Tutorial
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {isAdmin && (
+            <Button variant={isDragModeActive ? "default" : "outline"} size="icon" onClick={() => setIsDragModeActive(prev => !prev)} title="Modo arrastar">
+              <GripVertical className="w-4 h-4" />
+            </Button>
+          )}
+          {isAdmin && (
+            <Button className="flex items-center gap-2" onClick={() => { setEditingTutorial(null); setAddDialogOpen(true); }}>
+              <Plus className="w-4 h-4" /> Adicionar Tutorial
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="max-w-4xl mx-auto">
@@ -70,31 +124,56 @@ const FiscalTutorialsPage = () => {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
           </div>
         ) : filteredTutorials.length > 0 ? (
-          <div className="grid gap-6">
-            {filteredTutorials.map((tutorial) => (
-              <div key={tutorial.id} className="bg-card border rounded-lg overflow-hidden shadow-sm relative">
-                {isAdmin && (
-                  <Button variant="ghost" size="icon" onClick={() => handleEdit(tutorial)} className="absolute top-2 right-2 bg-background/80 hover:bg-background z-10" title="Editar tutorial">
-                    <Pencil className="w-4 h-4" />
-                  </Button>
-                )}
-                <div className="aspect-video">
-                  <iframe
-                    src={convertToEmbedUrl(tutorial.video_url)}
-                    title={tutorial.titulo}
-                    className="w-full h-full"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="fiscal-tutorials-list">
+              {(provided) => (
+                <div className="grid gap-6" {...provided.droppableProps} ref={provided.innerRef}>
+                  {filteredTutorials.map((tutorial, index) => (
+                    <Draggable key={tutorial.id} draggableId={tutorial.id} index={index} isDragDisabled={!isDragModeActive}>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          className={`bg-card border rounded-lg overflow-hidden shadow-sm relative ${snapshot.isDragging ? "ring-2 ring-primary shadow-lg" : ""}`}
+                        >
+                          {isDragModeActive && (
+                            <div {...provided.dragHandleProps} className="absolute top-2 left-2 z-10 cursor-grab bg-background/80 rounded p-1">
+                              <GripVertical className="w-4 h-4 text-muted-foreground" />
+                            </div>
+                          )}
+                          {isAdmin && (
+                            <div className="absolute top-2 right-2 z-10 flex gap-1">
+                              <Button variant="ghost" size="icon" onClick={() => handleEdit(tutorial)} className="bg-background/80 hover:bg-background" title="Editar">
+                                <Pencil className="w-4 h-4" />
+                              </Button>
+                              <Button variant="ghost" size="icon" onClick={() => handleDelete(tutorial)} className="bg-background/80 hover:bg-background text-destructive" title="Excluir">
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          )}
+                          <div className="aspect-video">
+                            <iframe
+                              src={convertToEmbedUrl(tutorial.video_url)}
+                              title={tutorial.titulo}
+                              className="w-full h-full"
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </div>
+                          <div className="p-4">
+                            <h3 className="font-semibold text-lg mb-2">{tutorial.titulo}</h3>
+                            <p className="text-sm text-muted-foreground">{tutorial.descricao}</p>
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
                 </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-lg mb-2">{tutorial.titulo}</h3>
-                  <p className="text-sm text-muted-foreground">{tutorial.descricao}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         ) : (
           <div className="text-center py-8 text-muted-foreground">
             {searchTerm ? "Nenhum tutorial encontrado" : "Nenhum tutorial fiscal disponível"}
@@ -114,6 +193,21 @@ const FiscalTutorialsPage = () => {
         tutorial={null}
         onSuccess={handleSuccess}
       />
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
+            <AlertDialogDescription>Tem certeza que deseja excluir "<strong>{tutorialToDelete?.titulo}</strong>"?</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90" disabled={deleteMutation.isPending}>
+              {deleteMutation.isPending ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Excluindo...</> : "Excluir"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
