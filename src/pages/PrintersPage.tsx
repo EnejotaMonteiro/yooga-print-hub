@@ -5,7 +5,7 @@ import { SocketStatus } from "@/components/SocketStatus";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Download, GripVertical, ListOrdered, Printer as PrinterIcon } from "lucide-react"; // Adicionado ListOrdered e renomeado Printer para PrinterIcon
+import { Download, GripVertical, ListOrdered, Plus, Printer as PrinterIcon } from "lucide-react";
 import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
@@ -158,6 +158,16 @@ const PrintersPage = () => {
                 title={isDragModeActive ? "Desativar modo de arrastar" : "Ativar modo de arrastar para reordenar"}
               >
                 <GripVertical className="w-4 h-4" />
+              </Button>
+              <Button
+                className="flex items-center gap-2"
+                onClick={() => {
+                  setSelectedPrinterForEdit(null);
+                  setEditDialogOpen(true);
+                }}
+              >
+                <Plus className="w-4 h-4" />
+                Adicionar Impressora
               </Button>
             </>
           )}
