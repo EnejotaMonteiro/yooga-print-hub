@@ -16,18 +16,22 @@ export const useAdmin = () => {
           return;
         }
 
-        const { data, error } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .eq('role', 'admin')
-          .maybeSingle();
+        const [adminResult, superAdminResult] = await Promise.all([
+          supabase.rpc('has_role', {
+            _user_id: session.user.id,
+            _role: 'admin',
+          }),
+          supabase.rpc('has_role', {
+            _user_id: session.user.id,
+            _role: 'super_admin',
+          }),
+        ]);
 
-        if (error) {
-          console.error('Erro ao verificar admin:', error);
+        if (adminResult.error || superAdminResult.error) {
+          console.error('Erro ao verificar admin:', adminResult.error || superAdminResult.error);
           setIsAdmin(false);
         } else {
-          setIsAdmin(!!data);
+          setIsAdmin(!!adminResult.data || !!superAdminResult.data);
         }
       } catch (error) {
         console.error('Erro ao verificar admin:', error);
