@@ -141,36 +141,32 @@ const PrintersPage = () => {
             </a>
           )}
           <SocketStatus />
-          {isAdmin && (
-            <>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setOrderSheetOpen(true)}
-                title="Reordenar impressoras (lista)"
-              >
-                <ListOrdered className="w-4 h-4" />
-              </Button>
-              <Button
-                variant={isDragModeActive ? "default" : "outline"}
-                size="icon"
-                onClick={() => setIsDragModeActive(prev => !prev)}
-                title={isDragModeActive ? "Desativar modo de arrastar" : "Ativar modo de arrastar para reordenar"}
-              >
-                <GripVertical className="w-4 h-4" />
-              </Button>
-              <Button
-                className="flex items-center gap-2"
-                onClick={() => {
-                  setSelectedPrinterForEdit(null);
-                  setEditDialogOpen(true);
-                }}
-              >
-                <Plus className="w-4 h-4" />
-                Adicionar Impressora
-              </Button>
-            </>
-          )}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setOrderSheetOpen(true)}
+            title="Reordenar impressoras (lista)"
+          >
+            <ListOrdered className="w-4 h-4" />
+          </Button>
+          <Button
+            variant={isDragModeActive ? "default" : "outline"}
+            size="icon"
+            onClick={() => setIsDragModeActive(prev => !prev)}
+            title={isDragModeActive ? "Desativar modo de arrastar" : "Ativar modo de arrastar para reordenar"}
+          >
+            <GripVertical className="w-4 h-4" />
+          </Button>
+          <Button
+            className="flex items-center gap-2"
+            onClick={() => {
+              setSelectedPrinterForEdit(null);
+              setEditDialogOpen(true);
+            }}
+          >
+            <Plus className="w-4 h-4" />
+            Adicionar Impressora
+          </Button>
         </div>
       </div>
 
@@ -206,7 +202,7 @@ const PrintersPage = () => {
                           downloadUrl={printer.download_url}
                           networkConnection={printer.conexao_rede}
                           recommendedWindows={printer.windows_recomendado}
-                          isAdmin={isAdmin}
+                          isAdmin={true}
                           onEdit={handleEditPrinter}
                           innerRef={provided.innerRef}
                           draggableProps={provided.draggableProps}
