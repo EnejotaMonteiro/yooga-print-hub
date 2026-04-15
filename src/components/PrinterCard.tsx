@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Edit, GripVertical } from "lucide-react";
+import { Download, Edit, GripVertical, Printer as PrinterIconPlaceholder } from "lucide-react";
 import { convertToEmbedUrl } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
@@ -80,9 +80,7 @@ export const PrinterCard = ({
       )}
       <CardContent className="p-0">
         <div className="aspect-video overflow-hidden printer-media-wrapper">
-          {imageUrl ? (
-            <img src={imageUrl} alt={name} className="w-full h-full object-cover rounded-t-lg" />
-          ) : (
+          {videoUrl ? (
             <iframe
               src={convertToEmbedUrl(videoUrl)}
               title={`${name} - Configuração e Funcionamento`}
@@ -91,6 +89,12 @@ export const PrinterCard = ({
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
+          ) : imageUrl ? (
+            <img src={imageUrl} alt={name} className="w-full h-full object-cover rounded-t-lg" />
+          ) : (
+            <div className="w-full h-full bg-muted flex items-center justify-center rounded-t-lg">
+              <PrinterIconPlaceholder className="w-12 h-12 text-muted-foreground" />
+            </div>
           )}
         </div>
         <div className="p-6">
