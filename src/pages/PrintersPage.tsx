@@ -6,13 +6,11 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Download, GripVertical, ListOrdered, Plus, Printer as PrinterIcon } from "lucide-react";
-import { useAdmin } from "@/hooks/use-admin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PrinterFormDialog } from "@/components/admin/PrinterFormDialog";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
-import { PrinterOrderSheet } from "@/components/admin/PrinterOrderSheet"; // Importar o novo componente
+import { PrinterOrderSheet } from "@/components/admin/PrinterOrderSheet";
 
-// Reutilizar a interface Printer do Supabase types para consistência
 import { Tables } from "@/integrations/supabase/types";
 export type Printer = Tables<'impressoras'>;
 
@@ -20,11 +18,10 @@ const PrintersPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedPrinterForEdit, setSelectedPrinterForEdit] = useState<Printer | null>(null);
-  const [isDragModeActive, setIsDragModeActive] = useState(false); // Para o drag na página principal
-  const [showDownloadAllButton, setShowDownloadAll] = useState(true); // Renomeado para evitar conflito
-  const [orderSheetOpen, setOrderSheetOpen] = useState(false); // Estado para o painel de ordem
+  const [isDragModeActive, setIsDragModeActive] = useState(false);
+  const [showDownloadAllButton, setShowDownloadAll] = useState(true);
+  const [orderSheetOpen, setOrderSheetOpen] = useState(false);
 
-  const { isAdmin, loading: adminLoading } = useAdmin();
   const queryClient = useQueryClient();
 
   const { data: printers, isLoading: loadingPrinters } = useQuery<Printer[]>({
@@ -172,7 +169,7 @@ const PrintersPage = () => {
 
       {/* Printers Grid */}
       <div className="pb-16">
-        {(loadingPrinters || adminLoading) ? (
+        {loadingPrinters ? (
           <div className="text-center py-8">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-muted-foreground">Carregando impressoras...</p>
@@ -209,7 +206,7 @@ const PrintersPage = () => {
                           dragHandleProps={isDragModeActive ? provided.dragHandleProps : {}}
                           isDragModeActive={isDragModeActive}
                           isDragging={snapshot.isDragging}
-                          imageUrl={printer.imagem_url || undefined} // Passar imageUrl
+                          imageUrl={printer.imagem_url || undefined}
                         />
                       )}
                     </Draggable>
