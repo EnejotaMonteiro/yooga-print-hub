@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Edit, GripVertical } from "lucide-react";
+import { Download, Edit, GripVertical, Printer as PrinterIconPlaceholder } from "lucide-react";
 import { convertToEmbedUrl } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
